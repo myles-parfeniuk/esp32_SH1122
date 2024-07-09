@@ -5,6 +5,16 @@ uint8_t SH1122Oled::frame_buffer[FRAME_BUFFER_LENGTH];
 SH1122Oled::sh1122_oled_font_info_t SH1122Oled::font_info;
 SH1122Oled::FontDirection SH1122Oled::font_dir = SH1122Oled::FontDirection::left_to_right;
 
+/**
+ * @brief SH1122Oled constructor.
+ *
+ * Construct a SH1122Oled object for managing a SH1122Oled driven OLED display.
+ * Initializes required GPIO pins and SPI peripheral then sends out several commands
+ * to initialize SH1122. Commands can be seen in default_init().
+ *
+ * @param oled_cfg Configuration settings (optional), default settings can be seen in sh1122_oled_cfg_t and are selectable.
+ * @return void, nothing to return
+ */
 SH1122Oled::SH1122Oled(sh1122_oled_cfg_t oled_cfg)
     : oled_cfg(oled_cfg)
 {
@@ -20,7 +30,7 @@ SH1122Oled::SH1122Oled(sh1122_oled_cfg_t oled_cfg)
 
     gpio_config(&io_dc_rst_cs_cfg);
 
-    gpio_set_level(oled_cfg.io_rst, 1); // put rst pin initially high*/
+    gpio_set_level(oled_cfg.io_rst, 1); // put rst pin initially high
 
     spi_bus_cfg.mosi_io_num = oled_cfg.io_mosi;
     spi_bus_cfg.miso_io_num = GPIO_NUM_NC;
@@ -41,12 +51,20 @@ SH1122Oled::SH1122Oled(sh1122_oled_cfg_t oled_cfg)
     oled_interface_cfg.pre_cb = NULL;
     oled_interface_cfg.flags = SPI_DEVICE_3WIRE | SPI_DEVICE_HALFDUPLEX;
 
+    // initialize SPI peripheral
     ESP_ERROR_CHECK(spi_bus_initialize(oled_cfg.spi_peripheral, &spi_bus_cfg, oled_cfg.dma_cha));
     ESP_ERROR_CHECK(spi_bus_add_device(oled_cfg.spi_peripheral, &oled_interface_cfg, &spi_hdl));
 
     default_init();
 }
 
+/**
+ * @brief Updates OLED display with current frame buffer.
+ *
+ * Sends frame buffer to SH1122 over SPI, should be called after performing draw operations.
+ *
+ * @return void, nothing to return
+ */
 void SH1122Oled::update_screen()
 {
     gpio_set_level(oled_cfg.io_cs, 0);
@@ -59,6 +77,14 @@ void SH1122Oled::update_screen()
     gpio_set_level(oled_cfg.io_cs, 1);
 }
 
+/**
+ * @brief Sets respective pixel to specified grayscale intensity.
+ *
+ * @param x Pixel x location.
+ * @param y Pixel y location.
+ * @param intensity Grayscale intensity of the drawn pixel.
+ * @return void, nothing to return
+ */
 void SH1122Oled::set_pixel(uint16_t x, uint16_t y, PixelIntensity intensity)
 {
 
@@ -86,6 +112,16 @@ void SH1122Oled::set_pixel(uint16_t x, uint16_t y, PixelIntensity intensity)
     }
 }
 
+/**
+ * @brief Draws a line between two points.
+ *
+ * @param x_1 Line starting x location.
+ * @param y_1 Line starting y location.
+ * @param x_2 Line ending x location.
+ * @param y_2 Line ending y location.
+ * @param intensity Grayscale intensity of the drawn line.
+ * @return void, nothing to return
+ */
 void SH1122Oled::draw_line(int16_t x_1, int16_t y_1, int16_t x_2, int16_t y_2, PixelIntensity intensity)
 {
     const int16_t delta_x = abs(x_2 - x_1);
@@ -115,6 +151,17 @@ void SH1122Oled::draw_line(int16_t x_1, int16_t y_1, int16_t x_2, int16_t y_2, P
     }
 }
 
+/**
+ * @brief Draws rectangular frame at the specified location.
+ *
+ * @param x Frame x location (upper left corner of frame)
+ * @param y Frame y location (upper left corner of frame)
+ * @param width Frame width.
+ * @param height Frame height.
+ * @param thickness Frame thickness (drawn towards inside of frame)
+ * @param intensity Grayscale intensity of the drawn frame.
+ * @return void, nothing to return
+ */
 void SH1122Oled::draw_rectangle_frame(int16_t x_1, int16_t y_1, int16_t width, int16_t height, int16_t thickness, PixelIntensity intensity)
 {
     for (int i = 0; i < thickness; i++)
@@ -130,6 +177,16 @@ void SH1122Oled::draw_rectangle_frame(int16_t x_1, int16_t y_1, int16_t width, i
         draw_line(x_1, (y_1 + height - 1) - i, (x_1 + width - 1), (y_1 + height - 1) - i, intensity);
 }
 
+/**
+ * @brief Draws a filed rectangle at the specified location.
+ *
+ * @param x Rectangle x location (upper left corner of rectangle)
+ * @param y Rectangle y location (upper left corner of rectangle)
+ * @param width Rectangle width.
+ * @param height Rectangle height.
+ * @param intensity Grayscale intensity of the drawn rectangle.
+ * @return void, nothing to return
+ */
 void SH1122Oled::draw_rectangle(int16_t x_1, int16_t y_1, int16_t width, int16_t height, PixelIntensity intensity)
 {
     for (uint16_t j = 0; j < height; j++)
@@ -139,6 +196,15 @@ void SH1122Oled::draw_rectangle(int16_t x_1, int16_t y_1, int16_t width, int16_t
     }
 }
 
+/**
+ * @brief Draws the selected glyph/character using the currently loaded font.
+ *
+ * @param x Glyph x location (upper left corner of glyph)
+ * @param y Glyph y location (upper left corner of glyph)
+ * @param intensity Grayscale intensity of the drawn glyph
+ * @param encoding The encoding of the character to be drawn, supports UTF-8 and UTF-16.
+ * @return The change in x required to draw the next glyph in string without overlapping.
+ */
 uint16_t SH1122Oled::draw_glyph(uint16_t x, uint16_t y, PixelIntensity intensity, uint16_t encoding)
 {
     const uint8_t* glyph_ptr = NULL;
@@ -172,17 +238,26 @@ uint16_t SH1122Oled::draw_glyph(uint16_t x, uint16_t y, PixelIntensity intensity
 
     if (encoding != 0x0ffff)
     {
-        glyph_ptr = font_get_glyph_data(encoding);
+        glyph_ptr = font_get_glyph_data(encoding); // get glyph data from lookup table
         if (glyph_ptr != NULL)
         {
-            font_setup_glyph_decode(&decode, glyph_ptr);
-            dx = font_decode_glyph(&decode, glyph_ptr);
+            font_setup_glyph_decode(&decode, glyph_ptr);         // setup decode structure with important values from table
+            dx = font_decode_and_draw_glyph(&decode, glyph_ptr); // decode and draw the glyph
         }
     }
 
     return dx;
 }
 
+/**
+ * @brief Draws a string at the specified location using the currently loaded font.
+ *
+ * @param x String x location (upper left corner of string)
+ * @param y String y location (upper left corner of string)
+ * @param intensity Grayscale intensity of the drawn string
+ * @param format The string to be drawn, supports variable arguments (ie printf style formatting)
+ * @return The width of the drawn string.
+ */
 uint16_t SH1122Oled::draw_string(uint16_t x, uint16_t y, PixelIntensity intensity, const char* format, ...)
 {
     uint16_t delta = 0;
@@ -249,6 +324,12 @@ uint16_t SH1122Oled::draw_string(uint16_t x, uint16_t y, PixelIntensity intensit
     return sum;
 }
 
+/**
+ * @brief Returns the width of specified glyph using the currently loaded font.
+ *
+ * @param encoding The encoding of the character for which width is desired, supports UTF-8 and UTF-16.
+ * @return The width of the specified glyph.
+ */
 uint16_t SH1122Oled::font_get_glyph_width(uint16_t encoding)
 {
     const uint8_t* glyph_data = font_get_glyph_data(encoding);
@@ -264,20 +345,13 @@ uint16_t SH1122Oled::font_get_glyph_width(uint16_t encoding)
     return font_decode_get_signed_bits(&decode, font_info.bits_per_delta_x);
 }
 
-uint16_t SH1122Oled::font_get_glyph_height(uint16_t encoding)
-{
-    const uint8_t* glyph_data = font_get_glyph_data(encoding);
-    sh1122_oled_font_decode_t decode;
-
-    if (glyph_data == NULL)
-        return 0;
-
-    font_setup_glyph_decode(&decode, glyph_data);
-
-    return decode.glyph_height;
-    return 0;
-}
-
+/**
+ * @brief Returns the width of specified glyph using the currently loaded font. Overloaded with decode structure for calls to font_get_string_width()
+ *
+ * @param decode The decode structure to save the glyph x offset in, for use within get_string_width()
+ * @param encoding The encoding of the character for which width is desired, supports UTF-8 and UTF-16.
+ * @return The width of the specified glyph.
+ */
 uint16_t SH1122Oled::font_get_glyph_width(sh1122_oled_font_decode_t* decode, uint16_t encoding)
 {
     const uint8_t* glyph_data = font_get_glyph_data(encoding);
@@ -292,6 +366,32 @@ uint16_t SH1122Oled::font_get_glyph_width(sh1122_oled_font_decode_t* decode, uin
     return font_decode_get_signed_bits(decode, font_info.bits_per_delta_x);
 }
 
+/**
+ * @brief Returns the height of specified glyph using the currently loaded font.
+ *
+ * @param encoding The encoding of the character for which height is desired, supports UTF-8 and UTF-16.
+ * @return The height of the specified glyph.
+ */
+uint16_t SH1122Oled::font_get_glyph_height(uint16_t encoding)
+{
+    const uint8_t* glyph_data = font_get_glyph_data(encoding);
+    sh1122_oled_font_decode_t decode;
+
+    if (glyph_data == NULL)
+        return 0;
+
+    font_setup_glyph_decode(&decode, glyph_data);
+
+    return decode.glyph_height;
+    return 0;
+}
+
+/**
+ * @brief Returns the width of specified string using the currently loaded font.
+ *
+ * @param format The string for which width is desired, supports variable arguments (ie printf style formatting)
+ * @return The width of the specified string.
+ */
 uint16_t SH1122Oled::font_get_string_width(const char* format, ...)
 {
     uint16_t encoding;
@@ -304,20 +404,21 @@ uint16_t SH1122Oled::font_get_string_width(const char* format, ...)
     va_list args;
     uint16_t size;
 
+    // find length of variable argument string
     va_start(args, format);
     size = vsnprintf(nullptr, 0, format, args) + 1;
     va_end(args);
 
-    buffer = new char[size];
+    buffer = new char[size]; // allocate correct amount of memory for string
 
     if (!buffer)
         return 0;
 
     va_start(args, format);
-    vsnprintf(buffer, size, format, args);
+    vsnprintf(buffer, size, format, args); // save variable argument string to buffer
     va_end(args);
 
-    str = (uint8_t*) buffer;
+    str = (uint8_t*) buffer; // cast char * to uint8_t for use with other member methods
 
     width = 0;
     dx = 0;
@@ -330,15 +431,16 @@ uint16_t SH1122Oled::font_get_string_width(const char* format, ...)
             break;
         if (encoding != 0x0fffe)
         {
-            dx = font_get_glyph_width(&decode, encoding);
+            dx = font_get_glyph_width(&decode, encoding); // get the glyph width
             if (initial_x_offset == -64)
                 initial_x_offset = decode.glyph_x_offset;
 
-            width += dx;
+            width += dx; // increment width counter
         }
-        str++;
+        str++; // increment string pointer to next glyph
     }
 
+    // if glyph_width is greater than 0, apply the respective glyph x offset.
     if (decode.glyph_width != 0)
     {
         width -= dx;
@@ -348,11 +450,17 @@ uint16_t SH1122Oled::font_get_string_width(const char* format, ...)
             width += initial_x_offset;
     }
 
-    delete[] buffer;
+    delete[] buffer; // free allocated buffer memory
 
     return width;
 }
 
+/**
+ * @brief Returns the height (tallest character height) of specified string using the currently loaded font.
+ *
+ * @param format The string for which height is desired, supports variable arguments (ie printf style formatting)
+ * @return The width of the specified string.
+ */
 uint16_t SH1122Oled::font_get_string_height(const char* format, ...)
 {
     char* buffer = nullptr;
@@ -362,6 +470,7 @@ uint16_t SH1122Oled::font_get_string_height(const char* format, ...)
     uint16_t current_height = 0;
     uint16_t max_height = 0;
 
+    // allocate correct amount of memory and save string from variable argument list
     va_start(args, format);
     size = vsnprintf(nullptr, 0, format, args) + 1;
     va_end(args);
@@ -377,31 +486,51 @@ uint16_t SH1122Oled::font_get_string_height(const char* format, ...)
 
     str = (uint8_t*) buffer;
 
+    // so long as the current glyph is not NULL (EOL) get its height and increment string pointer to next glyph
     while (*str != '\0')
     {
         current_height = font_get_glyph_height(*str);
+        // if the current height is greater than the largest height detected
         if (current_height > max_height)
-            max_height = current_height;
+            max_height = current_height; // overwrite max_height with tallest character height detected
 
         str++;
     }
 
-    delete[] buffer;
+    delete[] buffer; // free memory allocated for string
     return max_height;
 }
 
+/**
+ * @brief Returns the x position required to horizontally center a given string.
+ *
+ * @param str The string for which a horizontal centering is desired.
+ * @return The x position the string should be drawn at to center it horizontally.
+ */
 uint16_t SH1122Oled::font_get_string_center_x(const char* str)
 {
     uint16_t str_width = font_get_string_width(str);
     return (WIDTH - str_width) / 2;
 }
 
+/**
+ * @brief Returns the y position required to vertically center a given string.
+ *
+ * @param str The string for which a vertical centering is desired.
+ * @return The y position the string should be drawn at to center it vertically.
+ */
 uint16_t SH1122Oled::font_get_string_center_y(const char* str)
 {
     uint16_t max_char_height = font_get_string_height(str);
     return (HEIGHT - max_char_height) / 2;
 }
 
+/**
+ * @brief Loads a font for drawing strings and glyphs.
+ *
+ * @param font A pointer to the first element of the respective font lookup table, font tables are located in fonts directory.
+ * @return void, nothing to return
+ */
 void SH1122Oled::load_font(const uint8_t* font)
 {
     font_info.font = font;
@@ -432,16 +561,32 @@ void SH1122Oled::load_font(const uint8_t* font)
     font_info.start_pos_unicode = font_lookup_table_read_word(font, 21);
 }
 
+/**
+ * @brief Sets the draw direction for strings and glyphs, default is left to right.
+ *
+ * @param dir The direction strings and glyphs should be drawn in, see FontDirection definition.
+ * @return void, nothing to return
+ */
 void SH1122Oled::set_font_direction(FontDirection dir)
 {
     font_dir = dir;
 }
 
+/**
+ * @brief Clears the buffer containing the pixel data sent to SH1122.
+ *
+ * @return void, nothing to return
+ */
 void SH1122Oled::clear_buffer()
 {
     memset(frame_buffer, 0, sizeof(frame_buffer));
 }
 
+/**
+ * @brief Hard resets the SH1122 using the RST pin.
+ *
+ * @return void, nothing to return
+ */
 void SH1122Oled::reset()
 {
     gpio_set_level(oled_cfg.io_rst, 0);   // bring oled into reset (rst low)
@@ -450,79 +595,155 @@ void SH1122Oled::reset()
     vTaskDelay(200 / portTICK_PERIOD_MS); // wait 200ms to boot
 }
 
+/**
+ * @brief Sends power off command.
+ *
+ * @return void, nothing to return
+ */
 void SH1122Oled::power_off()
 {
     uint8_t cmd = OLED_CMD_POWER_OFF;
     send_commands(&cmd, 1);
 }
 
+/**
+ * @brief Sends power on command.
+ *
+ * @return void, nothing to return
+ */
 void SH1122Oled::power_on()
 {
     uint8_t cmd = OLED_CMD_POWER_ON;
     send_commands(&cmd, 1);
 }
 
+/**
+ * @brief Sets the contrast of the display. Display must be powered off before calling.
+ *
+ * @param contrast_reg_val The desired contrast, SH1122 has 256 contrast steps from 0x00 to 0xFF.
+ * @return void, nothing to return
+ */
 void SH1122Oled::set_contrast(uint8_t contrast_reg_val)
 {
     uint8_t cmds[2] = {OLED_CMD_SET_DISP_CONTRAST, contrast_reg_val};
     send_commands(cmds, 2);
 }
 
+/**
+ * @brief Sets the multiplex ratio of the display. Display must be powered off before calling.
+ *
+ * @param multiplex_ratio_reg_val Desired multiplex ratio step, from 1 to 64
+ * @return void, nothing to return
+ */
 void SH1122Oled::set_multiplex_ratio(uint8_t multiplex_ratio_reg_val)
 {
     uint8_t cmds[2] = {OLED_CMD_SET_MULTIPLEX_RATION, multiplex_ratio_reg_val};
     send_commands(cmds, 2);
 }
 
+/**
+ * @brief Sets the DC-DC voltage converter status and switch frequency. Display must be powered off before calling.
+ *
+ * @param mod DC-DC register value, see section 12 of commands in SH1122 datasheet.
+ * @return void, nothing to return
+ */
 void SH1122Oled::set_dc_dc_control_mod(uint8_t mod)
 {
     uint8_t cmds[2] = {OLED_CMD_SET_DC_DC_CONTROL_MOD, mod};
     send_commands(cmds, 2);
 }
 
+/**
+ * @brief Sets clock divide ratio/oscillator frequency of internal display clocks. Display must be powered off before calling.
+ *
+ * @param freq_reg_val Clock divide ratio register value, see section 17 of commands in SH1122 datasheet.
+ * @return void, nothing to return
+ */
 void SH1122Oled::set_oscillator_freq(uint8_t freq_reg_val)
 {
     uint8_t cmds[2] = {OLED_CMD_SET_OSCILLATOR_FREQ, freq_reg_val};
     send_commands(cmds, 2);
 }
 
+/**
+ * @brief Sets display offset modifier. Display must be powered off before calling.
+ *
+ * @param mod Offset modifier value, see section 16 of commands in SH1122 datasheet.
+ * @return void, nothing to return
+ */
 void SH1122Oled::set_display_offset_mod(uint8_t mod)
 {
     uint8_t cmds[2] = {OLED_CMD_SET_DISP_OFFSET_MOD, mod};
     send_commands(cmds, 2);
 }
 
+/**
+ * @brief Sets duration of precharge/discharge period of display. Display must be powered off before calling.
+ *
+ * @param period_reg_val Period register value, see section 18 of commands in SH1122 datasheet.
+ * @return void, nothing to return
+ */
 void SH1122Oled::set_precharge_period(uint8_t period_reg_val)
 {
     uint8_t cmds[2] = {OLED_CMD_SET_PRE_CHARGE_PERIOD, period_reg_val};
     send_commands(cmds, 2);
 }
 
+/**
+ * @brief Sets common pad output voltage of display at deselect stage. Display must be powered off before calling.
+ *
+ * @param vcom_reg_val VCOM deselect level register value, see section 19 of commands in SH1122 datasheet.
+ * @return void, nothing to return
+ */
 void SH1122Oled::set_vcom(uint8_t vcom_reg_val)
 {
     uint8_t cmds[2] = {OLED_CMD_SET_VCOM, vcom_reg_val};
     send_commands(cmds, 2);
 }
 
+/**
+ * @brief Sets segment pad output voltage level at precharge stage. Display must be powered off before calling.
+ *
+ * @param vseg_reg_val VSEGM precharge level register value, see section 20 of commands in SH1122 datasheet.
+ * @return void, nothing to return
+ */
 void SH1122Oled::set_vseg(uint8_t vseg_reg_val)
 {
     uint8_t cmds[2] = {OLED_CMD_SET_VSEG, vseg_reg_val};
     send_commands(cmds, 2);
 }
 
+/**
+ * @brief Sets the current row address in display internal RAM. Display must be powered off before calling.
+ *
+ * @param row_addr Desired row address from 0x00 (POR) to 0x3F.
+ * @return void, nothing to return
+ */
 void SH1122Oled::set_row_addr(uint8_t row_addr)
 {
     uint8_t cmds[2] = {OLED_CMD_SET_ROW_ADDR, row_addr};
     send_commands(cmds, 2);
 }
 
+/**
+ * @brief Sets the row address to be used as initial display line/COM0. Display must be powered off before calling.
+ *
+ * @param start_line Desired starting row address, from 0x00 (POR) to 0x3F.
+ * @return void, nothing to return
+ */
 void SH1122Oled::set_start_line(uint8_t start_line)
 {
-    uint8_t cmd = OLED_CMD_SET_DISP_START_LINE | start_line;
+    uint8_t cmd = OLED_CMD_SET_DISP_START_LINE | (start_line & 0x3F);
 
     send_commands(&cmd, 1);
 }
 
+/**
+ * @brief Sets segment output discharge voltage level. Display must be powered off before calling.
+ *
+ * @param discharge_level VSEGM discharge level register value, see section 21 of commands in SH1122 datasheet.
+ * @return void, nothing to return
+ */
 void SH1122Oled::set_vseg_discharge_level(uint8_t discharge_level)
 {
     uint8_t cmd = OLED_CMD_SET_DISCHARGE_LEVEL | discharge_level;
@@ -530,6 +751,12 @@ void SH1122Oled::set_vseg_discharge_level(uint8_t discharge_level)
     send_commands(&cmd, 1);
 }
 
+/**
+ * @brief Sets the high column address of display. Display must be powered off before calling.
+ *
+ * @param high_column_addr High column address desired, from 0x10 to 0x17. (column address is 7 bits, with 3 msbs in higher column address register)
+ * @return void, nothing to return
+ */
 void SH1122Oled::set_high_column_address(uint8_t high_column_addr)
 {
     uint8_t cmd = OLED_CMD_SET_HIGH_COLUMN_ADDR | high_column_addr;
@@ -537,6 +764,12 @@ void SH1122Oled::set_high_column_address(uint8_t high_column_addr)
     send_commands(&cmd, 1);
 }
 
+/**
+ * @brief Sets the low column address of display. Display must be powered off before calling.
+ *
+ * @param low_column_addr Low column address desired, from 0x00 to 0x0F. (column address is 7 bits, with 4 lsbs in lower column address register)
+ * @return void, nothing to return
+ */
 void SH1122Oled::set_low_column_address(uint8_t low_column_addr)
 {
     uint8_t cmd = OLED_CMD_SET_LOW_COLUMN_ADDR | low_column_addr;
@@ -544,13 +777,19 @@ void SH1122Oled::set_low_column_address(uint8_t low_column_addr)
     send_commands(&cmd, 1);
 }
 
-void SH1122Oled::set_rev_display(bool rev_dir)
+/**
+ * @brief Inverts display pixel intensity. Display must be powered off before calling.
+ *
+ * @param inverted True if an inverted pixel intensity id desired, false if otherwise.
+ * @return void, nothing to return
+ */
+void SH1122Oled::set_inverted_intensity(bool inverted)
 {
     uint8_t cmd = 0;
 
-    if (rev_dir)
+    if (inverted)
     {
-        cmd = OLED_CMD_SET_REV_DISPLAY;
+        cmd = OLED_CMD_SET_INV_DISPLAY;
     }
     else
     {
@@ -560,11 +799,17 @@ void SH1122Oled::set_rev_display(bool rev_dir)
     send_commands(&cmd, 1);
 }
 
-void SH1122Oled::set_segment_remap(bool rev_dir)
+/**
+ * @brief Change relationship between RAM column address and segment driver. Display must be powered off before calling.
+ *
+ * @param remapped True if remapped segment scheme is desired, false if otherwise. See section 8 of commands in SH1122 datasheet.
+ * @return void, nothing to return
+ */
+void SH1122Oled::set_segment_remap(bool remapped)
 {
     uint8_t cmd = 0;
 
-    if (rev_dir)
+    if (remapped)
         cmd = OLED_CMD_NORM_SEG_MAP | 0x01;
     else
         cmd = OLED_CMD_NORM_SEG_MAP;
@@ -572,6 +817,12 @@ void SH1122Oled::set_segment_remap(bool rev_dir)
     send_commands(&cmd, 1);
 }
 
+/**
+ * @brief Changes scan direction of display from 0 to N, to N to 0, thus vertically flipping display. Display must be powered off before calling.
+ *
+ * @param flipped True if a flipped orientation is desired, false if otherwise.
+ * @return void, nothing to return
+ */
 void SH1122Oled::set_orientation(bool flipped)
 {
     uint8_t cmd = 0;
@@ -584,6 +835,12 @@ void SH1122Oled::set_orientation(bool flipped)
     send_commands(&cmd, 1);
 }
 
+/**
+ * @brief Checks a passed glyph for EOL conditions.
+ *
+ * @param b Encoding of the glyph being checked.
+ * @return ascii value/encoding of the glyph, 0x0ffff if EOL.
+ */
 uint16_t SH1122Oled::get_ascii_next(uint8_t b)
 {
     if (b == 0 || b == '\n')
@@ -592,6 +849,12 @@ uint16_t SH1122Oled::get_ascii_next(uint8_t b)
         return b;
 }
 
+/**
+ * @brief Returns pointer to glyph data from current font lookup table.
+ *
+ * @param encoding Encoding of the glyph data is desired for.
+ * @return a pointer to the first element of respective glyph data, NULL if not found.
+ */
 const uint8_t* SH1122Oled::font_get_glyph_data(uint16_t encoding)
 {
     const uint8_t* glyph_ptr = font_info.font;
@@ -659,6 +922,12 @@ const uint8_t* SH1122Oled::font_get_glyph_data(uint16_t encoding)
     return glyph_ptr;
 }
 
+/**
+ * @brief Sets up glyph decoding structure with values from glyph data for decoding process.
+ *
+ * @param encoding Encoding of the glyph being decoded.
+ * @return void, nothing to return
+ */
 void SH1122Oled::font_setup_glyph_decode(sh1122_oled_font_decode_t* decode, const uint8_t* glyph_data)
 {
     decode->decode_ptr = glyph_data;
@@ -668,6 +937,12 @@ void SH1122Oled::font_setup_glyph_decode(sh1122_oled_font_decode_t* decode, cons
     decode->glyph_height = font_decode_get_unsigned_bits(decode, font_info.bits_per_char_height);
 }
 
+/**
+ * @brief Decodes bit values from font lookup table and returns them as an unsigned integer.
+ *
+ * @param cnt Amount to increment current bit position by.
+ * @return Unsigned decoded values.
+ */
 uint8_t SH1122Oled::font_decode_get_unsigned_bits(sh1122_oled_font_decode_t* decode, uint8_t cnt)
 {
     uint8_t val;
@@ -698,6 +973,12 @@ uint8_t SH1122Oled::font_decode_get_unsigned_bits(sh1122_oled_font_decode_t* dec
     return val; // return the decoded value
 }
 
+/**
+ * @brief Decodes bit values from font lookup table and returns them as a signed integer.
+ *
+ * @param cnt Amount to increment current bit position by.
+ * @return Signed decoded values.
+ */
 int8_t SH1122Oled::font_decode_get_signed_bits(sh1122_oled_font_decode_t* decode, uint8_t cnt)
 {
     int8_t val;
@@ -711,6 +992,15 @@ int8_t SH1122Oled::font_decode_get_signed_bits(sh1122_oled_font_decode_t* decode
     return val;
 }
 
+/**
+ * @brief Apply rotation to y coordinate of lines being drawn for current glyph such that they match passed direction.
+ *
+ * @param dy Target y position of the glyph being drawn.
+ * @param x Local x position of glyph being drawn.
+ * @param y Local y position of glyph being drawn.
+ * @param dir The desired drawing direction of the font, default is left to right.
+ * @return Rotated y value.
+ */
 uint16_t SH1122Oled::font_apply_direction_y(uint16_t dy, int8_t x, int8_t y, FontDirection dir)
 {
     switch (dir)
@@ -735,6 +1025,15 @@ uint16_t SH1122Oled::font_apply_direction_y(uint16_t dy, int8_t x, int8_t y, Fon
     return dy;
 }
 
+/**
+ * @brief Apply rotation to x coordinate of lines being drawn for current glyph such that they match passed direction.
+ *
+ * @param dx Target x position of the glyph being drawn.
+ * @param x Local x position of glyph being drawn.
+ * @param y Local y position of glyph being drawn.
+ * @param dir The desired drawing direction of the font, default is left to right.
+ * @return Rotated x value.
+ */
 uint16_t SH1122Oled::font_apply_direction_x(uint16_t dx, int8_t x, int8_t y, FontDirection dir)
 {
     switch (dir)
@@ -759,11 +1058,25 @@ uint16_t SH1122Oled::font_apply_direction_x(uint16_t dx, int8_t x, int8_t y, Fon
     return dx;
 }
 
+/**
+ * @brief Reads an 8 bit value from specified font lookup table.
+ *
+ * @param font Pointer to first element of font lookup table.
+ * @param offset Offset from initial address of lookup table to element desired to be read.
+ * @return Read 8-bit value read from lookup table.
+ */
 uint8_t SH1122Oled::font_lookup_table_read_char(const uint8_t* font, uint8_t offset)
 {
     return *(const uint8_t*) (font + offset);
 }
 
+/**
+ * @brief Reads a 16 bit value from specified font lookup table.
+ *
+ * @param font Pointer to first element of font lookup table.
+ * @param offset Offset from initial address of lookup table to element desired to be read.
+ * @return Read 16-bit value read from lookup table.
+ */
 uint16_t SH1122Oled::font_lookup_table_read_word(const uint8_t* font, uint8_t offset)
 {
     uint16_t word;
@@ -775,97 +1088,14 @@ uint16_t SH1122Oled::font_lookup_table_read_word(const uint8_t* font, uint8_t of
     return word;
 }
 
-void SH1122Oled::font_draw_lines(sh1122_oled_font_decode_t* decode, uint8_t len, uint8_t is_foreground)
-{
-    uint8_t cnt;     /* total number of remaining pixels, which have to be drawn */
-    uint8_t rem;     /* remaining pixel to the right edge of the glyph */
-    uint8_t current; /* number of pixels, which need to be drawn for the draw procedure */
-                     /* current is either equal to cnt or equal to rem */
-
-    /* local coordinates of the glyph */
-    uint8_t lx, ly;
-
-    /* target position on the screen */
-    uint16_t x, y;
-
-    cnt = len;
-
-    /*get the local position*/
-    lx = decode->x;
-    ly = decode->y;
-
-    while (1)
-    {
-        /*calculate the number of pixels to the right edge of the glyph*/
-        rem = decode->glyph_width;
-        rem -= lx;
-
-        /*calculate how many pixels to draw*/
-        current = rem;
-        if (cnt < rem)
-            current = cnt;
-
-        x = decode->target_x;
-        y = decode->target_y;
-
-        x = font_apply_direction_x(x, lx, ly, font_dir);
-        y = font_apply_direction_y(y, lx, ly, font_dir);
-
-        if (is_foreground)
-        {
-            draw_hv_line(decode, x, y, current, (PixelIntensity) decode->fg_intensity);
-        }
-
-        if (cnt < rem)
-            break;
-
-        cnt -= rem;
-        lx = 0;
-        ly++;
-    }
-    lx += cnt;
-    decode->x = lx;
-    decode->y = ly;
-}
-
-void SH1122Oled::draw_hv_line(sh1122_oled_font_decode_t* decode, int16_t x, int16_t y, uint16_t length, PixelIntensity intensity)
-{
-
-    if (length != 0)
-    {
-
-        if (y < 0)
-            return;
-        if (y >= HEIGHT)
-            return;
-
-        if (x < 0)
-            return;
-        if (x >= WIDTH)
-            return;
-
-        switch (font_dir)
-        {
-        case FontDirection::left_to_right:
-            draw_line(x, y, x + (length - 1), y, intensity);
-            break;
-
-        case FontDirection::top_to_bottom:
-            draw_line(x, y, x, y + (length - 1), intensity);
-            break;
-
-        case FontDirection::right_to_left:
-            draw_line(x - (length - 1), y, x, y, intensity);
-            break;
-
-        case FontDirection::bottom_to_top:
-            draw_line(x, y, x, y - (length - 1), intensity);
-            break;
-        }
-    }
-}
-
-int8_t SH1122Oled::font_decode_glyph(sh1122_oled_font_decode_t* decode, const uint8_t* glyph_data)
+/**
+ * @brief Decodes and draws a single glyph/character.
+ *
+ * @param decode Pointer to decode structure containing information about the glyph to be drawn.
+ * @param glyph_data Pointer to the initial element of the data for the glyph to be drawn.
+ * @return Amount for which x should be incremented before drawing the next glyph.
+ */
+int8_t SH1122Oled::font_decode_and_draw_glyph(sh1122_oled_font_decode_t* decode, const uint8_t* glyph_data)
 {
     uint8_t bg_line_length, fg_line_length;
     int8_t x, y;
@@ -906,48 +1136,131 @@ int8_t SH1122Oled::font_decode_glyph(sh1122_oled_font_decode_t* decode, const ui
     return d;
 }
 
-void SH1122Oled::send_commands(uint8_t* cmds, uint16_t length)
+/**
+ * @brief Draws lines/pixels for glyph being drawn.
+ *
+ * @param decode Pointer to decode structure containing information about the glyph currently being drawn.
+ * @param len Total number of pixels which must be drawn for specified glyph.
+ * @param is_foreground 0 if pixels are background/whitespace around the glyph, 1 if the actual glyph content to be drawn.
+ * @return void, nothing to return
+ */
+void SH1122Oled::font_draw_lines(sh1122_oled_font_decode_t* decode, uint8_t len, uint8_t is_foreground)
 {
-    gpio_set_level(oled_cfg.io_dc, 0);
-    spi_transaction_t t;
-    spi_transaction_t* rt;
-    uint8_t dc = COMMAND;
-    t.length = length * 8;
-    t.rxlength = 0;
-    t.tx_buffer = cmds;
-    t.rx_buffer = NULL;
-    t.user = (void*) &dc;
-    t.flags = 0;
-    spi_device_queue_trans(spi_hdl, &t, portMAX_DELAY);
-    spi_device_get_trans_result(spi_hdl, &rt, portMAX_DELAY);
+    uint8_t cnt;     /* total number of remaining pixels, which have to be drawn */
+    uint8_t rem;     /* remaining pixel to the right edge of the glyph */
+    uint8_t current; /* number of pixels, which need to be drawn for the draw procedure */
+                     /* current is either equal to cnt or equal to rem */
+
+    /* local coordinates of the glyph */
+    uint8_t lx, ly;
+
+    /* target position on the screen */
+    uint16_t x, y;
+
+    cnt = len;
+
+    /*get the local position*/
+    lx = decode->x;
+    ly = decode->y;
+
+    while (1)
+    {
+        /*calculate the number of pixels to the right edge of the glyph*/
+        rem = decode->glyph_width;
+        rem -= lx;
+
+        /*calculate how many pixels to draw*/
+        current = rem;
+        if (cnt < rem)
+            current = cnt;
+
+        x = decode->target_x;
+        y = decode->target_y;
+
+        x = font_apply_direction_x(x, lx, ly, font_dir);
+        y = font_apply_direction_y(y, lx, ly, font_dir);
+
+        if (is_foreground)
+        {
+            font_draw_line(decode, x, y, current, (PixelIntensity) decode->fg_intensity);
+        }
+
+        if (cnt < rem)
+            break;
+
+        cnt -= rem;
+        lx = 0;
+        ly++;
+    }
+    lx += cnt;
+    decode->x = lx;
+    decode->y = ly;
 }
 
-void SH1122Oled::send_data(uint8_t* data, uint16_t length)
+/**
+ * @brief Draws a single font line, called from font_draw_lines
+ *
+ * @param decode Pointer to decode structure containing information about the glyph currently being drawn.
+ * @param x Starting x position of line.
+ * @param y Starting y position of line.
+ * @param length Length of line in pixels.
+ * @param intensity Grayscale intensity of the line being drawn.
+ * @return void, nothing to return
+ */
+void SH1122Oled::font_draw_line(sh1122_oled_font_decode_t* decode, int16_t x, int16_t y, uint16_t length, PixelIntensity intensity)
 {
-    gpio_set_level(oled_cfg.io_dc, 1);
-    spi_transaction_t t;
-    spi_transaction_t* rt;
-    uint8_t dc = DATA;
-    t.length = length * 8;
-    t.rxlength = 0;
-    t.tx_buffer = data;
-    t.rx_buffer = NULL;
-    t.user = (void*) &dc;
-    t.flags = 0;
-    spi_device_queue_trans(spi_hdl, &t, portMAX_DELAY);
-    spi_device_get_trans_result(spi_hdl, &rt, portMAX_DELAY);
+
+    if (length != 0)
+    {
+
+        if (y < 0)
+            return;
+        if (y >= HEIGHT)
+            return;
+
+        if (x < 0)
+            return;
+        if (x >= WIDTH)
+            return;
+
+        switch (font_dir)
+        {
+        case FontDirection::left_to_right:
+            draw_line(x, y, x + (length - 1), y, intensity);
+            break;
+
+        case FontDirection::top_to_bottom:
+            draw_line(x, y, x, y + (length - 1), intensity);
+            break;
+
+        case FontDirection::right_to_left:
+            draw_line(x - (length - 1), y, x, y, intensity);
+            break;
+
+        case FontDirection::bottom_to_top:
+            draw_line(x, y, x, y - (length - 1), intensity);
+            break;
+        }
+    }
 }
 
+/**
+ * @brief Sends commands to initialize display for use.
+ *
+ * @return void, nothing to return
+ */
 void SH1122Oled::default_init()
 {
-    power_off();
     reset();
 
+    power_off();
     // send all initialization commands
     set_oscillator_freq(0x50);
-    set_multiplex_ratio(0x3F);
+    set_multiplex_ratio(HEIGHT - 1);
     set_display_offset_mod(0x00);
     set_row_addr(0x00);
+    set_high_column_address(0x00);
+    set_low_column_address(0x00);
     set_start_line(0x00);
     set_vseg_discharge_level(0x00);
     set_dc_dc_control_mod(0x80);
@@ -957,12 +1270,52 @@ void SH1122Oled::default_init()
     set_precharge_period(0x28);
     set_vcom(0x30);
     set_vseg(0x1E);
-    set_rev_display(false);
-    set_high_column_address(0x00);
-    set_low_column_address(0x00);
-    // clear screen of any artifacts
-    clear_buffer();
+    set_inverted_intensity(false);
     power_on(); // power back on oled
 
+    // clear screen of any artifacts
+    clear_buffer();
     update_screen();
+}
+
+/**
+ * @brief Sends commands to SH1122 over SPI.
+ *
+ * @param cmds Pointer to buffer containing commands to be sent.
+ * @param length Total length of command buffer.
+ * @return void, nothing to return
+ */
+void SH1122Oled::send_commands(uint8_t* cmds, uint16_t length)
+{
+    gpio_set_level(oled_cfg.io_dc, 0);
+    spi_transaction_t t;
+    spi_transaction_t* rt;
+    t.length = length * 8;
+    t.rxlength = 0;
+    t.tx_buffer = cmds;
+    t.rx_buffer = NULL;
+    t.flags = 0;
+    spi_device_queue_trans(spi_hdl, &t, portMAX_DELAY);
+    spi_device_get_trans_result(spi_hdl, &rt, portMAX_DELAY);
+}
+
+/**
+ * @brief Sends data to SH1122 over SPI.
+ *
+ * @param cmds Pointer to buffer containing data to be sent.
+ * @param length Total length of data buffer.
+ * @return void, nothing to return
+ */
+void SH1122Oled::send_data(uint8_t* data, uint16_t length)
+{
+    gpio_set_level(oled_cfg.io_dc, 1);
+    spi_transaction_t t;
+    spi_transaction_t* rt;
+    t.length = length * 8;
+    t.rxlength = 0;
+    t.tx_buffer = data;
+    t.rx_buffer = NULL;
+    t.flags = 0;
+    spi_device_queue_trans(spi_hdl, &t, portMAX_DELAY);
+    spi_device_get_trans_result(spi_hdl, &rt, portMAX_DELAY);
 }
