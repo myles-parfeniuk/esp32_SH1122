@@ -106,25 +106,27 @@ class SH1122Oled
         /// @brief Pixel intensity/grayscale level passed to drawing functions, SH1122 supports 16 different shades.
         enum class PixelIntensity
         {
-            level_0 = 0x00,
-            level_1 = 0x11,
-            level_2 = 0x22,
-            level_3 = 0x33,
-            level_4 = 0x44,
-            level_5 = 0x55,
-            level_6 = 0x66,
-            level_7 = 0x77,
-            level_8 = 0x88,
-            level_9 = 0x99,
-            level_10 = 0xAA,
-            level_11 = 0xBB,
-            level_12 = 0xCC,
-            level_13 = 0xDD,
-            level_14 = 0xEE,
-            level_15 = 0xFF
+            level_0,
+            level_1,
+            level_2,
+            level_3,
+            level_4,
+            level_5,
+            level_6,
+            level_7,
+            level_8,
+            level_9,
+            level_10,
+            level_11,
+            level_12,
+            level_13,
+            level_14,
+            level_15,
+            max
+            
         };
 
-        SH1122Oled(sh1122_oled_cfg_t oled_cfg = default_oled_cfg);
+        SH1122Oled(sh1122_oled_cfg_t settings = sh1122_oled_cfg_t());
 
         void update_screen();
         void clear_buffer();
@@ -204,19 +206,19 @@ class SH1122Oled
 
         } sh1122_oled_font_info_t;
 
-        /// @brief Glyph decode information structure, used to contain information about glyphs being decoded and drawn. 
+        /// @brief Glyph decode information structure, used to contain information about glyphs being decoded and drawn.
         typedef struct sh1122_oled_font_decode_t
         {
                 const uint8_t* decode_ptr; ///< Pointer to the glyph data being decoded
-                uint8_t bit_pos; ///< Current bit position in decoding/drawing process
-                int8_t glyph_width;    ///< Glyph width
-                int8_t glyph_height;   ///< Glyph height
-                int8_t x;              ///< Current x position to be drawn at
-                int8_t y;              ///< Current y position to be drawn at
-                uint16_t target_x;     ///< Target x position of the glyph
-                uint16_t target_y;     ///< Target y position of the glyph
-                int8_t glyph_x_offset; ///< Glyph x offset used for string width calculations only
-                uint8_t fg_intensity;  ///< Foreground intensity to draw
+                uint8_t bit_pos;           ///< Current bit position in decoding/drawing process
+                int8_t glyph_width;        ///< Glyph width
+                int8_t glyph_height;       ///< Glyph height
+                int8_t x;                  ///< Current x position to be drawn at
+                int8_t y;                  ///< Current y position to be drawn at
+                uint16_t target_x;         ///< Target x position of the glyph
+                uint16_t target_y;         ///< Target y position of the glyph
+                int8_t glyph_x_offset;     ///< Glyph x offset used for string width calculations only
+                uint8_t fg_intensity;      ///< Foreground intensity to draw
         } sh1122_oled_font_decode_t;
 
         void default_init();
@@ -236,49 +238,55 @@ class SH1122Oled
         void font_draw_lines(sh1122_oled_font_decode_t* decode, uint8_t len, uint8_t is_foreground);
         void font_draw_line(sh1122_oled_font_decode_t* decode, int16_t x, int16_t y, uint16_t length, PixelIntensity intensity);
 
-        sh1122_oled_cfg_t oled_cfg; ///< Holds configuration struct passed to constructor, used for GPIO pins and SPI
-        spi_bus_config_t spi_bus_cfg; ///< SPI peripheral config struct.
+        static sh1122_oled_cfg_t oled_cfg;                       ///< Holds configuration struct passed to constructor, used for GPIO pins and SPI
+        spi_bus_config_t spi_bus_cfg;                     ///< SPI peripheral config struct.
         spi_device_interface_config_t oled_interface_cfg; ///< SPI interface struct for SH1122
-        spi_device_handle_t spi_hdl; ///< Handle to perform SPI transactions with.
+        spi_device_handle_t spi_hdl;                      ///< Handle to perform SPI transactions with.
 
-        static FontDirection font_dir; ///< The currently selected font direction, default is left to right.
-        static sh1122_oled_cfg_t default_oled_cfg; ///< Default oled config settings
-        static sh1122_oled_font_info_t font_info; ///< Contains information about the currently loaded font.
+        static FontDirection font_dir;             ///< The currently selected font direction, default is left to right.
+        static sh1122_oled_font_info_t font_info;  ///< Contains information about the currently loaded font.
 
         static const constexpr uint16_t FRAME_BUFFER_LENGTH = WIDTH * HEIGHT / 2; ///< Length of frame buffer being sent over SPI.
-        static uint8_t frame_buffer[FRAME_BUFFER_LENGTH]; ///< Frame buffer to contain pixel data being sent over SPI.
-        static const constexpr uint16_t FRAME_CHUNK_1_LENGTH = FRAME_BUFFER_LENGTH / 3; ///< Length of first frame chunk being sent over SPI (frame buffer length exceeds esp-idf's SPI max transfer sz)
-        static const constexpr uint16_t FRAME_CHUNK_2_LENGTH = FRAME_CHUNK_1_LENGTH; ///< Length of second frame chunk being sent over SPI (frame buffer length exceeds esp-idf's SPI max transfer sz)
-        static const constexpr uint16_t FRAME_CHUNK_3_LENGTH = FRAME_BUFFER_LENGTH - FRAME_CHUNK_1_LENGTH - FRAME_CHUNK_2_LENGTH; ///< Length of third frame chunk being sent over SPI (frame buffer length exceeds esp-idf's SPI max transfer sz)
-        static const constexpr uint16_t FRAME_CHUNK_LENGTHS[3] = {FRAME_CHUNK_1_LENGTH, FRAME_CHUNK_2_LENGTH, FRAME_CHUNK_3_LENGTH}; ///< Length of frame chunks being sent over SPI (frame buffer length exceeds esp-idf's SPI max transfer sz)
+        static uint8_t frame_buffer[FRAME_BUFFER_LENGTH];                         ///< Frame buffer to contain pixel data being sent over SPI.
+        static const constexpr uint16_t FRAME_CHUNK_1_LENGTH =
+                FRAME_BUFFER_LENGTH /
+                3; ///< Length of first frame chunk being sent over SPI (frame buffer length exceeds esp-idf's SPI max transfer sz)
+        static const constexpr uint16_t FRAME_CHUNK_2_LENGTH =
+                FRAME_CHUNK_1_LENGTH; ///< Length of second frame chunk being sent over SPI (frame buffer length exceeds esp-idf's SPI max transfer sz)
+        static const constexpr uint16_t FRAME_CHUNK_3_LENGTH =
+                FRAME_BUFFER_LENGTH - FRAME_CHUNK_1_LENGTH -
+                FRAME_CHUNK_2_LENGTH; ///< Length of third frame chunk being sent over SPI (frame buffer length exceeds esp-idf's SPI max transfer sz)
+        static const constexpr uint16_t FRAME_CHUNK_LENGTHS[3] = {FRAME_CHUNK_1_LENGTH, FRAME_CHUNK_2_LENGTH,
+                FRAME_CHUNK_3_LENGTH}; ///< Length of frame chunks being sent over SPI (frame buffer length exceeds esp-idf's SPI max transfer sz)
 
         // spi
-        static const constexpr uint64_t SPI_CLK_SPEED_HZ = 4000000ULL; ///< Serial clockspeed of SPI transactions.
-        static const constexpr uint64_t SPI_TRANS_TIMEOUT_MS = 10ULL; ///< Timeout for SPI transactions.
-        static const constexpr uint8_t SPI_INTERRUPT_MODE_QUEUE_SIZE = 1; ///< Maximum amount of queued SPI transactions. 
+        static const constexpr uint64_t SPI_CLK_SPEED_HZ = 4000000ULL;    ///< Serial clockspeed of SPI transactions.
+        static const constexpr uint64_t SPI_TRANS_TIMEOUT_MS = 10ULL;     ///< Timeout for SPI transactions.
+        static const constexpr uint8_t SPI_INTERRUPT_MODE_QUEUE_SIZE = 1; ///< Maximum amount of queued SPI transactions.
 
         // commands
-        static const constexpr uint8_t OLED_CMD_POWER_ON = 0xAF; ///< Power on command.
-        static const constexpr uint8_t OLED_CMD_POWER_OFF = 0xAE; ///< Power off command.
-        static const constexpr uint8_t OLED_CMD_SET_ROW_ADDR = 0xB0; ///< Set row address command.
-        static const constexpr uint8_t OLED_CMD_SCAN_0_TO_N = 0xC0;  ///< Scan from bottom to top command.
-        static const constexpr uint8_t OLED_CMD_SCAN_N_TO_0 = 0xC8;  ///< Scan from top to bottom command.
-        static const constexpr uint8_t OLED_CMD_NORM_SEG_MAP = 0xA0; ///< Regular segment driver output pad assignment command.
-        static const constexpr uint8_t OLED_CMD_REV_SEG_MAP = 0xA1;  ///< Reversed segment driver output pads assignment command. 
+        static const constexpr uint8_t OLED_CMD_POWER_ON = 0xAF;             ///< Power on command.
+        static const constexpr uint8_t OLED_CMD_POWER_OFF = 0xAE;            ///< Power off command.
+        static const constexpr uint8_t OLED_CMD_SET_ROW_ADDR = 0xB0;         ///< Set row address command.
+        static const constexpr uint8_t OLED_CMD_SCAN_0_TO_N = 0xC0;          ///< Scan from bottom to top command.
+        static const constexpr uint8_t OLED_CMD_SCAN_N_TO_0 = 0xC8;          ///< Scan from top to bottom command.
+        static const constexpr uint8_t OLED_CMD_NORM_SEG_MAP = 0xA0;         ///< Regular segment driver output pad assignment command.
+        static const constexpr uint8_t OLED_CMD_REV_SEG_MAP = 0xA1;          ///< Reversed segment driver output pads assignment command.
         static const constexpr uint8_t OLED_CMD_SET_MULTIPLEX_RATION = 0xA8; ///< Multiplex ratio set command.
-        static const constexpr uint8_t OLED_CMD_SET_DC_DC_CONTROL_MOD = 0xAD; ///< Set onboard oled DC-DC voltage converter status and switch frequency command.
-        static const constexpr uint8_t OLED_CMD_SET_OSCILLATOR_FREQ = 0xD5; ///< Set display clock frequency command.
-        static const constexpr uint8_t OLED_CMD_SET_DISP_START_LINE = 0x40; ///< Set display starting row address command.
-        static const constexpr uint8_t OLED_CMD_SET_DISP_CONTRAST = 0x81; ///< Set display contrast command.
-        static const constexpr uint8_t OLED_CMD_SET_DISP_OFFSET_MOD = 0xD3; ///< Set display offset command. 
+        static const constexpr uint8_t OLED_CMD_SET_DC_DC_CONTROL_MOD =
+                0xAD; ///< Set onboard oled DC-DC voltage converter status and switch frequency command.
+        static const constexpr uint8_t OLED_CMD_SET_OSCILLATOR_FREQ = 0xD5;   ///< Set display clock frequency command.
+        static const constexpr uint8_t OLED_CMD_SET_DISP_START_LINE = 0x40;   ///< Set display starting row address command.
+        static const constexpr uint8_t OLED_CMD_SET_DISP_CONTRAST = 0x81;     ///< Set display contrast command.
+        static const constexpr uint8_t OLED_CMD_SET_DISP_OFFSET_MOD = 0xD3;   ///< Set display offset command.
         static const constexpr uint8_t OLED_CMD_SET_PRE_CHARGE_PERIOD = 0xD9; ///< Set precharge period command.
-        static const constexpr uint8_t OLED_CMD_SET_VCOM = 0xDB; ///< Set common pad output voltage at deselect command. 
-        static const constexpr uint8_t OLED_CMD_SET_VSEG = 0xDC; ///< Set segment pad output voltage at precharge stage.
-        static const constexpr uint8_t OLED_CMD_SET_DISCHARGE_LEVEL = 0x30; ///< Set segment output discharge voltage level command.
-        static const constexpr uint8_t OLED_CMD_SET_NORMAL_DISPLAY = 0xA6; ///< Set non inverted pixel intensity command.
-        static const constexpr uint8_t OLED_CMD_SET_INV_DISPLAY = 0xA7; ///< Set inverted pixel intensity command.
-        static const constexpr uint8_t OLED_CMD_SET_HIGH_COLUMN_ADDR = 0x10; ///< Set high column address command.
-        static const constexpr uint8_t OLED_CMD_SET_LOW_COLUMN_ADDR = 0x00; ///< Set low column address command.
+        static const constexpr uint8_t OLED_CMD_SET_VCOM = 0xDB;              ///< Set common pad output voltage at deselect command.
+        static const constexpr uint8_t OLED_CMD_SET_VSEG = 0xDC;              ///< Set segment pad output voltage at precharge stage.
+        static const constexpr uint8_t OLED_CMD_SET_DISCHARGE_LEVEL = 0x30;   ///< Set segment output discharge voltage level command.
+        static const constexpr uint8_t OLED_CMD_SET_NORMAL_DISPLAY = 0xA6;    ///< Set non inverted pixel intensity command.
+        static const constexpr uint8_t OLED_CMD_SET_INV_DISPLAY = 0xA7;       ///< Set inverted pixel intensity command.
+        static const constexpr uint8_t OLED_CMD_SET_HIGH_COLUMN_ADDR = 0x10;  ///< Set high column address command.
+        static const constexpr uint8_t OLED_CMD_SET_LOW_COLUMN_ADDR = 0x00;   ///< Set low column address command.
 
-        static const constexpr char* TAG = "SH1122Oled"; ///< Class tag, used in debug statements. 
+        static const constexpr char* TAG = "SH1122Oled"; ///< Class tag, used in debug statements.
 };

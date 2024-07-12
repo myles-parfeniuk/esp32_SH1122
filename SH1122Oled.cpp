@@ -1,6 +1,6 @@
 #include "SH1122Oled.hpp"
 
-sh1122_oled_cfg_t SH1122Oled::default_oled_cfg;
+sh1122_oled_cfg_t SH1122Oled::oled_cfg;
 uint8_t SH1122Oled::frame_buffer[FRAME_BUFFER_LENGTH];
 SH1122Oled::sh1122_oled_font_info_t SH1122Oled::font_info;
 SH1122Oled::FontDirection SH1122Oled::font_dir = SH1122Oled::FontDirection::left_to_right;
@@ -15,9 +15,9 @@ SH1122Oled::FontDirection SH1122Oled::font_dir = SH1122Oled::FontDirection::left
  * @param oled_cfg Configuration settings (optional), default settings can be seen in sh1122_oled_cfg_t and are selectable.
  * @return void, nothing to return
  */
-SH1122Oled::SH1122Oled(sh1122_oled_cfg_t oled_cfg)
-    : oled_cfg(oled_cfg)
+SH1122Oled::SH1122Oled(sh1122_oled_cfg_t settings)
 {
+    oled_cfg = settings; 
 
     // set-up data command pin and rst pin
     gpio_config_t io_dc_rst_cs_cfg;
@@ -39,6 +39,7 @@ SH1122Oled::SH1122Oled(sh1122_oled_cfg_t oled_cfg)
     spi_bus_cfg.quadwp_io_num = GPIO_NUM_NC;
     spi_bus_cfg.max_transfer_sz = FRAME_CHUNK_3_LENGTH;
     spi_bus_cfg.flags = SPICOMMON_BUSFLAG_MASTER;
+    spi_bus_cfg.isr_cpu_id = ESP_INTR_CPU_AFFINITY_AUTO;
 
     oled_interface_cfg.address_bits = 0;
     oled_interface_cfg.dummy_bits = 0;
@@ -108,7 +109,7 @@ void SH1122Oled::set_pixel(uint16_t x, uint16_t y, PixelIntensity intensity)
         if (high_byte == 1)
             *pixel = ((uint8_t) intensity & 0x0F) | (*pixel & 0xF0);
         else
-            *pixel = ((uint8_t) intensity & 0xF0) | (*pixel & 0x0F);
+            *pixel = (((uint8_t)intensity << 4) & 0xF0) | (*pixel & 0x0F);
     }
 }
 
