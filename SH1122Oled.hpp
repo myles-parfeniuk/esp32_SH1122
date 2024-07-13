@@ -1,5 +1,6 @@
 #pragma once
 
+// standard library includes
 #include <stdio.h>
 #include <vector>
 #include <math.h>
@@ -7,6 +8,7 @@
 #include <cstring>
 #include <cstdarg>
 
+// esp-idf includes
 #include <driver/gpio.h>
 #include <driver/spi_common.h>
 #include <driver/spi_master.h>
@@ -123,17 +125,18 @@ class SH1122Oled
             level_14,
             level_15,
             max
-            
+
         };
 
         SH1122Oled(sh1122_oled_cfg_t settings = sh1122_oled_cfg_t());
-
         void update_screen();
         void clear_buffer();
         void set_pixel(uint16_t x, uint16_t y, PixelIntensity intensity);
         void draw_line(int16_t x_1, int16_t y_1, int16_t x_2, int16_t y_2, PixelIntensity intensity);
         void draw_rectangle_frame(int16_t x_1, int16_t y_1, int16_t width, int16_t height, int16_t thickness, PixelIntensity intensity);
         void draw_rectangle(int16_t x_1, int16_t y_1, int16_t width, int16_t height, PixelIntensity intensity);
+        void draw_circle_frame(int16_t x_c, int16_t y_c, int16_t r, int16_t thickness, PixelIntensity intensity);
+        void draw_circle(int16_t x_c, int16_t y_c, int16_t r, PixelIntensity intensity);
         uint16_t draw_glyph(uint16_t x, uint16_t y, PixelIntensity intensity, uint16_t encoding);
         uint16_t draw_string(uint16_t x, uint16_t y, PixelIntensity intensity, const char* format, ...);
         uint16_t font_get_string_width(const char* format, ...);
@@ -221,9 +224,18 @@ class SH1122Oled
                 uint8_t fg_intensity;      ///< Foreground intensity to draw
         } sh1122_oled_font_decode_t;
 
+        /// @brief Represents point on OLED screen, used in drawing functions
+        typedef struct sh1122_2d_point_t
+        {
+                int16_t x;
+                int16_t y;
+        } sh1122_2d_point_t;
+
         void default_init();
         void send_commands(uint8_t* cmds, uint16_t length);
         void send_data(uint8_t* data, uint16_t length);
+        void fill_ellipse_frame(
+                std::vector<sh1122_2d_point_t>& outter_points, std::vector<sh1122_2d_point_t>& inner_points, PixelIntensity intensity);
         uint16_t get_ascii_next(uint8_t b);
         const uint8_t* font_get_glyph_data(uint16_t encoding);
         uint16_t font_get_glyph_width(sh1122_oled_font_decode_t* decode, uint16_t encoding);
@@ -238,13 +250,13 @@ class SH1122Oled
         void font_draw_lines(sh1122_oled_font_decode_t* decode, uint8_t len, uint8_t is_foreground);
         void font_draw_line(sh1122_oled_font_decode_t* decode, int16_t x, int16_t y, uint16_t length, PixelIntensity intensity);
 
-        static sh1122_oled_cfg_t oled_cfg;                       ///< Holds configuration struct passed to constructor, used for GPIO pins and SPI
+        static sh1122_oled_cfg_t oled_cfg;                ///< Holds configuration struct passed to constructor, used for GPIO pins and SPI
         spi_bus_config_t spi_bus_cfg;                     ///< SPI peripheral config struct.
         spi_device_interface_config_t oled_interface_cfg; ///< SPI interface struct for SH1122
         spi_device_handle_t spi_hdl;                      ///< Handle to perform SPI transactions with.
 
-        static FontDirection font_dir;             ///< The currently selected font direction, default is left to right.
-        static sh1122_oled_font_info_t font_info;  ///< Contains information about the currently loaded font.
+        static FontDirection font_dir;            ///< The currently selected font direction, default is left to right.
+        static sh1122_oled_font_info_t font_info; ///< Contains information about the currently loaded font.
 
         static const constexpr uint16_t FRAME_BUFFER_LENGTH = WIDTH * HEIGHT / 2; ///< Length of frame buffer being sent over SPI.
         static uint8_t frame_buffer[FRAME_BUFFER_LENGTH];                         ///< Frame buffer to contain pixel data being sent over SPI.

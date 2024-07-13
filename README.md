@@ -106,8 +106,8 @@ API documentation generated with doxygen can be found in the documentation direc
 
 
 ## Acknowledgements
-Thanks to Oliver Krause and contributors of U8G2.\
-https://github.com/olikraus/u8g2\
+Thanks to Oliver Krause and contributors of u8g2.\
+https://github.com/olikraus/u8g2 \
 This library utilizes the same font and RLE encoding system used by U8G2.
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

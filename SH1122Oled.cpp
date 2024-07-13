@@ -17,7 +17,7 @@ SH1122Oled::FontDirection SH1122Oled::font_dir = SH1122Oled::FontDirection::left
  */
 SH1122Oled::SH1122Oled(sh1122_oled_cfg_t settings)
 {
-    oled_cfg = settings; 
+    oled_cfg = settings;
 
     // set-up data command pin and rst pin
     gpio_config_t io_dc_rst_cs_cfg;
@@ -109,7 +109,7 @@ void SH1122Oled::set_pixel(uint16_t x, uint16_t y, PixelIntensity intensity)
         if (high_byte == 1)
             *pixel = ((uint8_t) intensity & 0x0F) | (*pixel & 0xF0);
         else
-            *pixel = (((uint8_t)intensity << 4) & 0xF0) | (*pixel & 0x0F);
+            *pixel = (((uint8_t) intensity << 4) & 0xF0) | (*pixel & 0x0F);
     }
 }
 
@@ -159,7 +159,7 @@ void SH1122Oled::draw_line(int16_t x_1, int16_t y_1, int16_t x_2, int16_t y_2, P
  * @param y Frame y location (upper left corner of frame)
  * @param width Frame width.
  * @param height Frame height.
- * @param thickness Frame thickness (drawn towards inside of frame)
+ * @param thickness Frame thickness (drawn towards center of rectangle)
  * @param intensity Grayscale intensity of the drawn frame.
  * @return void, nothing to return
  */
@@ -179,7 +179,7 @@ void SH1122Oled::draw_rectangle_frame(int16_t x_1, int16_t y_1, int16_t width, i
 }
 
 /**
- * @brief Draws a filed rectangle at the specified location.
+ * @brief Draws a filled rectangle at the specified location.
  *
  * @param x Rectangle x location (upper left corner of rectangle)
  * @param y Rectangle y location (upper left corner of rectangle)
@@ -195,6 +195,108 @@ void SH1122Oled::draw_rectangle(int16_t x_1, int16_t y_1, int16_t width, int16_t
         for (uint16_t i = 0; i < width; i++)
             set_pixel((x_1 + i), (y_1 + j), intensity);
     }
+}
+
+/**
+ * @brief Draws a circular frame at the specified location.
+ *
+ * @param x_c Circle center x position.
+ * @param y_c Circle center y position.
+ * @param r Circle radius.
+ * @param thickness Frame thickness (drawn towards center of circle)
+ * @param intensity Grayscale intensity of the drawn circle.
+ * @return void, nothing to return
+ */
+void SH1122Oled::draw_circle_frame(int16_t x_c, int16_t y_c, int16_t r, int16_t thickness, PixelIntensity intensity)
+{
+    const int16_t outter_r = r;
+    const int16_t inner_r = r - thickness;
+    int16_t err = 0;
+    int16_t x = 0;
+    int16_t y = 0;
+    std::vector<std::vector<sh1122_2d_point_t>> quad_1_points(2); // element 0 is outter points, element 1 is inner points
+    std::vector<std::vector<sh1122_2d_point_t>> quad_2_points(2); // element 0 is outter points, element 1 is inner points
+    std::vector<std::vector<sh1122_2d_point_t>> quad_3_points(2); // element 0 is outter points, element 1 is inner points
+    std::vector<std::vector<sh1122_2d_point_t>> quad_4_points(2); // element 0 is outter points, element 1 is inner points
+
+    if (thickness <= 0 || thickness > r)
+        return;
+
+    if (r == thickness)
+        set_pixel(x_c, y_c, intensity);
+
+    for (int i = 0; (thickness > 1) ? (i < 2) : (i < 1); i++) // only draw inner ring if thickness > 1
+    {
+        x = -(outter_r - i * (thickness - 1));
+        y = 0;
+        err = 2 - 2 * (outter_r - i * (thickness - 1));
+
+        do
+        {
+            if ((x_c - x >= 0 && x_c - x < WIDTH) && (y_c + y >= 0 && y_c + y < HEIGHT))
+            {
+                /*  I. Quadrant */
+                quad_1_points.at(i).push_back((sh1122_2d_point_t){(int16_t) (x_c - x), (int16_t) (y_c + y)});
+                set_pixel((x_c - x), (y_c + y), intensity);
+            }
+
+            if ((x_c - y >= 0 && x_c - y < WIDTH) && (y_c - x >= 0 && y_c - x < HEIGHT))
+            {
+                /*  II. Quadrant */
+                quad_2_points.at(i).push_back((sh1122_2d_point_t){(int16_t) (x_c - y), (int16_t) (y_c - x)});
+                set_pixel((x_c - y), (y_c - x), intensity);
+            }
+
+            if ((x_c + x >= 0 && x_c + x < WIDTH) && (y_c - y >= 0 && y_c - y < HEIGHT))
+            {
+                /* III. Quadrant */
+                quad_3_points.at(i).push_back((sh1122_2d_point_t){(int16_t) (x_c + x), (int16_t) (y_c - y)});
+                set_pixel((x_c + x), (y_c - y), intensity);
+            }
+
+            if ((x_c + y >= 0 && x_c + y < WIDTH) && (y_c + x >= 0 && y_c + x < HEIGHT))
+            {
+                /*  IV. Quadrant */
+                quad_4_points.at(i).push_back((sh1122_2d_point_t){(int16_t) (x_c + y), (int16_t) (y_c + x)});
+                set_pixel((x_c + y), (y_c + x), intensity);
+            }
+
+            r = err;
+
+            if (err > x)
+                err += ++x * 2 + 1;
+
+            if (err <= y)
+                err += ++y * 2 + 1;
+
+        } while (x < 0);
+    }
+
+    if (quad_1_points.at(0).size() != 0 && quad_1_points.at(1).size() != 0)
+        fill_ellipse_frame(quad_1_points.at(0), quad_1_points.at(1), intensity);
+
+    if (quad_2_points.at(0).size() != 0 && quad_2_points.at(1).size() != 0)
+        fill_ellipse_frame(quad_2_points.at(0), quad_2_points.at(1), intensity);
+
+    if (quad_3_points.at(0).size() != 0 && quad_3_points.at(1).size() != 0)
+        fill_ellipse_frame(quad_3_points.at(0), quad_3_points.at(1), intensity);
+
+    if (quad_4_points.at(0).size() != 0 && quad_4_points.at(1).size() != 0)
+        fill_ellipse_frame(quad_4_points.at(0), quad_4_points.at(1), intensity);
+}
+
+/**
+ * @brief Draws a filled circle at the specified location.
+ *
+ * @param x_c Circle center x position.
+ * @param y_c Circle center y position.
+ * @param r Circle radius.
+ * @param intensity Grayscale intensity of the drawn circle.
+ * @return void, nothing to return
+ */
+void SH1122Oled::draw_circle(int16_t x_c, int16_t y_c, int16_t r, PixelIntensity intensity)
+{
+    draw_circle_frame(x_c, y_c, r, r, intensity);
 }
 
 /**
@@ -1241,6 +1343,56 @@ void SH1122Oled::font_draw_line(sh1122_oled_font_decode_t* decode, int16_t x, in
         case FontDirection::bottom_to_top:
             draw_line(x, y, x, y - (length - 1), intensity);
             break;
+        }
+    }
+}
+
+void SH1122Oled::fill_ellipse_frame(
+        std::vector<sh1122_2d_point_t>& outter_points, std::vector<sh1122_2d_point_t>& inner_points, PixelIntensity intensity)
+{
+
+    int16_t in_x = 0;
+    int16_t in_y = 0;
+    int16_t out_x = 0;
+    int16_t out_y = 0;
+    int16_t out2_x = 0;
+    int16_t out2_y = 0;
+
+    // loop through inner ring coordinates
+    for (int i = 0; i < inner_points.size(); i++)
+    {
+        in_x = inner_points.at(i).x;
+        in_y = inner_points.at(i).y;
+
+        // loop through outter ring coordinates
+        for (int j = 0; j < outter_points.size(); j++)
+        {
+            out_x = outter_points.at(j).x;
+            out_y = outter_points.at(j).y;
+
+            // if matching x location is detected in quadrant, draw vertical lines
+            if (out_x == in_x)
+                for (int draw_y = (in_y > out_y) ? out_y : in_y; (in_y > out_y) ? (draw_y < in_y) : (draw_y < out_y); draw_y++)
+                {
+                    set_pixel(out_x, draw_y, intensity);
+
+                    // fill in any pixels adjacent to line being drawn that have matching y location (as line is drawn upwards)
+                    for (int k = 0; k < outter_points.size(); k++)
+                    {
+                        out2_x = outter_points.at(k).x;
+                        out2_y = outter_points.at(k).y;
+
+                        if (out2_y == draw_y)
+                            draw_line(out2_x, draw_y, in_x, draw_y, intensity);
+                    }
+                }
+
+            // if matching y location is detected in quadrant, draw horizontal lines
+            if (out_y == in_y)
+                for (int draw_x = (in_x > out_x) ? out_x : in_x; (in_x > out_x) ? (draw_x < in_x) : (draw_x < out_x); draw_x++)
+                {
+                    set_pixel(draw_x, out_y, intensity);
+                }
         }
     }
 }
