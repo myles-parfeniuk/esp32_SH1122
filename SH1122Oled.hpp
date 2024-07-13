@@ -16,6 +16,8 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
+#define SH1122_PIXEL_IN_BOUNDS(x, y) (((x >= 0) && (x < SH1122Oled::WIDTH)) && ((y >= 0) && (y < SH1122Oled::HEIGHT)))
+
 /// @brief OLED configuration settings structure passed into SH1122Oled constructor
 typedef struct sh1122_oled_cfg_t
 {
@@ -137,16 +139,19 @@ class SH1122Oled
         void draw_rectangle(int16_t x_1, int16_t y_1, int16_t width, int16_t height, PixelIntensity intensity);
         void draw_circle_frame(int16_t x_c, int16_t y_c, int16_t r, int16_t thickness, PixelIntensity intensity);
         void draw_circle(int16_t x_c, int16_t y_c, int16_t r, PixelIntensity intensity);
+        void draw_ellipse_frame(int16_t x_c, int16_t y_c, int16_t r_x, int16_t r_y, int16_t thickness, PixelIntensity intensity);
+        void draw_ellipse(int16_t x_c, int16_t y_c, int16_t r_x, int16_t r_y, PixelIntensity intensity);
         uint16_t draw_glyph(uint16_t x, uint16_t y, PixelIntensity intensity, uint16_t encoding);
         uint16_t draw_string(uint16_t x, uint16_t y, PixelIntensity intensity, const char* format, ...);
+
+        static void load_font(const uint8_t* font);
+        void set_font_direction(FontDirection dir);
         uint16_t font_get_string_width(const char* format, ...);
         uint16_t font_get_string_height(const char* format, ...);
         uint16_t font_get_glyph_width(uint16_t encoding);
         uint16_t font_get_glyph_height(uint16_t encoding);
         uint16_t font_get_string_center_x(const char* str);
         uint16_t font_get_string_center_y(const char* str);
-        static void load_font(const uint8_t* font);
-        void set_font_direction(FontDirection dir);
 
         void reset();
         void power_off();
@@ -234,8 +239,8 @@ class SH1122Oled
         void default_init();
         void send_commands(uint8_t* cmds, uint16_t length);
         void send_data(uint8_t* data, uint16_t length);
-        void fill_ellipse_frame(
-                std::vector<sh1122_2d_point_t>& outter_points, std::vector<sh1122_2d_point_t>& inner_points, PixelIntensity intensity);
+        void fill_ellipse_frame_quadrant(
+                std::vector<sh1122_2d_point_t>& outter_points, std::vector<sh1122_2d_point_t>& inner_points, int16_t y_c, PixelIntensity intensity);
         uint16_t get_ascii_next(uint8_t b);
         const uint8_t* font_get_glyph_data(uint16_t encoding);
         uint16_t font_get_glyph_width(sh1122_oled_font_decode_t* decode, uint16_t encoding);

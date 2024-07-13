@@ -93,7 +93,7 @@ void SH1122Oled::set_pixel(uint16_t x, uint16_t y, PixelIntensity intensity)
     int16_t y_it = 0;
     int16_t high_byte = 0;
 
-    if ((x < WIDTH) && (y < HEIGHT))
+    if (SH1122_PIXEL_IN_BOUNDS(x, y))
     {
         if (x != 0)
         {
@@ -209,80 +209,7 @@ void SH1122Oled::draw_rectangle(int16_t x_1, int16_t y_1, int16_t width, int16_t
  */
 void SH1122Oled::draw_circle_frame(int16_t x_c, int16_t y_c, int16_t r, int16_t thickness, PixelIntensity intensity)
 {
-    const int16_t outter_r = r;
-    const int16_t inner_r = r - thickness;
-    int16_t err = 0;
-    int16_t x = 0;
-    int16_t y = 0;
-    std::vector<std::vector<sh1122_2d_point_t>> quad_1_points(2); // element 0 is outter points, element 1 is inner points
-    std::vector<std::vector<sh1122_2d_point_t>> quad_2_points(2); // element 0 is outter points, element 1 is inner points
-    std::vector<std::vector<sh1122_2d_point_t>> quad_3_points(2); // element 0 is outter points, element 1 is inner points
-    std::vector<std::vector<sh1122_2d_point_t>> quad_4_points(2); // element 0 is outter points, element 1 is inner points
-
-    if (thickness <= 0 || thickness > r)
-        return;
-
-    if (r == thickness)
-        set_pixel(x_c, y_c, intensity);
-
-    for (int i = 0; (thickness > 1) ? (i < 2) : (i < 1); i++) // only draw inner ring if thickness > 1
-    {
-        x = -(outter_r - i * (thickness - 1));
-        y = 0;
-        err = 2 - 2 * (outter_r - i * (thickness - 1));
-
-        do
-        {
-            if ((x_c - x >= 0 && x_c - x < WIDTH) && (y_c + y >= 0 && y_c + y < HEIGHT))
-            {
-                /*  I. Quadrant */
-                quad_1_points.at(i).push_back((sh1122_2d_point_t){(int16_t) (x_c - x), (int16_t) (y_c + y)});
-                set_pixel((x_c - x), (y_c + y), intensity);
-            }
-
-            if ((x_c - y >= 0 && x_c - y < WIDTH) && (y_c - x >= 0 && y_c - x < HEIGHT))
-            {
-                /*  II. Quadrant */
-                quad_2_points.at(i).push_back((sh1122_2d_point_t){(int16_t) (x_c - y), (int16_t) (y_c - x)});
-                set_pixel((x_c - y), (y_c - x), intensity);
-            }
-
-            if ((x_c + x >= 0 && x_c + x < WIDTH) && (y_c - y >= 0 && y_c - y < HEIGHT))
-            {
-                /* III. Quadrant */
-                quad_3_points.at(i).push_back((sh1122_2d_point_t){(int16_t) (x_c + x), (int16_t) (y_c - y)});
-                set_pixel((x_c + x), (y_c - y), intensity);
-            }
-
-            if ((x_c + y >= 0 && x_c + y < WIDTH) && (y_c + x >= 0 && y_c + x < HEIGHT))
-            {
-                /*  IV. Quadrant */
-                quad_4_points.at(i).push_back((sh1122_2d_point_t){(int16_t) (x_c + y), (int16_t) (y_c + x)});
-                set_pixel((x_c + y), (y_c + x), intensity);
-            }
-
-            r = err;
-
-            if (err > x)
-                err += ++x * 2 + 1;
-
-            if (err <= y)
-                err += ++y * 2 + 1;
-
-        } while (x < 0);
-    }
-
-    if (quad_1_points.at(0).size() != 0 && quad_1_points.at(1).size() != 0)
-        fill_ellipse_frame(quad_1_points.at(0), quad_1_points.at(1), intensity);
-
-    if (quad_2_points.at(0).size() != 0 && quad_2_points.at(1).size() != 0)
-        fill_ellipse_frame(quad_2_points.at(0), quad_2_points.at(1), intensity);
-
-    if (quad_3_points.at(0).size() != 0 && quad_3_points.at(1).size() != 0)
-        fill_ellipse_frame(quad_3_points.at(0), quad_3_points.at(1), intensity);
-
-    if (quad_4_points.at(0).size() != 0 && quad_4_points.at(1).size() != 0)
-        fill_ellipse_frame(quad_4_points.at(0), quad_4_points.at(1), intensity);
+    draw_ellipse_frame(x_c, y_c, r, r, thickness, intensity);
 }
 
 /**
@@ -297,6 +224,186 @@ void SH1122Oled::draw_circle_frame(int16_t x_c, int16_t y_c, int16_t r, int16_t 
 void SH1122Oled::draw_circle(int16_t x_c, int16_t y_c, int16_t r, PixelIntensity intensity)
 {
     draw_circle_frame(x_c, y_c, r, r, intensity);
+}
+
+/**
+ * @brief Draws an ellipse frame at the specified location.
+ *
+ * @param x_c Ellipse center x position.
+ * @param y_c Ellipse center y position.
+ * @param r_x Horizontal radius (ellipse parameter a)
+ * @param r_y Vertical radius (ellipse parameter b)
+ * @param thickness Frame thickness (drawn towards center of ellipse)
+ * @param intensity Grayscale intensity of the drawn ellipse.
+ * @return void, nothing to return
+ */
+void SH1122Oled::draw_ellipse_frame(int16_t x_c, int16_t y_c, int16_t r_x, int16_t r_y, int16_t thickness, PixelIntensity intensity)
+{
+    int32_t d_x;
+    int32_t d_y;
+    float d_1;
+    float d_2;
+    int16_t x = 0;
+    int16_t y = 0;
+    int32_t r_x_sq = 0;
+    int32_t r_y_sq = 0;
+    std::vector<std::vector<sh1122_2d_point_t>> quad_1_points(2); // element 0 is outter points, element 1 is inner points
+    std::vector<std::vector<sh1122_2d_point_t>> quad_2_points(2); // element 0 is outter points, element 1 is inner points
+    std::vector<std::vector<sh1122_2d_point_t>> quad_3_points(2); // element 0 is outter points, element 1 is inner points
+    std::vector<std::vector<sh1122_2d_point_t>> quad_4_points(2); // element 0 is outter points, element 1 is inner points
+
+    if (thickness <= 0 || thickness > r_y || thickness > r_x)
+        return;
+
+    if (r_y == thickness)
+        set_pixel(x_c, y_c, intensity);
+    else if (r_x == thickness)
+    {
+        draw_line(x_c, y_c - r_y, x_c, y_c + r_y, intensity);
+    }
+
+    for (int i = 0; (thickness > 1) ? (i < 2) : (i < 1); i++)
+    {
+        x = 0; // ellipse is centered about origin, assume (0, r_y) as first point and transform by x_c and y_c later
+        y = (r_y - i * (thickness - 1));
+        r_x_sq = (int32_t) (r_x - i * (thickness - 1)) * (r_x - i * (thickness - 1));
+        r_y_sq = (int32_t) (r_y - i * (thickness - 1)) * (r_y - i * (thickness - 1));
+
+        // calculate initial decision parameter for region 1 of quadrants, d_1_0 = r_y^2 + (1/4)*r_x^2 -r_x^2*r_y
+        d_1 = (float) r_y_sq + (0.25f * (float) r_x_sq) - (float) (r_x_sq * (r_y - i * (thickness - 1)));
+
+        // next  decision parameter modifiers
+        d_x = 2 * r_y_sq * x; // if(d_1[k] < 0): d_1[k+1] = d_1[k] + 2 * r_y^2 * x[k + 1] + r_y^2
+        d_y = 2 * r_x_sq * y; // if(d_1[k] >= 0): d_1[k+1] = d_1[k] + 2 * r_y^2 * x[k + 1] - 2 * r_x^2 * y[k] + r_y^2
+
+        while (d_x < d_y)
+        {
+            // draw region 1 points
+            if (SH1122_PIXEL_IN_BOUNDS(x + x_c, y + y_c))
+            {
+                // quadrant 1
+                set_pixel(x + x_c, y + y_c, intensity);
+                quad_1_points[i].push_back((sh1122_2d_point_t){(int16_t) (x + x_c), (int16_t) (y + y_c)});
+            }
+
+            if (SH1122_PIXEL_IN_BOUNDS(-x + x_c, y + y_c))
+            {
+                // quadrant 2
+                set_pixel(-x + x_c, y + y_c, intensity);
+                quad_2_points[i].push_back((sh1122_2d_point_t){(int16_t) (-x + x_c), (int16_t) (y + y_c)});
+            }
+
+            if (SH1122_PIXEL_IN_BOUNDS(x + x_c, -y + y_c))
+            {
+                // quadrant 3
+                set_pixel(x + x_c, -y + y_c, intensity);
+                quad_3_points[i].push_back((sh1122_2d_point_t){(int16_t) (x + x_c), (int16_t) (-y + y_c)});
+            }
+
+            if (SH1122_PIXEL_IN_BOUNDS(-x + x_c, -y + y_c))
+            {
+                // quadrant 4
+                set_pixel(-x + x_c, -y + y_c, intensity);
+                quad_4_points[i].push_back((sh1122_2d_point_t){(int16_t) (-x + x_c), (int16_t) (-y + y_c)});
+            }
+
+            // find next point and next d_1 parameter
+            if (d_1 < 0) // if(d_1[k] < 0)
+            {
+                x++; // next point is (x[k+1], y[k])
+                d_x += 2 * r_y_sq;
+                d_1 += d_x + r_y_sq; // d_1[k+1] = d_1[k] + 2 * r_y^2 * x[k+1] + r_y^2
+            }
+            else // if(d_1[k] >= 0)
+            {
+                x++; // next point is (x[k+1], y[k-1])
+                y--;
+                d_x += 2 * r_y_sq;
+                d_y += -2 * r_x_sq;
+                d_1 += d_x - d_y + r_y_sq; // d_1[k+1] = d_1[k] + 2 * r_y^2 * x[k+1] - 2 * r_x^2 * y[k] + r_y^2
+            }
+        }
+
+        // calculate initial decision parameter of region 2 for quadrants d_2_0 = r_y^2 * (x_0 + 1/2)^2 + r_x^2 * (y_9 - 1)^2 - r_x^2 *r_y^2
+        d_2 = ((float) r_y_sq * ((float) x + 0.5f) * ((float) x + 0.5f)) + (float) (r_x_sq * (y - 1) * (y - 1)) - (float) (r_x_sq * r_y_sq);
+
+        while (y >= 0)
+        {
+            // draw region 2 points
+            if (SH1122_PIXEL_IN_BOUNDS(x + x_c, y + y_c))
+            {
+                // quadrant 1
+                set_pixel(x + x_c, y + y_c, intensity);
+                quad_1_points[i].push_back((sh1122_2d_point_t){(int16_t) (x + x_c), (int16_t) (y + y_c)});
+            }
+
+            if (SH1122_PIXEL_IN_BOUNDS(-x + x_c, y + y_c))
+            {
+                // quadrant 2
+                set_pixel(-x + x_c, y + y_c, intensity);
+                quad_2_points[i].push_back((sh1122_2d_point_t){(int16_t) (-x + x_c), (int16_t) (y + y_c)});
+            }
+
+            if (SH1122_PIXEL_IN_BOUNDS(x + x_c, -y + y_c))
+            {
+                // quadrant 3
+                set_pixel(x + x_c, -y + y_c, intensity);
+                quad_3_points[i].push_back((sh1122_2d_point_t){(int16_t) (x + x_c), (int16_t) (-y + y_c)});
+            }
+
+            if (SH1122_PIXEL_IN_BOUNDS(-x + x_c, -y + y_c))
+            {
+                // quadrant 4
+                set_pixel(-x + x_c, -y + y_c, intensity);
+                quad_4_points[i].push_back((sh1122_2d_point_t){(int16_t) (-x + x_c), (int16_t) (-y + y_c)});
+            }
+
+            // find next point and next d_2 parameter
+            if (d_2 > 0) // if(d_2[k] > 0)
+            {
+                y--; // next point is (x[k], y[k-1])
+                d_y += -2 * r_x_sq;
+                d_2 += r_x_sq - d_y; // d_2[k+1] = d_2[k] - 2 * r_x^2 * y[k+1] + r_x^2
+            }
+            else // if(d_2[k] <= 0)
+            {
+                // next point is (x[k+1], y[k-1])
+                y--;
+                x++;
+                d_x += 2 * r_y_sq;
+                d_y += -2 * r_x_sq;
+                d_2 += d_x - d_y + r_x_sq; // d_2[k+1] = d_2[k] + 2 * r_y^2 * x[k+1] - 2 * r_x^2 * y[k+1] + r_x^2
+            }
+        }
+    }
+
+    if (quad_1_points.at(0).size() != 0 && quad_1_points.at(1).size() != 0)
+        fill_ellipse_frame_quadrant(quad_1_points.at(0), quad_1_points.at(1), y_c, intensity);
+
+    if (quad_2_points.at(0).size() != 0 && quad_2_points.at(1).size() != 0)
+        fill_ellipse_frame_quadrant(quad_2_points.at(0), quad_2_points.at(1), y_c, intensity);
+
+    if (quad_3_points.at(0).size() != 0 && quad_3_points.at(1).size() != 0)
+        fill_ellipse_frame_quadrant(quad_3_points.at(0), quad_3_points.at(1), y_c, intensity);
+
+    if (quad_4_points.at(0).size() != 0 && quad_4_points.at(1).size() != 0)
+        fill_ellipse_frame_quadrant(quad_4_points.at(0), quad_4_points.at(1), y_c, intensity);
+}
+
+/**
+ * @brief Draws a filled ellipse at the specified location.
+ *
+ * @param x_c Ellipse center x position.
+ * @param y_c Ellipse center y position.
+ * @param r_x Horizontal radius (ellipse parameter a)
+ * @param r_y Vertical radius (ellipse parameter b)
+ * @param intensity Grayscale intensity of the drawn ellipse.
+ * @return void, nothing to return
+ */
+void SH1122Oled::draw_ellipse(int16_t x_c, int16_t y_c, int16_t r_x, int16_t r_y, PixelIntensity intensity)
+{
+    int16_t thickness = std::min(r_x, r_y);
+    draw_ellipse_frame(x_c, y_c, r_x, r_y, thickness, intensity);
 }
 
 /**
@@ -1315,15 +1422,7 @@ void SH1122Oled::font_draw_line(sh1122_oled_font_decode_t* decode, int16_t x, in
 
     if (length != 0)
     {
-
-        if (y < 0)
-            return;
-        if (y >= HEIGHT)
-            return;
-
-        if (x < 0)
-            return;
-        if (x >= WIDTH)
+        if (!SH1122_PIXEL_IN_BOUNDS(x, y))
             return;
 
         switch (font_dir)
@@ -1347,52 +1446,56 @@ void SH1122Oled::font_draw_line(sh1122_oled_font_decode_t* decode, int16_t x, in
     }
 }
 
-void SH1122Oled::fill_ellipse_frame(
-        std::vector<sh1122_2d_point_t>& outter_points, std::vector<sh1122_2d_point_t>& inner_points, PixelIntensity intensity)
+/**
+ * @brief Fill quadrants of an ellipse frame.
+ *
+ * @param outter_points Vector containing all outter ring points for quadrant.
+ * @param inner_points Vector containing all inner ring points for quadrant.
+ * @param y_c Ellipse center y position.
+ * @param intensity Grayscale intensity of the ellipse fill.
+ * @return void, nothing to return
+ */
+void SH1122Oled::fill_ellipse_frame_quadrant(
+        std::vector<sh1122_2d_point_t>& outter_points, std::vector<sh1122_2d_point_t>& inner_points, int16_t y_c, PixelIntensity intensity)
 {
-
     int16_t in_x = 0;
     int16_t in_y = 0;
     int16_t out_x = 0;
     int16_t out_y = 0;
-    int16_t out2_x = 0;
-    int16_t out2_y = 0;
+    int16_t inner_elem = 0;
 
-    // loop through inner ring coordinates
-    for (int i = 0; i < inner_points.size(); i++)
+    // loop through all inner ring points
+    for (int i = 0; i < outter_points.size(); i++)
     {
-        in_x = inner_points.at(i).x;
-        in_y = inner_points.at(i).y;
+        inner_elem = -255;
+        out_x = outter_points[i].x;
+        out_y = outter_points[i].y;
 
-        // loop through outter ring coordinates
-        for (int j = 0; j < outter_points.size(); j++)
+        // check if there is an inner ring point with matching x location
+        for (int j = 0; j < inner_points.size(); j++)
         {
-            out_x = outter_points.at(j).x;
-            out_y = outter_points.at(j).y;
+            in_x = inner_points[j].x;
+            in_y = inner_points[j].y;
 
-            // if matching x location is detected in quadrant, draw vertical lines
+            // save element and exit loop if found
             if (out_x == in_x)
-                for (int draw_y = (in_y > out_y) ? out_y : in_y; (in_y > out_y) ? (draw_y < in_y) : (draw_y < out_y); draw_y++)
-                {
-                    set_pixel(out_x, draw_y, intensity);
+            {
+                inner_elem = j;
+                break;
+            }
+        }
 
-                    // fill in any pixels adjacent to line being drawn that have matching y location (as line is drawn upwards)
-                    for (int k = 0; k < outter_points.size(); k++)
-                    {
-                        out2_x = outter_points.at(k).x;
-                        out2_y = outter_points.at(k).y;
-
-                        if (out2_y == draw_y)
-                            draw_line(out2_x, draw_y, in_x, draw_y, intensity);
-                    }
-                }
-
-            // if matching y location is detected in quadrant, draw horizontal lines
-            if (out_y == in_y)
-                for (int draw_x = (in_x > out_x) ? out_x : in_x; (in_x > out_x) ? (draw_x < in_x) : (draw_x < out_x); draw_x++)
-                {
-                    set_pixel(draw_x, out_y, intensity);
-                }
+        if (inner_elem != -255)
+        {
+            // if matching point was found draw a vertical line between the two
+            draw_line(out_x, out_y, out_x, in_y, intensity);
+            // remove matching point from inner_points vector to increase search speed
+            inner_points.erase(inner_points.begin() + inner_elem);
+        }
+        else
+        {
+            // no matching point found, draw line to vertical center of ellipse
+            draw_line(out_x, out_y, out_x, y_c, intensity);
         }
     }
 }
