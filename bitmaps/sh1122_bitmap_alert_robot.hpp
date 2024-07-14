@@ -2,7 +2,13 @@
 #include <stdint.h>
 
 /*
-    Generated using sh1122_encode_bitmap.py from photo designed by Dimpoart:
+    Converted with sh1122_encode_bitmap.py 
+    Source Image Name: alert_robot.png
+    Width: 64
+    Height: 64
+    Conversion Settings: transparency= True
+    
+    Source art designed by Dimpoart:
     https://www.veryicon.com/icons/art/rave-every-day/robot-1.html
 */
 static const uint8_t sh1122_bitmap_alert_robot[1588] = {6, 48, 64, 64, 16, 36, 5, 2, 16, 61, 5, 4, 16, 60, 5, 2, 6, 1, 5, 1, 16, 59, 5, 5, 16, 59, 5, 5, 16,

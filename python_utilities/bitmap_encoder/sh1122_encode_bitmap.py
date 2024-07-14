@@ -2,16 +2,20 @@ from PIL import Image
 import os
 import argparse
 
+OLED_WIDTH = 256
+OLED_HEIGHT = 64
+PIXEL_INTENSITY_TRANSPARENT = 16
+PIXEL_INTENSITY_MAX = 15
 
 def map_gray_scale_value(raw_value, transparency):
 	if(transparency):
 		if raw_value[1] > 30:
-			return ((raw_value[0] * 15) // 255)
+			return ((raw_value[0] * PIXEL_INTENSITY_MAX) // (OLED_WIDTH - 1))
 		else:
-			return 16
+			return PIXEL_INTENSITY_TRANSPARENT
 
 	else:
-		return ((raw_value * 15) // 255)
+		return ((raw_value * PIXEL_INTENSITY_MAX) // (OLED_WIDTH - 1))
 
 def load_image(filepath, transparency):
 	if transparency:
@@ -21,15 +25,15 @@ def load_image(filepath, transparency):
 
 	cols, rows = im.size
 	#resize image if its width exceeds oled width, maintain aspect ratio
-	if cols > 256:
-		height = int(im.height * (256 / im.width))
-		im = im.resize((256, height), Image.LANCZOS) #lanczos interpolation for best result when downscaling 
+	if cols > OLED_WIDTH:
+		height = int(im.height * (OLED_WIDTH / im.width))
+		im = im.resize((OLED_WIDTH, height), Image.LANCZOS) #lanczos interpolation for best result when downscaling 
 		cols, rows = im.size
 
 	#resize image if its height exceeds oled height, maintain aspect ratio
-	if rows > 64:
-		width = int(im.width * (64 / im.height))
-		im = im.resize((width, 64), Image.LANCZOS)
+	if rows > OLED_HEIGHT:
+		width = int(im.width * (OLED_HEIGHT / im.height))
+		im = im.resize((width, OLED_HEIGHT), Image.LANCZOS)
 
 	return im
 
@@ -48,7 +52,7 @@ def encode_bitmap(im, transparency):
 		for x in range(cols):
 			gray_scale_value = map_gray_scale_value(pixels[x, y], transparency)
 
-			if (gray_scale_value != prev_gray_scale_value) or (repeated_val_cnt >= 255):
+			if (gray_scale_value != prev_gray_scale_value) or (repeated_val_cnt >=  (OLED_WIDTH - 1)):
 				array_str += " " + str(prev_gray_scale_value) + ", " + str(repeated_val_cnt) + ",\n" #the lower element is grayscale intesity, upper is amount of times it appears in sequence
 				elem_count += 2
 				total_pixels += repeated_val_cnt
@@ -68,13 +72,18 @@ def encode_bitmap(im, transparency):
 	array_str = " " + str(((elem_count - 2) & 0xFF00) >> 8) + ", " + str((elem_count - 2) & 0x00FF) + ", \n" + array_str #store the total size of the bitmap data
 	elem_count += 2
 
-	return (array_str, elem_count)
+	return (array_str, elem_count, cols, rows)
 
-def write_file(filename, array_data, total_elements):
+def write_file(filename, array_data, total_elements, cols, rows, transparency):
+	og_filename = filename
 	filename = filename[:-4]
 	filename = "sh1122_bitmap_" + filename
 	file_str = "#pragma once \n"
 	file_str += "#include <stdint.h> \n\n"
+	file_str += "/*\n"
+	file_str += " Converted with sh1122_encode_bitmap.py \n Source Image Name: " + og_filename +"\n Width: " + str(cols) + "\n"
+	file_str += " Height: " + str(rows) + "\n Conversion Settings: transparency= " + str(transparency) + "\n"
+	file_str += "*/\n"
 	file_str += "static const uint8_t " + filename + "[" + str(total_elements) + "] = \n{ \n"
 	file_str += array_data
 	file_str += "};"
@@ -92,8 +101,8 @@ def main(transparency):
 			filepath = os.path.join(input_dir, filename)
 			
 			im = load_image(filepath, transparency)
-			array_data, total_elements = encode_bitmap(im, transparency)
-			write_file(filename, array_data, total_elements)
+			array_data, total_elements, cols, rows, = encode_bitmap(im, transparency)
+			write_file(filename, array_data, total_elements, cols, rows, transparency)
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description='Process some arguments.')

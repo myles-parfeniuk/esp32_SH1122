@@ -2,8 +2,11 @@
 #include <stdint.h> 
 
 /*
-    Generated using sh1122_encode_bitmap.py from photo designed by Yumsel:
-    https://www.pngitem.com/middle/ioTiwJi_chibi-cute-pig-drawing-hd-png-download/
+ Converted with sh1122_encode_bitmap.py 
+ Source Image Name: pig.png
+ Width: 71
+ Height: 64
+ Conversion Settings: transparency= True
 */
 static const uint8_t sh1122_bitmap_pig[2926] = 
 { 

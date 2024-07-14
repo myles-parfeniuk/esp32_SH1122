@@ -2,8 +2,11 @@
 #include <stdint.h> 
 
 /*
-    Generated using sh1122_encode_bitmap.py from photo designed by Freepik:
-    https://www.freepik.com/free-vector/hand-drawn-pickle-cartoon-illustration_58524562.htm#fromView=search&page=1&position=38&uuid=566510e8-d2d2-4439-8d2a-55a585792372
+ Converted with sh1122_encode_bitmap.py 
+ Source Image Name: pickle_boat.png
+ Width: 111
+ Height: 64
+ Conversion Settings: transparency= True
 */
 static const uint8_t sh1122_bitmap_pickle_boat[1854] = 
 { 
