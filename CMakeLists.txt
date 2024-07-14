@@ -1,3 +1,3 @@
 idf_component_register(SRC_DIRS . 
-                    INCLUDE_DIRS . fonts 
+                    INCLUDE_DIRS . fonts bitmaps
                     REQUIRES freertos driver)

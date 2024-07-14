@@ -93,24 +93,25 @@ void SH1122Oled::set_pixel(uint16_t x, uint16_t y, PixelIntensity intensity)
     int16_t y_it = 0;
     int16_t high_byte = 0;
 
-    if (SH1122_PIXEL_IN_BOUNDS(x, y))
-    {
-        if (x != 0)
+    if(intensity != PixelIntensity::level_transparent)
+        if (SH1122_PIXEL_IN_BOUNDS(x, y))
         {
-            x_it = x / 2;
-            high_byte = x % 2;
+            if (x != 0)
+            {
+                x_it = x / 2;
+                high_byte = x % 2;
+            }
+
+            if (y != 0)
+                y_it = (y * WIDTH) / 2;
+
+            uint8_t* pixel = (frame_buffer + x_it + y_it);
+
+            if (high_byte == 1)
+                *pixel = ((uint8_t) intensity & 0x0F) | (*pixel & 0xF0);
+            else
+                *pixel = (((uint8_t) intensity << 4) & 0xF0) | (*pixel & 0x0F);
         }
-
-        if (y != 0)
-            y_it = (y * WIDTH) / 2;
-
-        uint8_t* pixel = (frame_buffer + x_it + y_it);
-
-        if (high_byte == 1)
-            *pixel = ((uint8_t) intensity & 0x0F) | (*pixel & 0xF0);
-        else
-            *pixel = (((uint8_t) intensity << 4) & 0xF0) | (*pixel & 0x0F);
-    }
 }
 
 /**
@@ -532,6 +533,45 @@ uint16_t SH1122Oled::draw_string(uint16_t x, uint16_t y, PixelIntensity intensit
     delete[] buffer;
 
     return sum;
+}
+
+/**
+ * @brief Draws a sh1122 RLE encoded bitmap created with sh1122_encode_bitmap.py.
+ *
+ * @param x Bitmap x location (upper left corner of bitmap)
+ * @param y Bitmap y location (upper left corner of bitmap)
+ * @param bg_intensity Background intensity (optional, default transparent), fills transparent pixels with bg_intensity if used
+ * @return The width of the drawn string.
+ */
+void SH1122Oled::draw_bitmap(uint16_t x, uint16_t y, const uint8_t* bitmap, PixelIntensity bg_intensity)
+{
+    const int16_t bitmap_col_sz = *(bitmap + 2);
+    const int16_t bitmap_row_sz = *(bitmap + 3);
+    const uint8_t* data_ptr = bitmap + 4;
+    int16_t repeated_value_lim = *(data_ptr + 1);
+    PixelIntensity intensity = (PixelIntensity) * data_ptr;
+    int16_t repeated_value_count = 0;
+
+    for (int row = 0; row < bitmap_row_sz; row++)
+    {
+        for (int col = 0; col < bitmap_col_sz; col++)
+        {
+            if(intensity == PixelIntensity::level_transparent)
+                intensity = bg_intensity;
+
+            set_pixel(x + col, y + row, intensity);
+            repeated_value_count++;
+
+            if(repeated_value_count >= repeated_value_lim)
+            {
+                data_ptr += 2; 
+                repeated_value_lim = *(data_ptr + 1);
+                intensity = (PixelIntensity) * data_ptr;
+                repeated_value_count = 0; 
+            }
+                
+        }
+    }
 }
 
 /**

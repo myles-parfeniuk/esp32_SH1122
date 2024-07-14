@@ -126,8 +126,8 @@ class SH1122Oled
             level_13,
             level_14,
             level_15,
+            level_transparent,
             max
-
         };
 
         SH1122Oled(sh1122_oled_cfg_t settings = sh1122_oled_cfg_t());
@@ -143,6 +143,7 @@ class SH1122Oled
         void draw_ellipse(int16_t x_c, int16_t y_c, int16_t r_x, int16_t r_y, PixelIntensity intensity);
         uint16_t draw_glyph(uint16_t x, uint16_t y, PixelIntensity intensity, uint16_t encoding);
         uint16_t draw_string(uint16_t x, uint16_t y, PixelIntensity intensity, const char* format, ...);
+        void draw_bitmap(uint16_t x, uint16_t y, const uint8_t *bitmap, PixelIntensity bg_intensity = PixelIntensity::level_transparent);
 
         static void load_font(const uint8_t* font);
         void set_font_direction(FontDirection dir);
