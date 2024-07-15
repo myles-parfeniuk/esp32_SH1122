@@ -143,7 +143,7 @@ class SH1122Oled
         void draw_ellipse(int16_t x_c, int16_t y_c, int16_t r_x, int16_t r_y, PixelIntensity intensity);
         uint16_t draw_glyph(uint16_t x, uint16_t y, PixelIntensity intensity, uint16_t encoding);
         uint16_t draw_string(uint16_t x, uint16_t y, PixelIntensity intensity, const char* format, ...);
-        void draw_bitmap(uint16_t x, uint16_t y, const uint8_t *bitmap, PixelIntensity bg_intensity = PixelIntensity::level_transparent);
+        void draw_bitmap(uint16_t x, uint16_t y, const uint8_t* bitmap, PixelIntensity bg_intensity = PixelIntensity::level_transparent);
 
         static void load_font(const uint8_t* font);
         void set_font_direction(FontDirection dir);
@@ -251,10 +251,14 @@ class SH1122Oled
         int8_t font_decode_get_signed_bits(sh1122_oled_font_decode_t* decode, uint8_t cnt);
         uint16_t font_apply_direction_y(uint16_t dy, int8_t x, int8_t y, FontDirection dir);
         uint16_t font_apply_direction_x(uint16_t dx, int8_t x, int8_t y, FontDirection dir);
-        static uint8_t font_lookup_table_read_char(const uint8_t* font, uint8_t offset);
-        static uint16_t font_lookup_table_read_word(const uint8_t* font, uint8_t offset);
         void font_draw_lines(sh1122_oled_font_decode_t* decode, uint8_t len, uint8_t is_foreground);
         void font_draw_line(sh1122_oled_font_decode_t* decode, int16_t x, int16_t y, uint16_t length, PixelIntensity intensity);
+        static uint8_t font_lookup_table_read_char(const uint8_t* font, uint8_t offset);
+        static uint16_t font_lookup_table_read_word(const uint8_t* font, uint8_t offset);
+
+        void bitmap_decode_pixel_block(const uint8_t** data_ptr, int16_t& r_val_lim, PixelIntensity& intensity);
+        void bitmap_read_byte(const uint8_t** data_ptr, int16_t& r_val_lim, PixelIntensity& intensity);
+        void bitmap_read_word(const uint8_t** data_ptr, int16_t& r_val_lim, PixelIntensity& intensity);
 
         static sh1122_oled_cfg_t oled_cfg;                ///< Holds configuration struct passed to constructor, used for GPIO pins and SPI
         spi_bus_config_t spi_bus_cfg;                     ///< SPI peripheral config struct.
@@ -276,6 +280,16 @@ class SH1122Oled
                 FRAME_CHUNK_2_LENGTH; ///< Length of third frame chunk being sent over SPI (frame buffer length exceeds esp-idf's SPI max transfer sz)
         static const constexpr uint16_t FRAME_CHUNK_LENGTHS[3] = {FRAME_CHUNK_1_LENGTH, FRAME_CHUNK_2_LENGTH,
                 FRAME_CHUNK_3_LENGTH}; ///< Length of frame chunks being sent over SPI (frame buffer length exceeds esp-idf's SPI max transfer sz)
+
+        // bitmap decoding
+        static const constexpr uint8_t BITMAP_DECODE_WORD_FLG_BIT = BIT7;    ///< Indicates word length pixel block.
+        static const constexpr uint16_t BITMAP_DECODE_R_VAL_LOW_BIT_POS = 5; ///< Shift for lower repeated value bits.
+        static const constexpr uint16_t BITMAP_DECODE_R_VAL_LOW_MASK =
+                (BIT7 | BIT6 | BIT5); ///< Mask for isolating the 3 lsbs of repeated value count with word length pixel block.
+        static const constexpr uint16_t BITMAP_DECODE_R_VAL_B_MASK =
+                (BIT6 | BIT5); ///< Mask for isolating repeated value count with byte length pixel block.
+        static const constexpr uint8_t BITMAP_DECODE_PIXEL_INTENSITY_MASK =
+                (BIT4 | BIT3 | BIT2 | BIT1 | BIT0); ///< Mask for isolating grayscale intensity value.
 
         // spi
         static const constexpr uint64_t SPI_CLK_SPEED_HZ = 4000000ULL;    ///< Serial clockspeed of SPI transactions.

@@ -93,7 +93,7 @@ void SH1122Oled::set_pixel(uint16_t x, uint16_t y, PixelIntensity intensity)
     int16_t y_it = 0;
     int16_t high_byte = 0;
 
-    if(intensity != PixelIntensity::level_transparent)
+    if (intensity != PixelIntensity::level_transparent)
         if (SH1122_PIXEL_IN_BOUNDS(x, y))
         {
             if (x != 0)
@@ -536,40 +536,39 @@ uint16_t SH1122Oled::draw_string(uint16_t x, uint16_t y, PixelIntensity intensit
 }
 
 /**
- * @brief Draws a sh1122 RLE encoded bitmap created with sh1122_encode_bitmap.py.
+ * @brief Draws a sh1122 custom run-line-encoded bitmap created with sh1122_encode_bitmap.py.
  *
  * @param x Bitmap x location (upper left corner of bitmap)
  * @param y Bitmap y location (upper left corner of bitmap)
  * @param bg_intensity Background intensity (optional, default transparent), fills transparent pixels with bg_intensity if used
- * @return The width of the drawn string.
+ * @return void, nothing to return
  */
 void SH1122Oled::draw_bitmap(uint16_t x, uint16_t y, const uint8_t* bitmap, PixelIntensity bg_intensity)
 {
     const int16_t bitmap_col_sz = *(bitmap + 2);
     const int16_t bitmap_row_sz = *(bitmap + 3);
     const uint8_t* data_ptr = bitmap + 4;
-    int16_t repeated_value_lim = *(data_ptr + 1);
-    PixelIntensity intensity = (PixelIntensity) * data_ptr;
+    int16_t repeated_value_lim = 0;
+    PixelIntensity intensity = PixelIntensity::level_transparent;
     int16_t repeated_value_count = 0;
+
+    bitmap_decode_pixel_block(&data_ptr, repeated_value_lim, intensity);
 
     for (int row = 0; row < bitmap_row_sz; row++)
     {
         for (int col = 0; col < bitmap_col_sz; col++)
         {
-            if(intensity == PixelIntensity::level_transparent)
+            if (intensity == PixelIntensity::level_transparent)
                 intensity = bg_intensity;
 
             set_pixel(x + col, y + row, intensity);
             repeated_value_count++;
 
-            if(repeated_value_count >= repeated_value_lim)
+            if (repeated_value_count >= repeated_value_lim)
             {
-                data_ptr += 2; 
-                repeated_value_lim = *(data_ptr + 1);
-                intensity = (PixelIntensity) * data_ptr;
-                repeated_value_count = 0; 
+                bitmap_decode_pixel_block(&data_ptr, repeated_value_lim, intensity);
+                repeated_value_count = 0;
             }
-                
         }
     }
 }
@@ -1336,6 +1335,53 @@ uint16_t SH1122Oled::font_lookup_table_read_word(const uint8_t* font, uint8_t of
     word += (uint16_t) * (const uint8_t*) (font + offset + 1);
 
     return word;
+}
+
+/**
+ * @brief Decodes a single pixel block (an intensity and the amount of pixels it repeats) from sh1122 RLE bitmap data.
+ *
+ * @param data_ptr Pointer to current pixel block in bitmap data. Incremented after read is completed to next pixel block.
+ * @param r_val_lim Repeated value limit returned from data, total amount of pixels returned intensity repeats for.
+ * @param intensity Grayscale intensity value returned from data.
+ * @return void, nothing to return
+ */
+void SH1122Oled::bitmap_decode_pixel_block(const uint8_t** data_ptr, int16_t& r_val_lim, PixelIntensity& intensity)
+{
+
+    if (**data_ptr & BITMAP_DECODE_WORD_FLG_BIT)
+        bitmap_read_word(data_ptr, r_val_lim, intensity);
+    else
+        bitmap_read_byte(data_ptr, r_val_lim, intensity);
+}
+
+/**
+ * @brief Decodes a byte length pixel block from sh1122 RLE bitmap data.
+ *
+ * @param data_ptr Pointer to current pixel block in bitmap data. Incremented by 1 after read is completed to next pixel block.
+ * @param r_val_lim Repeated value limit returned from data, total amount of pixels returned intensity repeats for.
+ * @param intensity Grayscale intensity value returned from data.
+ * @return void, nothing to return
+ */
+void SH1122Oled::bitmap_read_byte(const uint8_t** data_ptr, int16_t& r_val_lim, PixelIntensity& intensity)
+{
+    intensity = (PixelIntensity) (**data_ptr & BITMAP_DECODE_PIXEL_INTENSITY_MASK);
+    r_val_lim = (int16_t) (**data_ptr & BITMAP_DECODE_R_VAL_B_MASK) >> 5;
+    *data_ptr += 1;
+}
+
+/**
+ * @brief Decodes a word length pixel block from sh1122 RLE bitmap data.
+ *
+ * @param data_ptr Pointer to current pixel block in bitmap data. Incremented by 2 after read is completed to next pixel block.
+ * @param r_val_lim Repeated value limit returned from data, total amount of pixels returned intensity repeats for.
+ * @param intensity Grayscale intensity value returned from data.
+ * @return void, nothing to return
+ */
+void SH1122Oled::bitmap_read_word(const uint8_t** data_ptr, int16_t& r_val_lim, PixelIntensity& intensity)
+{
+    intensity = (PixelIntensity) (*(*data_ptr + 1) & BITMAP_DECODE_PIXEL_INTENSITY_MASK);
+    r_val_lim = (int16_t) ((**data_ptr & ~BITMAP_DECODE_WORD_FLG_BIT) << 3) | (int16_t) (((*(*data_ptr + 1)) & BITMAP_DECODE_R_VAL_LOW_MASK) >> 5);
+    *data_ptr += 2;
 }
 
 /**

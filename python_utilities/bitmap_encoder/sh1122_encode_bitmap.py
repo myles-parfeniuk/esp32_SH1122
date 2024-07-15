@@ -7,6 +7,25 @@ OLED_HEIGHT = 64
 PIXEL_INTENSITY_TRANSPARENT = 16
 PIXEL_INTENSITY_MAX = 15
 
+BIT_0 = 1
+BIT_1 = 2
+BIT_2 = 4
+BIT_3 = 8
+BIT_4 = 16
+BIT_5 = 32
+BIT_6 = 64
+BIT_7 = 128
+BIT_8 = 256
+BIT_9 = 512
+BIT_10 = 1024
+
+R_VAL_LOW_BIT_MSK = (BIT_0 | BIT_1 | BIT_2)
+R_VAL_HIGH_BIT_MSK = (BIT_3 | BIT_4 | BIT_5 | BIT_6 | BIT_7 | BIT_8 | BIT_9)
+R_VAL_WORD_MAX = 2**10 - 1
+R_VAL_BYTE_MAX = 2**2 - 1
+R_VAL_LOW_BIT_POS = 5
+WORD_FLG_BIT = BIT_7
+
 def map_gray_scale_value(raw_value, transparency):
 	if(transparency):
 		if raw_value[1] > 30:
@@ -37,6 +56,18 @@ def load_image(filepath, transparency):
 
 	return im
 
+def encode_word(gray_scale_value, repeated_val_cnt):
+	r_val_count_high = (repeated_val_cnt & R_VAL_HIGH_BIT_MSK) >> 3
+	r_val_count_low = repeated_val_cnt & R_VAL_LOW_BIT_MSK
+	encoded_upper_byte = WORD_FLG_BIT | r_val_count_high
+	encoded_lower_byte = (r_val_count_low << R_VAL_LOW_BIT_POS) | gray_scale_value
+	return (encoded_upper_byte, encoded_lower_byte)
+
+def encode_byte(gray_scale_value, repeated_val_cnt):
+	encoded_byte = (repeated_val_cnt << R_VAL_LOW_BIT_POS) | gray_scale_value
+	encoded_byte &= ~WORD_FLG_BIT
+	return encoded_byte
+
 def encode_bitmap(im, transparency):
 	pixels = im.load()
 	cols, rows = im.size
@@ -47,24 +78,37 @@ def encode_bitmap(im, transparency):
 	repeated_val_cnt = 0; 
 	total_pixels = 0
 
-	#bitmap data is stored in groups of 2 elements, intensity followed by the amount of times the given intensity repeats, ie (15, 5) means 5 pixels of intensity 15 in a row
 	for y in range(rows):
 		for x in range(cols):
 			gray_scale_value = map_gray_scale_value(pixels[x, y], transparency)
 
-			if (gray_scale_value != prev_gray_scale_value) or (repeated_val_cnt >=  (OLED_WIDTH - 1)):
-				array_str += " " + str(prev_gray_scale_value) + ", " + str(repeated_val_cnt) + ",\n" #the lower element is grayscale intesity, upper is amount of times it appears in sequence
-				elem_count += 2
-				total_pixels += repeated_val_cnt
-				repeated_val_cnt = 0
+			if (gray_scale_value != prev_gray_scale_value) or (repeated_val_cnt >=  R_VAL_WORD_MAX):
+				if repeated_val_cnt > 2: #word length pixel data
+					encoded_upper_byte, encoded_lower_byte = encode_word(prev_gray_scale_value, repeated_val_cnt)
+					array_str += " " + str(encoded_upper_byte) + ", " + str(encoded_lower_byte) + ",\n" 
+					elem_count += 2
+				else: #byte length pixel data
+					encoded_byte = encode_byte(prev_gray_scale_value, repeated_val_cnt)
+					array_str += " " + str(encoded_byte) + ",\n"
+					elem_count += 1
 
+				total_pixels += repeated_val_cnt 
+				repeated_val_cnt = 0
 
 			repeated_val_cnt += 1
 
 			if (x == (cols - 1)) and (y == rows - 1):
-				array_str += " " + str(gray_scale_value) + ", " + str(repeated_val_cnt) + "\n"
-				elem_count += 2
-				total_pixels += repeated_val_cnt
+				if repeated_val_cnt > 2: #word length pixel data
+					encoded_upper_byte, encoded_lower_byte = encode_word(gray_scale_value, repeated_val_cnt)
+					array_str += " " + str(encoded_upper_byte) + ", " + str(encoded_lower_byte) + "\n" 
+					elem_count += 2
+				else: #byte length pixel data
+					encoded_byte = encode_byte(prev_gray_scale_value, repeated_val_cnt)
+					array_str += " " + str(encoded_byte) + "\n"
+					elem_count += 1
+
+				total_pixels += repeated_val_cnt 
+
 				break
 
 			prev_gray_scale_value = gray_scale_value
@@ -105,8 +149,8 @@ def main(transparency):
 			write_file(filename, array_data, total_elements, cols, rows, transparency)
 
 if __name__ == "__main__":
-	parser = argparse.ArgumentParser(description='Process some arguments.')
-	parser.add_argument('-T', '--transparency', action='store_true', help='Enable transparency')
+	parser = argparse.ArgumentParser(prog = 'sh1122 encode bitmap', description='Encodes images with custom run-line format for 16 shade grayscale displays.')
+	parser.add_argument('-T', '--transparency', action='store_true', help='Transparent pixels will not be ignored, if unused  they may appear as black or white.')
 	args = parser.parse_args()
 	main(args.transparency)
 
