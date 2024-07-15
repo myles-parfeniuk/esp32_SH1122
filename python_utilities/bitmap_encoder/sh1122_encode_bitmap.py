@@ -56,19 +56,27 @@ def load_image(filepath, transparency):
 
 	return im
 
-def encode_word(gray_scale_value, repeated_val_cnt):
+def encode_word(gray_scale_value, repeated_val_cnt, inverted):
+	if inverted:
+		if gray_scale_value != PIXEL_INTENSITY_TRANSPARENT:
+			gray_scale_value = PIXEL_INTENSITY_MAX - gray_scale_value
+
 	r_val_count_high = (repeated_val_cnt & R_VAL_HIGH_BIT_MSK) >> 3
 	r_val_count_low = repeated_val_cnt & R_VAL_LOW_BIT_MSK
 	encoded_upper_byte = WORD_FLG_BIT | r_val_count_high
 	encoded_lower_byte = (r_val_count_low << R_VAL_LOW_BIT_POS) | gray_scale_value
 	return (encoded_upper_byte, encoded_lower_byte)
 
-def encode_byte(gray_scale_value, repeated_val_cnt):
+def encode_byte(gray_scale_value, repeated_val_cnt, inverted):
+	if inverted:
+		if gray_scale_value != PIXEL_INTENSITY_TRANSPARENT:
+			gray_scale_value = PIXEL_INTENSITY_MAX - gray_scale_value
+
 	encoded_byte = (repeated_val_cnt << R_VAL_LOW_BIT_POS) | gray_scale_value
 	encoded_byte &= ~WORD_FLG_BIT
 	return encoded_byte
 
-def encode_bitmap(im, transparency):
+def encode_bitmap(im, transparency, inverted):
 	pixels = im.load()
 	cols, rows = im.size
 	array_str = " " + str(cols) + ", " + str(rows) + ", \n" #store the width and height of the bitmap
@@ -84,11 +92,11 @@ def encode_bitmap(im, transparency):
 
 			if (gray_scale_value != prev_gray_scale_value) or (repeated_val_cnt >=  R_VAL_WORD_MAX):
 				if repeated_val_cnt > 2: #word length pixel data
-					encoded_upper_byte, encoded_lower_byte = encode_word(prev_gray_scale_value, repeated_val_cnt)
+					encoded_upper_byte, encoded_lower_byte = encode_word(prev_gray_scale_value, repeated_val_cnt, inverted)
 					array_str += " " + str(encoded_upper_byte) + ", " + str(encoded_lower_byte) + ",\n" 
 					elem_count += 2
 				else: #byte length pixel data
-					encoded_byte = encode_byte(prev_gray_scale_value, repeated_val_cnt)
+					encoded_byte = encode_byte(prev_gray_scale_value, repeated_val_cnt, inverted)
 					array_str += " " + str(encoded_byte) + ",\n"
 					elem_count += 1
 
@@ -99,11 +107,11 @@ def encode_bitmap(im, transparency):
 
 			if (x == (cols - 1)) and (y == rows - 1):
 				if repeated_val_cnt > 2: #word length pixel data
-					encoded_upper_byte, encoded_lower_byte = encode_word(gray_scale_value, repeated_val_cnt)
+					encoded_upper_byte, encoded_lower_byte = encode_word(gray_scale_value, repeated_val_cnt, inverted)
 					array_str += " " + str(encoded_upper_byte) + ", " + str(encoded_lower_byte) + "\n" 
 					elem_count += 2
 				else: #byte length pixel data
-					encoded_byte = encode_byte(prev_gray_scale_value, repeated_val_cnt)
+					encoded_byte = encode_byte(prev_gray_scale_value, repeated_val_cnt, inverted)
 					array_str += " " + str(encoded_byte) + "\n"
 					elem_count += 1
 
@@ -118,7 +126,7 @@ def encode_bitmap(im, transparency):
 
 	return (array_str, elem_count, cols, rows)
 
-def write_file(filename, array_data, total_elements, cols, rows, transparency):
+def write_file(filename, array_data, total_elements, cols, rows, transparency, inverted):
 	og_filename = filename
 	filename = filename[:-4]
 	filename = "sh1122_bitmap_" + filename
@@ -126,7 +134,7 @@ def write_file(filename, array_data, total_elements, cols, rows, transparency):
 	file_str += "#include <stdint.h> \n\n"
 	file_str += "/*\n"
 	file_str += " Converted with sh1122_encode_bitmap.py \n Source Image Name: " + og_filename +"\n Width: " + str(cols) + "\n"
-	file_str += " Height: " + str(rows) + "\n Conversion Settings: transparency= " + str(transparency) + "\n"
+	file_str += " Height: " + str(rows) + "\n Conversion Settings: transparency= " + str(transparency) + ", inverted= " +str(inverted) +"\n"
 	file_str += "*/\n"
 	file_str += "static const uint8_t " + filename + "[" + str(total_elements) + "] = \n{ \n"
 	file_str += array_data
@@ -137,7 +145,7 @@ def write_file(filename, array_data, total_elements, cols, rows, transparency):
 		file.write(file_str)
 	print(filename + " successfully converted.")
 
-def main(transparency):
+def main(transparency, inverted):
 	input_dir = 'input'
 
 	for filename in os.listdir(input_dir):
@@ -145,13 +153,14 @@ def main(transparency):
 			filepath = os.path.join(input_dir, filename)
 			
 			im = load_image(filepath, transparency)
-			array_data, total_elements, cols, rows, = encode_bitmap(im, transparency)
-			write_file(filename, array_data, total_elements, cols, rows, transparency)
+			array_data, total_elements, cols, rows, = encode_bitmap(im, transparency, inverted)
+			write_file(filename, array_data, total_elements, cols, rows, transparency, inverted)
 
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(prog = 'sh1122 encode bitmap', description='Encodes images with custom run-line format for 16 shade grayscale displays.')
-	parser.add_argument('-T', '--transparency', action='store_true', help='Transparent pixels will not be ignored, if unused  they may appear as black or white.')
+	parser.add_argument('-T', '-t', '--transparency', action='store_true', help='Transparent pixels will not be ignored, if unused  they may appear as black or white.')
+	parser.add_argument('-I', '-i', '--inverted', action='store_true', default = False, help = 'Invert the grayscale intensity of the generated bitmap.')
 	args = parser.parse_args()
-	main(args.transparency)
+	main(args.transparency, args.inverted)
 
 

@@ -6,7 +6,7 @@
     Source Image Name: pig.png
     Width: 71
     Height: 64
-    Conversion Settings: transparency= True
+    Conversion Settings: transparency= True, inverted= False
 
     Source art designed by Yumsel:
     https://www.pngitem.com/middle/ioTiwJi_chibi-cute-pig-drawing-hd-png-download/

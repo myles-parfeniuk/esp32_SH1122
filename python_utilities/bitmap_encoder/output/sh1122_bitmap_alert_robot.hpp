@@ -6,7 +6,7 @@
  Source Image Name: alert_robot.png
  Width: 64
  Height: 64
- Conversion Settings: transparency= True
+ Conversion Settings: transparency= True, inverted= False
 */
 static const uint8_t sh1122_bitmap_alert_robot[1117] = 
 { 

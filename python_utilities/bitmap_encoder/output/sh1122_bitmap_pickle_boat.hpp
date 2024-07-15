@@ -6,7 +6,7 @@
  Source Image Name: pickle_boat.png
  Width: 111
  Height: 64
- Conversion Settings: transparency= True
+ Conversion Settings: transparency= True, inverted= False
 */
 static const uint8_t sh1122_bitmap_pickle_boat[1369] = 
 { 
