@@ -774,6 +774,11 @@ uint16_t SH1122Oled::font_get_string_center_y(const char* str)
     return (HEIGHT - max_char_height) / 2;
 }
 
+void SH1122Oled::take_screen_shot()
+{
+
+}
+
 /**
  * @brief Loads a font for drawing strings and glyphs.
  *

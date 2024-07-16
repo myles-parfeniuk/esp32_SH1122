@@ -133,6 +133,7 @@ class SH1122Oled
         SH1122Oled(sh1122_oled_cfg_t settings = sh1122_oled_cfg_t());
         void update_screen();
         void clear_buffer();
+
         void set_pixel(uint16_t x, uint16_t y, PixelIntensity intensity);
         void draw_line(int16_t x_1, int16_t y_1, int16_t x_2, int16_t y_2, PixelIntensity intensity);
         void draw_rectangle_frame(int16_t x_1, int16_t y_1, int16_t width, int16_t height, int16_t thickness, PixelIntensity intensity);
@@ -153,6 +154,8 @@ class SH1122Oled
         uint16_t font_get_glyph_height(uint16_t encoding);
         uint16_t font_get_string_center_x(const char* str);
         uint16_t font_get_string_center_y(const char* str);
+
+        void take_screen_shot(); 
 
         void reset();
         void power_off();

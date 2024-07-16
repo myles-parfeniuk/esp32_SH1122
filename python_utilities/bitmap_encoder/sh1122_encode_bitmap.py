@@ -6,6 +6,7 @@ OLED_WIDTH = 256
 OLED_HEIGHT = 64
 PIXEL_INTENSITY_TRANSPARENT = 16
 PIXEL_INTENSITY_MAX = 15
+TRANSPARENCY_THRESHOLD = 30
 
 BIT_0 = 1
 BIT_1 = 2
@@ -26,9 +27,19 @@ R_VAL_BYTE_MAX = 2**2 - 1
 R_VAL_LOW_BIT_POS = 5
 WORD_FLG_BIT = BIT_7
 
+"""
+	Maps a raw grayscale value from image to a scaled 16 level value for SH1122.
+
+	Args:
+	    raw_value (int or tuple): The raw grayscale value or tuple (gray_value, transparency_value) if transparency is True.
+	    transparency (bool): Flag indicating if transparency mode is enabled. Preserves alpha channel if true.
+
+	Returns:
+	    int: Scaled grayscale intensity value, or PIXEL_INTENSITY_TRANSPARENT if transparency condition is met.
+"""
 def map_gray_scale_value(raw_value, transparency):
 	if(transparency):
-		if raw_value[1] > 30:
+		if raw_value[1] > TRANSPARENCY_THRESHOLD:
 			return ((raw_value[0] * PIXEL_INTENSITY_MAX) // (OLED_WIDTH - 1))
 		else:
 			return PIXEL_INTENSITY_TRANSPARENT
@@ -36,6 +47,16 @@ def map_gray_scale_value(raw_value, transparency):
 	else:
 		return ((raw_value * PIXEL_INTENSITY_MAX) // (OLED_WIDTH - 1))
 
+"""
+	Opens an image, converts it to either black and white, or black and white with an alpha/transparency channel.
+
+	Args:
+	    filepath (string): Path to the file being opened.
+	    transparency (bool): Flag indicating if transparency mode is enabled. Perserves alpha channel if true.
+
+	Returns:
+	    Image object: An object containing information about the opened image.
+"""
 def load_image(filepath, transparency):
 	if transparency:
 		im = Image.open(filepath).convert('LA') #load image and convert to black and white with alpha channel
@@ -56,6 +77,24 @@ def load_image(filepath, transparency):
 
 	return im
 
+"""
+	Encodes a word pixel block. A word pixel block contains 16 bits. 
+	The MSb of the first element of a word pixel block is the word flag, which is always set to 1 to indicate the data is a word.
+	
+	Encoded Data Format: 
+	encoded_word[15] = word flag
+	encoded_word[14:8] = Count bits 9 to 3
+	encoded_word[7:5] = Count bits 2 to 0
+	encoded_word[4:0] = gray scale intensity value
+
+	Args:
+	    gray_scale_value (int): The scaled grayscale intensity (ranging from 0 to 16).
+	    repeated_val_cnt (int): The total amount of times the pixel appears in sequence (ranging from 1 to 1023)
+	    inverted (bool): True if the colors of the image should be inverted. 
+
+	Returns:
+	    tupple (encoded_upper_byte, encoded_lower_byte)(int, int): A tupple containing the MSB followed by the LSB of the encoded word.
+"""
 def encode_word(gray_scale_value, repeated_val_cnt, inverted):
 	if inverted:
 		if gray_scale_value != PIXEL_INTENSITY_TRANSPARENT:
@@ -67,6 +106,23 @@ def encode_word(gray_scale_value, repeated_val_cnt, inverted):
 	encoded_lower_byte = (r_val_count_low << R_VAL_LOW_BIT_POS) | gray_scale_value
 	return (encoded_upper_byte, encoded_lower_byte)
 
+"""
+	Encodes a byte pixel block. A byte pixel block contains 8 bits. 
+	The MSb of a byte pixel block is the word flag, which is always set to 0 to indicate the data is a byte.
+	
+	Encoded Data Format:
+	encoded_word[7] = word flag
+	encoded_word[6:5] = Count bits 
+	encoded_word[4:0] = gray scale intensity value
+
+	Args:
+	    gray_scale_value (int): The scaled grayscale intensity (ranging from 0 to 16).
+	    repeated_val_cnt (int): The total amount of times the pixel appears in sequence (ranging from 1 to 3).
+	    inverted (bool): True if the colors of the image should be inverted. 
+
+	Returns:
+	    int: The encoded byte.
+"""
 def encode_byte(gray_scale_value, repeated_val_cnt, inverted):
 	if inverted:
 		if gray_scale_value != PIXEL_INTENSITY_TRANSPARENT:
@@ -76,6 +132,26 @@ def encode_byte(gray_scale_value, repeated_val_cnt, inverted):
 	encoded_byte &= ~WORD_FLG_BIT
 	return encoded_byte
 
+"""
+	Encodes a bitmap with a custom flavor of RLE. Each bitmap contains its total length in elements, followed by its height, width, 
+	then data.	The data is broken into chunk of pixels is refered to as a pixel blocks which can either be a word in length (16 bits) 
+	or byte sized (8 bits). 
+
+	Each pixel block contains:
+	- A flag to indicate if the data is a byte or word
+	- The intensity of the pixel(s)
+	- The amount of times pixels of the given intensity repeat
+	
+	See encode_byte and encode_word for more details on pixel block format.
+
+	Args:
+	    im (Image object): The image to be encoded should be preprocessed for black and white, or black and white with alphachannel before passing. 
+	    transparency (bool): Flag indicating if transparency mode is enabled. Preserves alpha channel if true.
+	    inverted (bool): True if the colors of the image should be inverted. 
+
+	Returns:
+	    tupple (array_str, elem_count, cols, rows)(int, int, int, int): A tupple containing array string for the header file, total element count, amount of columns, and amount of rows.
+"""
 def encode_bitmap(im, transparency, inverted):
 	pixels = im.load()
 	cols, rows = im.size
@@ -126,6 +202,21 @@ def encode_bitmap(im, transparency, inverted):
 
 	return (array_str, elem_count, cols, rows)
 
+"""
+	Creates a .hpp file with encoded bitmap data for use with esp_SH1122 component. 
+
+	Args:
+	    filename (string): The name of the file to save.
+	    array_data (string): The encoded array data returned from encode_bitmap
+	    total_elements (int): Total amount of elements returned from encode_bitmap
+	    cols (int): Column count/ width of bitmap returned from encode_bitmap
+	    rows (int): Row count/ height of bitmap returned from encode_bitmap
+	    transparency (bool): Flag indicating if transparency mode is enabled. 
+	    inverted (bool): True if the colors of the image are inverted. 
+
+	Returns:
+	    n/a
+"""
 def write_file(filename, array_data, total_elements, cols, rows, transparency, inverted):
 	og_filename = filename
 	filename = filename[:-4]
