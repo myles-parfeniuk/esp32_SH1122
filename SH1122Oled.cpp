@@ -536,7 +536,7 @@ uint16_t SH1122Oled::draw_string(uint16_t x, uint16_t y, PixelIntensity intensit
 }
 
 /**
- * @brief Draws a sh1122 custom run-line-encoded bitmap created with sh1122_encode_bitmap.py.
+ * @brief Draws a sh1122 custom run-length-encoded bitmap created with sh1122_encode_bitmap.py.
  *
  * @param x Bitmap x location (upper left corner of bitmap)
  * @param y Bitmap y location (upper left corner of bitmap)
@@ -776,7 +776,6 @@ uint16_t SH1122Oled::font_get_string_center_y(const char* str)
 
 void SH1122Oled::take_screen_shot()
 {
-
 }
 
 /**

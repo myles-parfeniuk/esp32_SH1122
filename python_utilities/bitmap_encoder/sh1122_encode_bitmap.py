@@ -1,3 +1,32 @@
+"""
+sh1122_encode_bitmap.py
+
+This script encodes images into a custom run-length format suitable for 16-shade grayscale displays using an SH1122 controller.
+
+Requirements:
+- Python 3.x
+- PIL (Python Imaging Library)
+
+Usage:
+python sh1122_encode_bitmap.py [-h] [-T] [-TT x] [-I]
+
+Options:
+  -h, --help            Show this help message and exit.
+  -T, --transparency    Enable transparency mode. Preserves alpha channel if true.
+  -TT x, --transparency_threshold x
+                        Set threshold for pixel transparency (0-255). Default is 30.
+  -I, --inverted        Invert grayscale intensity of the generated bitmap.
+
+Output:
+Generates a .hpp file in the 'output' directory for each PNG image found in the 'input' directory.
+
+Note:
+- The script resizes images to fit the SH1122 OLED dimensions (256x64) if they have not been presized.
+- Transparency mode preserves alpha channel, converting images to black and white with alpha.
+- When transparency mode is enabled, pixels with alpha channel values less than the passed threshold will be set to transparent.
+  If the pixel's alpha channel level is above the transparency level, its scaled grayscale value will be used instead. 
+- Inverted mode flips grayscale intensity values if specified.
+"""
 from PIL import Image
 import os
 import argparse
@@ -6,7 +35,7 @@ OLED_WIDTH = 256
 OLED_HEIGHT = 64
 PIXEL_INTENSITY_TRANSPARENT = 16
 PIXEL_INTENSITY_MAX = 15
-TRANSPARENCY_THRESHOLD = 30
+transparency_threshold = 30
 
 BIT_0 = 1
 BIT_1 = 2
@@ -38,8 +67,9 @@ WORD_FLG_BIT = BIT_7
 	    int: Scaled grayscale intensity value, or PIXEL_INTENSITY_TRANSPARENT if transparency condition is met.
 """
 def map_gray_scale_value(raw_value, transparency):
+	global transparency_threshold
 	if(transparency):
-		if raw_value[1] > TRANSPARENCY_THRESHOLD:
+		if raw_value[1] > transparency_threshold:
 			return ((raw_value[0] * PIXEL_INTENSITY_MAX) // (OLED_WIDTH - 1))
 		else:
 			return PIXEL_INTENSITY_TRANSPARENT
@@ -225,7 +255,7 @@ def write_file(filename, array_data, total_elements, cols, rows, transparency, i
 	file_str += "#include <stdint.h> \n\n"
 	file_str += "/*\n"
 	file_str += " Converted with sh1122_encode_bitmap.py \n Source Image Name: " + og_filename +"\n Width: " + str(cols) + "\n"
-	file_str += " Height: " + str(rows) + "\n Conversion Settings: transparency= " + str(transparency) + ", inverted= " +str(inverted) +"\n"
+	file_str += " Height: " + str(rows) + "\n Conversion Settings: transparency= " + str(transparency) + ", transparency_threshold=" + (str(transparency_threshold) if transparency else " n/a") + ", inverted= " +str(inverted) +"\n"
 	file_str += "*/\n"
 	file_str += "static const uint8_t " + filename + "[" + str(total_elements) + "] = \n{ \n"
 	file_str += array_data
@@ -237,6 +267,7 @@ def write_file(filename, array_data, total_elements, cols, rows, transparency, i
 	print(filename + " successfully converted.")
 
 def main(transparency, inverted):
+	global transparency_threshold
 	input_dir = 'input'
 
 	for filename in os.listdir(input_dir):
@@ -248,10 +279,20 @@ def main(transparency, inverted):
 			write_file(filename, array_data, total_elements, cols, rows, transparency, inverted)
 
 if __name__ == "__main__":
-	parser = argparse.ArgumentParser(prog = 'sh1122 encode bitmap', description='Encodes images with custom run-line format for 16 shade grayscale displays.')
+	parser = argparse.ArgumentParser(prog = 'sh1122 encode bitmap', description='Encodes images with custom run-length format for 16 shade grayscale displays.')
 	parser.add_argument('-T', '-t', '--transparency', action='store_true', help='Transparent pixels will not be ignored, if unused  they may appear as black or white.')
+	parser.add_argument('-TT', '-tt', '--transparency_threshold', type=int, metavar='x', choices=range(256), help='Pixels with alpha channel below this level will be set to transparent (default 30).')
 	parser.add_argument('-I', '-i', '--inverted', action='store_true', default = False, help = 'Invert the grayscale intensity of the generated bitmap.')
+
 	args = parser.parse_args()
+
+	if args.transparency_threshold is not None:
+		transparency_threshold = args.transparency_threshold
+
+	#-tt only availble if -t is used
+	if args.transparency_threshold is not None and not args.transparency:
+		parser.error('-tt/--transparency_threshold can only be used with -t/--transparency')
+
 	main(args.transparency, args.inverted)
 
 

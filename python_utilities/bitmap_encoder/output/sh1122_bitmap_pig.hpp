@@ -6,7 +6,7 @@
  Source Image Name: pig.png
  Width: 71
  Height: 64
- Conversion Settings: transparency= True, inverted= False
+ Conversion Settings: transparency= True, transparency_threshold=30, inverted= False
 */
 static const uint8_t sh1122_bitmap_pig[1712] = 
 { 

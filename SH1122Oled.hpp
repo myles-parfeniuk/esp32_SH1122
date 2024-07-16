@@ -155,7 +155,7 @@ class SH1122Oled
         uint16_t font_get_string_center_x(const char* str);
         uint16_t font_get_string_center_y(const char* str);
 
-        void take_screen_shot(); 
+        void take_screen_shot();
 
         void reset();
         void power_off();
@@ -188,15 +188,15 @@ class SH1122Oled
                 /* offset 0 */
                 uint8_t glyph_cnt;  ///<Total amount of glyphs contained within the font.
                 uint8_t bbx_mode;   ///<BBX build mode of font 0: proportional, 1: common height, 2: monospace, 3: multiple of 8
-                uint8_t bits_per_0; ///< Glyph RLE (run line encoding) parameter, max bits per background line.
-                uint8_t bits_per_1; ///< Glyph RLE (run line encoding) parameter, max bits per foreground line.
+                uint8_t bits_per_0; ///< Glyph RLE (run length encoding) parameter, max bits per background line.
+                uint8_t bits_per_1; ///< Glyph RLE (run length encoding) parameter, max bits per foreground line.
 
                 /* offset 4 */
-                uint8_t bits_per_char_width;  ///< Glyph RLE (run line encoding) parameter, bits per char width data.
-                uint8_t bits_per_char_height; ///<Glyph RLE (run line encoding) parameter, bits per char height data.
-                uint8_t bits_per_char_x;      ///<Glyph RLE (run line encoding) parameter, bits per local char x position.
-                uint8_t bits_per_char_y;      ///<Glyph RLE (run line encoding) parameter, bits per local char y position.
-                uint8_t bits_per_delta_x;     ///<Glyph RLE (run line encoding) parameter, bits per change in x position.
+                uint8_t bits_per_char_width;  ///< Glyph RLE (run length encoding) parameter, bits per char width data.
+                uint8_t bits_per_char_height; ///<Glyph RLE (run length encoding) parameter, bits per char height data.
+                uint8_t bits_per_char_x;      ///<Glyph RLE (run length encoding) parameter, bits per local char x position.
+                uint8_t bits_per_char_y;      ///<Glyph RLE (run length encoding) parameter, bits per local char y position.
+                uint8_t bits_per_delta_x;     ///<Glyph RLE (run length encoding) parameter, bits per change in x position.
 
                 /* offset 9 */
                 int8_t max_char_width;  ///<Max glyph width of any glyphs contained within font.

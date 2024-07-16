@@ -21,8 +21,10 @@
 
 ## About
 
-esp32_SH1122 is a C++ esp-idf v5.x component, intended to serve as a driver for SH1122 driven 256x64 OLED displays with 16 shades of grayscale. 
-This library contains functions for basic graphics like lines, rectangles, ellipses, as well as strings. The font system is a port of U8G2's font system, with close to 2000 different fonts to choose from, as well as support for custom fonts. 
+esp32_SH1122 is a C++ esp-idf v5.x component, intended to serve as a driver for SH1122 driven 256x64 OLED displays with 16 shades of grayscale.  
+This library contains functions for basic graphics like lines, rectangles, and ellipses. It also contains support
+for strings and bitmaps.  
+The font system is a port of U8G2's font system, with close to 2000 different fonts to choose from, as well as support for custom fonts. This repo also contains tools to convert images to a bitmap format suitable for the SH1122.
 
 ## Getting Started
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -41,7 +43,7 @@ The default wiring is depicted below, it can be changed at driver initialization
    ```
 
 
-2. Cd into the components directory and clone the esp32_BNO08x repo.
+2. Cd into the components directory and clone the esp32_SH1122 repo.
 
    ```sh
    cd components
@@ -56,7 +58,7 @@ The default wiring is depicted below, it can be changed at driver initialization
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Example
-This example draws the splash screen depicted at the top of this page. 
+This example draws a string on a dark gray background.
 ```cpp  
 #include <stdio.h>
 #include "SH1122Oled.hpp"
@@ -75,22 +77,23 @@ extern "C" void app_main(void)
                                         GPIO_NUM_23) //data/!command GPIO
                                         );
     */
+
     while (1)
     {
 
         oled.clear_buffer(); // clear buffer of previous frame before drawing
 
-        // draw the background by drawing rectangles in grayscale level 1 to level 15.
-        for (int i = static_cast<int>(SH1122Oled::PixelIntensity::level_1); i < static_cast<int>(SH1122Oled::PixelIntensity::max); i++)
-            oled.draw_rectangle((i - 1) * 17, 0, 17, SH1122Oled::HEIGHT, static_cast<SH1122Oled::PixelIntensity>(i));
+        // draw background
+        oled.draw_rectangle(0, 0, SH1122Oled::WIDTH, SH1122Oled::HEIGHT, SH1122Oled::PixelIntensity::level_1);
 
         // draw screen border
-        oled.draw_rectangle_frame(0, 0, SH1122Oled::WIDTH, SH1122Oled::HEIGHT, 2, SH1122Oled::PixelIntensity::level_15);
+        oled.draw_rectangle_frame(0, 0, SH1122Oled::WIDTH, SH1122Oled::HEIGHT, 2, SH1122Oled::PixelIntensity::level_10);
 
-        SH1122Oled::load_font(sh1122_font_inr16_mf);                                  // load font for drawing string
-        const int x = oled.font_get_string_center_x("esp32_SH1122");                  // find the string x position for horizontal centering
-        const int y = oled.font_get_string_center_y("esp32_SH1122");                  // find the string y position for vertical centering
-        oled.draw_string(x, y, SH1122Oled::PixelIntensity::level_15, "esp32_SH1122"); // draw the string
+        // draw the string
+        SH1122Oled::load_font(sh1122_font_inr16_mf); // load font for drawing string
+        const int x = oled.font_get_string_center_x("esp32_SH1122");  // find the string x position for horizontal centering
+        const int y = oled.font_get_string_center_y("esp32_SH1122");  // find the string y position for vertical centering
+        oled.draw_string(x, y, SH1122Oled::PixelIntensity::level_15, "esp32_SH1122"); 
 
         oled.update_screen(); // send the current buffer to the screen
 
@@ -106,9 +109,9 @@ API documentation generated with doxygen can be found in the documentation direc
 
 
 ## Acknowledgements
-Thanks to Oliver Krause and contributors of u8g2.\
-https://github.com/olikraus/u8g2 \
-This library utilizes the same font and RLE encoding system used by U8G2.
+Thanks to Oliver Krause and contributors of u8g2.  
+https://github.com/olikraus/u8g2  
+This library utilizes the same run-line encoding system used by U8G2 for fonts.  
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## License

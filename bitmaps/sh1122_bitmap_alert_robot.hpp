@@ -6,7 +6,7 @@
     Source Image Name: alert_robot.png
     Width: 64
     Height: 64
-    Conversion Settings: transparency= True, inverted= False
+    Conversion Settings: transparency= True, transparency_threshold=30, inverted= False
 
     Source art designed by Dimpoart:
     https://www.veryicon.com/icons/art/rave-every-day/robot-1.html

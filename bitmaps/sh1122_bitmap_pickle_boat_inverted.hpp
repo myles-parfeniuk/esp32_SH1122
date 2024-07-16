@@ -6,7 +6,7 @@
     Source Image Name: pickle_boat.png
     Width: 111
     Height: 64
-    Conversion Settings: transparency= True, inverted= True
+    Conversion Settings: transparency= True, transparency_threshold=30, inverted= True
 
     Source art designed by Freepik:
     https://www.freepik.com/free-vector/hand-drawn-pickle-cartoon-illustration_58524562.htm#fromView=search&page=1&position=38&uuid=566510e8-d2d2-4439-8d2a-55a585792372
