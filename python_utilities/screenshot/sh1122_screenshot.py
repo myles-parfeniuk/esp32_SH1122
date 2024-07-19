@@ -1,3 +1,29 @@
+"""
+sh1122_screenshot.py
+
+Description:
+    This script captures screenshots from an SH1122-driven display connected
+    via serial communication (UART). Screenshots are decoded, processed, and
+    saved as images.
+
+Dependencies:
+    - serial (pyserial library)
+    - keyboard
+    - terminaltables
+    - PIL (Python Imaging Library)
+    - argparse
+
+Usage:
+    python sh1122_screenshot.py <comport_name> [-b <baud_rate>] [-s <scaling_factor>]
+
+Args:
+    comport_name (str): Name of the serial port to which the esp32 is connected.
+    -b, --baud_rate (int): Baud rate for serial communication (default: 115200).
+    -s, --scaling_factor (int): Multiplier for image size (default: 1 (no change, 256x64)).
+
+Example:
+    python sh1122_screenshot.py COM5 -b 115200 -s 2 
+"""
 import serial
 import serial.tools.list_ports
 import threading
@@ -12,6 +38,18 @@ OLED_WIDTH = 256
 FRAME_BUFFER_LENGTH = 8192
 stop_scanning_event = threading.Event()
 
+"""
+Task: task_scan_keyboard
+
+Description:
+    Monitors keyboard input to detect 'q' key press, ending screenshot session.
+
+Args:
+    None
+    
+Returns:
+    None
+"""
 def task_scan_keyboard():
 	global stop_scanning_event
 
@@ -24,16 +62,18 @@ def task_scan_keyboard():
 			break
 		time.sleep(0.1)
 
-def get_serial_ports():
-   	
-	port_list = []
-	port_list.append(['Name', 'Description'])
+"""
+Function: read_screenshot
 
-	for p in serial.tools.list_ports.comports():
-		port_list.append([p.device, p.description])
+Description:
+    Receives a single screenshot from esp32 over serial.
 
-	return port_list
-
+Args:
+    comport (serial.Serial): The serial port object to read from.
+    
+Returns:
+    tuple: Tuple containing the screenshot data (string) and timestamp since boot in microseconds (int).
+"""
 def read_screenshot(comport):
 	time_stamp = 0
 	screenshot = ""
@@ -55,6 +95,18 @@ def read_screenshot(comport):
 
 	return (screenshot, time_stamp)
 
+"""
+Function: parse_screenshot
+
+Description:
+    Parses the raw screenshot data into a list of integers that matches the original frame buffer.
+
+Args:
+    screenshot (str): Raw screenshot data as a comma-separated string.
+    
+Returns:
+    list: Corrected frame buffer as a list of integers.
+"""
 def parse_screenshot(screenshot):
 	corrected_frame_buffer = []
 	screenshot = screenshot.split(',')
@@ -66,6 +118,18 @@ def parse_screenshot(screenshot):
 
 	return corrected_frame_buffer
 
+"""
+Function: decode_frame_buffer
+
+Description:
+    Decodes the frame buffer into pixel intensity data.
+
+Args:
+    frame_buffer (list): List of integers representing the frame buffer.
+    
+Returns:
+    list: 2D list ([y][x]) representing pixel intensity data for the given screenshot.
+"""
 def decode_frame_buffer(frame_buffer):
 	x_it = 0
 	y_it = 0
@@ -90,9 +154,34 @@ def decode_frame_buffer(frame_buffer):
 
 	return pixel_data
 
+"""
+Function: map_gray_scale_value
+
+Description:
+    Maps scaled intensity values to BW color values to be used by PIL.
+
+Args:
+    scaled_value (int): Scaled intensity value (0-15).
+    
+Returns:
+    int: BW color value mapped from the scaled intensity.
+"""
 def map_gray_scale_value(scaled_value):
 	return scaled_value * 255 // 15
 
+"""
+Function: create_image
+
+Description:
+    Creates an image from pixel intensity data.
+
+Args:
+    pixel_data (list): 2D list of pixel intensity values.
+    scaling_factor (int): Scaling factor for image size.
+    
+Returns:
+    Image: PIL Image object representing the created image.
+"""
 def create_image(pixel_data, scaling_factor):
 	img = Image.new('L', (OLED_WIDTH * scaling_factor, OLED_HEIGHT * scaling_factor))
 
@@ -100,45 +189,81 @@ def create_image(pixel_data, scaling_factor):
 		for x in range(OLED_WIDTH):
 			pixel_color = map_gray_scale_value(pixel_data[y][x])
 
-			# Set the 2x2 block of pixels in the scaled image
+			#apply scaling
 			for dy in range(scaling_factor):
 				for dx in range(scaling_factor):
 					img.putpixel((x * scaling_factor + dx, y * scaling_factor + dy), pixel_color)
 
 	return img
 
+"""
+Function: save_image
+
+Description:
+    Saves an image to the output directory.
+
+Args:
+    img (Image): PIL Image object to be saved.
+    shot_total (int): Total number of screenshots taken.
+    time_stamp (int): Timestamp of the screenshot in microseconds.
+    
+Returns:
+    None
+"""
 def save_image(img, shot_total, time_stamp):
+
 	file_name = f"screenshot_{shot_total}_{time_stamp}_ms.png"
 	print(file_name + " saved.")
 	img.save(f"output/{file_name}")
 
-def save_images(images):
+"""
+Function: save_images
+
+Description:
+    Saves screenshots as .png files with timestamps appended to filenames, in output directory.
+Args:
+    images (list): List of tuples containing pixel data,
+                   shot total, and timestamp for each image.
+   	scaling_factor (int): The image width and height multiplier.
+    
+Returns:
+    None
+"""
+def save_images(images, scaling_factor):
 	for i in range(len(images)):
+		time_stamp = images[i][2]
+		shot_total = images[i][1]
+		pixel_data = images[i][0]
+
 		if(i == 0):
 			time_stamp_corrected = 0;
-			prev_time_stamp = images[i][2]
+			prev_time_stamp = time_stamp
 		else:
-			d_t = (images[i][2] - prev_time_stamp) // 1000
-			prev_time_stamp = images[i][2]
+			d_t = (time_stamp- prev_time_stamp) // 1000 #divide by 1000 to convert to ms
+			prev_time_stamp = time_stamp
 			time_stamp_corrected += d_t
 
-		save_image(images[i][0], images[i][1], time_stamp_corrected)
+		img = create_image(images[i][0], scaling_factor)
+
+		save_image(img, shot_total, time_stamp_corrected)
 
 
 if __name__ == '__main__':
 	task_scan_keyboard_hdl = threading.Thread(target = task_scan_keyboard, name = 'Scan Keyboard Task')
 	parser = argparse.ArgumentParser(prog = 'sh1122 screenshot', description='Takes screenshots of SH1122 driven displays for building documentation.')
 	parser.add_argument('comport_name', type = str, help='Name of comport for which esp32 is attatched, for ex. \'COM*\' on windows or \'dev/ttyUSB*\' on linux')
-	parser.add_argument('-b', '--baud_rate', type=int, default=115200, help = 'Baud rate of esp32 serial communications, in idf.py menuconfig: component config->ESP System Settings -> UART console baud rate.')
+	parser.add_argument('-b', '-B', '--baud_rate', type=int, default=115200, help = 'Baud rate of esp32 serial communications, in idf.py menuconfig: component config->ESP System Settings -> UART console baud rate.')
+	parser.add_argument('-s', '-S', '--scaling_factor', type=int, default = 1, help = 'Multiplies the width and height for a larger image (defualt = 1, no change)')
 	args = parser.parse_args()
 	images_to_save = []
-	scaling_factor = 2
 
 	baud_rate = args.baud_rate
 	comport_name = args.comport_name
+	scaling_factor = args.scaling_factor
 
 	comport = serial.Serial()
 	comport.port = comport_name
+	"""prevents esp32 from resetting upon connection"""
 	comport.setDTR(False)
 	comport.setRTS(False)
 	comport.baudrate = baud_rate
@@ -159,15 +284,14 @@ if __name__ == '__main__':
 
 			if len(frame_buffer) == FRAME_BUFFER_LENGTH:
 				pixel_data = decode_frame_buffer(frame_buffer)
-				img = create_image(pixel_data, scaling_factor)
 				shot_total+=1
-				images_to_save.append((img, shot_total, time_stamp))
+				images_to_save.append((pixel_data, shot_total, time_stamp))
 				print(f"{shot_total} screenshots captured, press q to quit and save.")
 			else:
 				print("Screenshot dropped, error.")
 
 		comport.close()
-		save_images(images_to_save)
+		save_images(images_to_save, scaling_factor)
 		task_scan_keyboard_hdl.join()
 
 	except serial.SerialException as e:
