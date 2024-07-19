@@ -774,8 +774,34 @@ uint16_t SH1122Oled::font_get_string_center_y(const char* str)
     return (HEIGHT - max_char_height) / 2;
 }
 
+/**
+ * @brief Sends frame buffer to sh1122_screenshot.py to create a screen shot.
+ *
+ * @return void, nothing to return
+ */
 void SH1122Oled::take_screen_shot()
 {
+    const constexpr int CHUNK_BUFFER_LENGTH = 512;
+    int index = 0;
+    char chunk_buffer[CHUNK_BUFFER_LENGTH];
+    uint16_t encoded_val = 0;
+
+    printf("SCREENSHOT_S\n\r");
+    printf("TIMESTAMP %lld\n\r", esp_timer_get_time());
+    for (int i = 0; i < FRAME_BUFFER_LENGTH; i+=2)
+    {
+        encoded_val = (((uint16_t)frame_buffer[i + 1] << 8) & 0xFF00) | ((uint16_t)frame_buffer[i] & 0x00FF);
+        index += snprintf(chunk_buffer + index, CHUNK_BUFFER_LENGTH - index, " %d,", encoded_val);
+
+        if (index > CHUNK_BUFFER_LENGTH - 50)
+        {
+            printf(" %s \n\r", chunk_buffer);
+            index = 0;
+        } 
+        else if (i == FRAME_BUFFER_LENGTH - 2)
+            printf(" %s \n\r", chunk_buffer);
+    }
+    printf("SCREENSHOT_P\n\r");
 }
 
 /**
