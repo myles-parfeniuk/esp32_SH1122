@@ -2,9 +2,12 @@
 sh1122_screenshot.py
 
 Description:
-    This script captures screenshots from an SH1122-driven display connected
-    via serial communication (UART). Screenshots are decoded, processed, and
-    saved as images.
+	This script captures screenshots from calls to take_screen_shot().
+	It receives the frame buffer over serial, which is then decoded, processed, 
+	and saved as an image.
+
+	After launching the script will continue to run and take screenshots until the 'q'
+	key is hit.
 
 Dependencies:
     - serial (pyserial library)
@@ -32,6 +35,7 @@ from terminaltables import AsciiTable
 import time
 from PIL import Image
 import argparse
+import os
 
 OLED_HEIGHT = 64
 OLED_WIDTH = 256
@@ -230,6 +234,7 @@ Returns:
     None
 """
 def save_images(images, scaling_factor):
+	os.makedirs("output/", exist_ok=True)  #create output directory if it does not exist
 	for i in range(len(images)):
 		time_stamp = images[i][2]
 		shot_total = images[i][1]
@@ -273,7 +278,7 @@ if __name__ == '__main__':
 		comport.open()
 		print(f"serial port {comport_name} successfully opened at {baud_rate}baud...")
 		for i in range(2):
-			comport.readline()
+			comport.readline() 
 
 		task_scan_keyboard_hdl.start()
 		shot_total = 0

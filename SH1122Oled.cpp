@@ -18,7 +18,7 @@ SH1122Oled::FontDirection SH1122Oled::font_dir = SH1122Oled::FontDirection::left
 SH1122Oled::SH1122Oled(sh1122_oled_cfg_t settings)
 {
     oled_cfg = settings;
-
+    font_info.font = nullptr; //used to check if user has loaded font for string/glyph functions
     // set-up data command pin and rst pin
     gpio_config_t io_dc_rst_cs_cfg;
 
@@ -422,6 +422,13 @@ uint16_t SH1122Oled::draw_glyph(uint16_t x, uint16_t y, PixelIntensity intensity
     sh1122_oled_font_decode_t decode;
     uint16_t dx = 0;
 
+    // must load font before attempting to write glyphs
+    if (font_info.font == nullptr)
+    {
+        ESP_LOGE(TAG, "No font loaded.");
+        return 0;
+    }
+
     // set up the decode structure
     decode.target_x = x;
 
@@ -478,6 +485,13 @@ uint16_t SH1122Oled::draw_string(uint16_t x, uint16_t y, PixelIntensity intensit
     uint8_t* str = nullptr;
     va_list args;
     uint16_t size;
+
+    // must load font before attempting to write
+    if (font_info.font == nullptr)
+    {
+        ESP_LOGE(TAG, "No font loaded.");
+        return 0;
+    }
 
     va_start(args, format);
     size = vsnprintf(nullptr, 0, format, args) + 1;
@@ -581,8 +595,16 @@ void SH1122Oled::draw_bitmap(uint16_t x, uint16_t y, const uint8_t* bitmap, Pixe
  */
 uint16_t SH1122Oled::font_get_glyph_width(uint16_t encoding)
 {
-    const uint8_t* glyph_data = font_get_glyph_data(encoding);
+    const uint8_t* glyph_data;
     sh1122_oled_font_decode_t decode;
+
+    if (font_info.font == nullptr)
+    {
+        ESP_LOGE(TAG, "No font loaded.");
+        return 0;
+    }
+
+    glyph_data = font_get_glyph_data(encoding);
 
     if (glyph_data == NULL)
         return 0;
@@ -603,7 +625,15 @@ uint16_t SH1122Oled::font_get_glyph_width(uint16_t encoding)
  */
 uint16_t SH1122Oled::font_get_glyph_width(sh1122_oled_font_decode_t* decode, uint16_t encoding)
 {
-    const uint8_t* glyph_data = font_get_glyph_data(encoding);
+    const uint8_t* glyph_data;
+
+    if (font_info.font == nullptr)
+    {
+        ESP_LOGE(TAG, "No font loaded.");
+        return 0;
+    }
+
+    glyph_data = font_get_glyph_data(encoding);
 
     if (glyph_data == NULL)
         return 0;
@@ -623,8 +653,16 @@ uint16_t SH1122Oled::font_get_glyph_width(sh1122_oled_font_decode_t* decode, uin
  */
 uint16_t SH1122Oled::font_get_glyph_height(uint16_t encoding)
 {
-    const uint8_t* glyph_data = font_get_glyph_data(encoding);
+    const uint8_t* glyph_data;
     sh1122_oled_font_decode_t decode;
+
+    if (font_info.font == nullptr)
+    {
+        ESP_LOGE(TAG, "No font loaded.");
+        return 0;
+    }
+
+    glyph_data = font_get_glyph_data(encoding);
 
     if (glyph_data == NULL)
         return 0;
@@ -652,6 +690,13 @@ uint16_t SH1122Oled::font_get_string_width(const char* format, ...)
     uint8_t* str = nullptr;
     va_list args;
     uint16_t size;
+
+    // cannot get string width without font info
+    if (font_info.font == nullptr)
+    {
+        ESP_LOGE(TAG, "No font loaded.");
+        return 0;
+    }
 
     // find length of variable argument string
     va_start(args, format);
@@ -719,6 +764,13 @@ uint16_t SH1122Oled::font_get_string_height(const char* format, ...)
     uint16_t current_height = 0;
     uint16_t max_height = 0;
 
+    // cannot get string height without font info
+    if (font_info.font == nullptr)
+    {
+        ESP_LOGE(TAG, "No font loaded.");
+        return 0;
+    }
+
     // allocate correct amount of memory and save string from variable argument list
     va_start(args, format);
     size = vsnprintf(nullptr, 0, format, args) + 1;
@@ -758,7 +810,16 @@ uint16_t SH1122Oled::font_get_string_height(const char* format, ...)
  */
 uint16_t SH1122Oled::font_get_string_center_x(const char* str)
 {
-    uint16_t str_width = font_get_string_width(str);
+    uint16_t str_width;
+
+    if (font_info.font == nullptr)
+    {
+        ESP_LOGE(TAG, "No font loaded.");
+        return 0;
+    }
+
+    str_width = font_get_string_width(str);
+
     return (WIDTH - str_width) / 2;
 }
 
@@ -770,7 +831,16 @@ uint16_t SH1122Oled::font_get_string_center_x(const char* str)
  */
 uint16_t SH1122Oled::font_get_string_center_y(const char* str)
 {
-    uint16_t max_char_height = font_get_string_height(str);
+    uint16_t max_char_height;
+
+    if (font_info.font == nullptr)
+    {
+        ESP_LOGE(TAG, "No font loaded.");
+        return 0;
+    }
+
+    max_char_height = font_get_string_height(str);
+
     return (HEIGHT - max_char_height) / 2;
 }
 
@@ -788,16 +858,16 @@ void SH1122Oled::take_screen_shot()
 
     printf("SCREENSHOT_S\n\r");
     printf("TIMESTAMP %lld\n\r", esp_timer_get_time());
-    for (int i = 0; i < FRAME_BUFFER_LENGTH; i+=2)
+    for (int i = 0; i < FRAME_BUFFER_LENGTH; i += 2)
     {
-        encoded_val = (((uint16_t)frame_buffer[i + 1] << 8) & 0xFF00) | ((uint16_t)frame_buffer[i] & 0x00FF);
+        encoded_val = (((uint16_t) frame_buffer[i + 1] << 8) & 0xFF00) | ((uint16_t) frame_buffer[i] & 0x00FF);
         index += snprintf(chunk_buffer + index, CHUNK_BUFFER_LENGTH - index, " %d,", encoded_val);
 
         if (index > CHUNK_BUFFER_LENGTH - 50)
         {
             printf(" %s \n\r", chunk_buffer);
             index = 0;
-        } 
+        }
         else if (i == FRAME_BUFFER_LENGTH - 2)
             printf(" %s \n\r", chunk_buffer);
     }

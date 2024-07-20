@@ -1,18 +1,26 @@
 <a name="readme-top"></a>
-![image](esp32_SH1122_banner.png)
+![image](README_images/esp32_SH1122_banner.png)
 <summary>Table of Contents</summary>
 <ol>
 <li>
     <a href="#about">About</a>
 </li>
 <li>
+    <a href="#features">Features</a>
+    <ul>
+    <li><a href="#custom-bitmaps">Custom Bitmaps</a></li>
+    <li><a href="#u8g2-font-support">U8G2 Font Support</a></li>
+    <li><a href="#screenshots">Screenshots</a></li>
+    </ul>
+</li>
+<li>
     <a href="#getting-started">Getting Started</a>
     <ul>
     <li><a href="#wiring">Wiring</a></li>
     <li><a href="#adding-to-project">Adding to Project</a></li>
+    <li><a href="#example">Example</a></li>
     </ul>
 </li>
-<li><a href="#example">Example</a></li>
 <li><a href="#documentation">Documentation</a></li>
 <li><a href="#acknowledgements">Acknowledgements</a></li>  <!-- Added this line -->
 <li><a href="#license">License</a></li>
@@ -24,14 +32,66 @@
 esp32_SH1122 is a C++ esp-idf v5.x component, intended to serve as a driver for SH1122 driven 256x64 OLED displays with 16 shades of grayscale.  
 This library contains functions for basic graphics like lines, rectangles, and ellipses. It also contains support
 for strings and bitmaps.  
-The font system is a port of U8G2's font system, with close to 2000 different fonts to choose from, as well as support for custom fonts. This repo also contains tools to convert images to a bitmap format suitable for the SH1122.
+
+## Features
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Custom Bitmaps
+This library includes tools for encoding images into 16-shade grayscale bitmaps. The bitmaps use a custom run-length encoding
+format to minimize memory usage as much as possible.  
+
+To create bitmaps, place .png images into the python_utilities/bitmap_encoder/input directory, then run the sh1122_encode_bitmap.py
+script. If you would like to preserve transparency ensure you use the '-t' flag,  for more info see the header at the top of sh1122_encode_bitmap.py.  
+
+The encoded bitmaps will be saved as .hpp files within the python_utilities/bitmap_encoder/output directory. Copy and paste
+the created bitmaps into the ./bitmaps directory and include them into your project. To draw, call draw_bitmap and pass it the  
+respective bitmap.
+
+Below are a few encoded bitmaps on the OLED next to their original source images.
+
+![image](README_images/custom_bitmaps.jpg)
+![image](README_images/pig.png)
+![image](README_images/pickle_boat.png)
+![image](README_images/alert_robot.png)
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### U8G2 Font Support
+This library contains close to 2000 different fonts from the U8G2 display library.  
+The fonts names remain the same; however, they have "sh1122_font" appended onto the front instead of u8g2_font.  
+
+A list of the fonts available within this library can be found here:  
+https://github.com/olikraus/u8g2/wiki/fntlistall  
+
+To use a font, include the respective font's header file, then call load_font(), passing it the font look up table.  
+Ensure you load a font before attempting to draw strings or glyphs.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Screenshots
+This library contains tools for creating screenshots and gifs for use in documentation.  
+  
+To take screen shots call the take_screenshot() method, while running the sh1122_screenshot.py  
+script, located under python_utilities/screenshot. The take_screenshot() method dumps the current frame buffer  
+over serial, which is processed into an image by the script.  
+  
+For minimal latency you should increase your console baud rate in menuconfig to the maximum possible value.  
+For more info see the header at the top of sh1122_screenshot.py.  
+
+Running the sh1122_gif_creator.py script will create a gif from any screenshots located in the output folder generated  
+by sh1122_screenshot.py. An example of this is the splash screen recording below this text.  
+
+![image](README_images/splash_screen_recording.gif)
+![image](README_images/splash_screen_real.gif)
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Getting Started
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Wiring
 The default wiring is depicted below, it can be changed at driver initialization (see example section).
-![image](esp32_SH1122_wiring.png)
+![image](README_images/esp32_SH1122_wiring.png)
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Adding to Project
