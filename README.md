@@ -19,6 +19,9 @@
     <li><a href="#wiring">Wiring</a></li>
     <li><a href="#adding-to-project">Adding to Project</a></li>
     <li><a href="#example">Example</a></li>
+    <li><a href="#creating-bitmaps">Creating Bitmaps</a></li>
+    <li><a href="#font-system">Font System</a></li>
+    <li><a href="#taking-screenshots">Taking Screenshots</a></li>
     </ul>
 </li>
 <li><a href="#documentation">Documentation</a></li>
@@ -40,12 +43,7 @@ for strings and bitmaps.
 This library includes tools for encoding images into 16-shade grayscale bitmaps. The bitmaps use a custom run-length encoding
 format to minimize memory usage as much as possible.  
 
-To create bitmaps, place .png images into the python_utilities/bitmap_encoder/input directory, then run the sh1122_encode_bitmap.py
-script. If you would like to preserve transparency ensure you use the '-t' flag,  for more info see the header at the top of sh1122_encode_bitmap.py.  
-
-The encoded bitmaps will be saved as .hpp files within the python_utilities/bitmap_encoder/output directory. Copy and paste
-the created bitmaps into the ./bitmaps directory and include them into your project. To draw, call draw_bitmap and pass it the  
-respective bitmap.
+See the [Creating Bitmaps](#creating-bitmaps) for more info.
 
 Below are a few encoded bitmaps on the OLED next to their original source images.
 
@@ -62,23 +60,16 @@ The fonts names remain the same; however, they have "sh1122_font" appended onto 
 A list of the fonts available within this library can be found here:  
 https://github.com/olikraus/u8g2/wiki/fntlistall  
 
-To use a font, include the respective font's header file, then call load_font(), passing it the font look up table.  
-Ensure you load a font before attempting to draw strings or glyphs.
+For more on using fonts, see [Font System](#font-system).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Screenshots
 This library contains tools for creating screenshots and gifs for use in documentation.  
   
-To take screen shots call the take_screenshot() method, while running the sh1122_screenshot.py  
-script, located under python_utilities/screenshot. The take_screenshot() method dumps the current frame buffer  
-over serial, which is processed into an image by the script.  
-  
-For minimal latency you should increase your console baud rate in menuconfig to the maximum possible value.  
-For more info see the header at the top of sh1122_screenshot.py.  
+See [Taking Screenshots](#taking-screenshots) for more info.
 
-Running the sh1122_gif_creator.py script will create a gif from any screenshots located in the output folder generated  
-by sh1122_screenshot.py. An example of this is the splash screen recording below this text.  
+Below is an example of screen recording gif displaying a splash screen.  
 
 ![image](README_images/splash_screen_recording.gif)
 ![image](README_images/splash_screen_real.gif)
@@ -90,7 +81,7 @@ by sh1122_screenshot.py. An example of this is the splash screen recording below
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Wiring
-The default wiring is depicted below, it can be changed at driver initialization (see example section).
+The default wiring is depicted below, it can be changed at driver initialization (see [Example](#example)).
 ![image](README_images/esp32_SH1122_wiring.png)
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -101,7 +92,6 @@ The default wiring is depicted below, it can be changed at driver initialization
    ```sh
    mkdir components
    ```
-
 
 2. Cd into the components directory and clone the esp32_SH1122 repo.
 
@@ -138,6 +128,9 @@ extern "C" void app_main(void)
                                         );
     */
 
+    // load font for drawing string
+    SH1122Oled::load_font(sh1122_font_inr16_mf); 
+
     while (1)
     {
 
@@ -150,7 +143,6 @@ extern "C" void app_main(void)
         oled.draw_rectangle_frame(0, 0, SH1122Oled::WIDTH, SH1122Oled::HEIGHT, 2, SH1122Oled::PixelIntensity::level_10);
 
         // draw the string
-        SH1122Oled::load_font(sh1122_font_inr16_mf); // load font for drawing string
         const int x = oled.font_get_string_center_x("esp32_SH1122");  // find the string x position for horizontal centering
         const int y = oled.font_get_string_center_y("esp32_SH1122");  // find the string y position for vertical centering
         oled.draw_string(x, y, SH1122Oled::PixelIntensity::level_15, "esp32_SH1122"); 
@@ -161,6 +153,92 @@ extern "C" void app_main(void)
     }
 }
 ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Creating Bitmaps
+To create bitmaps:
+
+1.  Place .png images into the `python_utilities/bitmap_encoder/input` directory.
+
+2.  Run the `sh1122_encode_bitmap.py` script and append any arguments on you see fit.   
+
+    From terminal with python in path:
+
+    ```sh
+        python sh1122_encode_bitmap.py
+    ```
+
+    To see a full list of argument flags type:
+    ```sh
+        python sh1122_encode_bitmap.py -help
+    ```
+
+3. Copy the .hpp files generated by the script from `python_utilities/bitmap_encoder/output` to `your_project/components/esp32_SH1122/bitmaps`
+
+4. To draw a bitmap include the respective .hpp file at the top of your project and call draw bitmap.
+    ```cpp
+        #include "SH1122Oled.hpp"
+        #include "bitmaps/sh1122_bitmap_your_file.hpp"
+        //...
+        //somewhere in your code
+        oled.draw_bitmap(0, 0, sh1122_bitmap_your_file);
+    ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Font System
+All the font files are located within the `fonts/` directory. Ensure you load a font before calling functions like
+`draw_string()`, `draw_glyph()`, `get_string_width()`, etc...   
+
+**Ensure you load a font before attempting to draw strings or glyphs**.  
+
+To use a font:
+
+1. Include the respective font's header file at the top of your file:
+    ```cpp
+    #include "fonts/sh1122_font_inr16_mf.hpp"
+    ```
+2. Call load_font(), passing it the font look up table:
+    ```cpp
+    SH1122Oled::load_font(sh1122_font_inr16_mf); 
+    ```
+
+3. Call whichever draw functions you like, for example:
+    ```cpp
+    oled.draw_string(x, y, SH1122Oled::PixelIntensity::level_15, "my string"); 
+    ```
+    String functions also support variable argument lists like printf:
+
+    ```cpp
+    int my_number = 1122;
+    oled.draw_string(x, y, SH1122Oled::PixelIntensity::level_15, "my number %d", my_number); 
+    ```
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Taking Screenshots
+To take screen shots:
+
+1.  Call the take_screenshot() method somewhere in your firmware, this function dumps the current frame buffer over serial.
+    ```cpp
+    oled.take_screen_shot()
+    ```
+2. While your firmware is flashed and executing, run the `sh1122_screenshot.py` script located in `python_utilities/screenshot`.  
+    Ensure you close the esp-idf serial monitor if you have it open and append the comport name as well as baud rate onto the script execution call, for example:
+
+    ```sh
+    python sh1122_screenshot.py COM3 -b 115200
+    ```
+
+3. The script will display how many screen shots it has captured each time a new one is received, press the q key once you are done to save the images.
+
+4. The output images (in png format) can be found in the `python_utilities/screenshot/output` directory.  
+
+
+**NOTE:**
+For minimal latency you should increase your console baud rate in menuconfig to the maximum possible value.  
+For more info see the header at the top of sh1122_screenshot.py.  
+
+To create gifs from any captured screenshots simply run `sh1122_gif_creator.py`, it will account for each frame duration according to the time stamps in the filenames of the screenshots.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Documentation
