@@ -187,9 +187,10 @@ To create bitmaps:
 
 ### Font System
 All the font files are located within the `fonts/` directory. Ensure you load a font before calling functions like
-`draw_string()`, `draw_glyph()`, `get_string_width()`, etc...   
-
-**Ensure you load a font before attempting to draw strings or glyphs**.  
+`draw_string()`, `draw_glyph()`, `get_string_width()`, etc...  
+   
+A full list of included fonts can be found at:  
+https://github.com/olikraus/u8g2/wiki/fntlistall
 
 To use a font:
 
