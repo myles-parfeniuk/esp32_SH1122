@@ -1,0 +1,27 @@
+<map id="esp32_SH1122/SH1122Oled.hpp" name="esp32_SH1122/SH1122Oled.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="437,5,648,32"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,80,66,107"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="436,32,273,50,81,82,80,77,272,45,436,26"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="89,80,145,107"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="436,35,308,54,160,82,159,77,307,49,436,30"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="169,80,230,107"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="471,35,246,82,245,77,470,30"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="255,80,315,107"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="498,35,331,82,329,77,496,30"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="339,80,404,107"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="513,35,417,76,415,71,511,30"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="428,80,518,107"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="532,34,497,70,493,67,528,31"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="543,80,683,107"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="556,31,592,67,588,71,553,34"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="708,80,838,107"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="583,30,719,72,717,77,582,35"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="862,80,940,107"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="611,30,847,77,846,82,610,35"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="964,80,1104,107"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="629,30,949,77,948,82,628,35"/>
+<area shape="rect" id="Node000012" title=" " alt="" coords="1129,80,1233,107"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="649,26,860,46,1114,77,1113,82,859,51,648,31"/>
+<area shape="rect" id="Node000013" title=" " alt="" coords="1258,80,1347,107"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="648,22,914,41,1076,56,1242,77,1242,82,1076,62,913,46,648,28"/>
+</map>

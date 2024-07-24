@@ -1,0 +1,13 @@
+<map id="SH1122Oled::font_draw_lines" name="SH1122Oled::font_draw_lines">
+<area shape="rect" id="Node000001" title="Draws lines/pixels for glyph being drawn." alt="" coords="5,72,163,115"/>
+<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#a04e6d8b29a6d7be2af038255c2fe0303" title="Apply rotation to x coordinate of lines being drawn for current glyph such that they match passed dir..." alt="" coords="222,5,384,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="155,69,215,50,217,56,157,74"/>
+<area shape="rect" id="Node000003" href="$class_s_h1122_oled.html#a61416c2cf61025eec856d9ebe723101c" title="Apply rotation to y coordinate of lines being drawn for current glyph such that they match passed dir..." alt="" coords="222,72,384,115"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="163,91,207,91,207,96,163,96"/>
+<area shape="rect" id="Node000004" href="$class_s_h1122_oled.html#a68b5b4726aafb82116a7f9c6f4fa61f3" title="Draws a single font line, called from font_draw_lines." alt="" coords="211,139,395,165"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="163,112,236,132,235,137,162,117"/>
+<area shape="rect" id="Node000005" href="$class_s_h1122_oled.html#afdc6accc8d7fd602781c66db6e0ce956" title="Draws a line between two points." alt="" coords="443,139,599,165"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="396,149,427,149,427,155,396,155"/>
+<area shape="rect" id="Node000006" href="$class_s_h1122_oled.html#a003791e9b607af20e96a11b9cd074d50" title="Sets respective pixel to specified grayscale intensity." alt="" coords="647,139,802,165"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="600,149,632,149,632,155,600,155"/>
+</map>

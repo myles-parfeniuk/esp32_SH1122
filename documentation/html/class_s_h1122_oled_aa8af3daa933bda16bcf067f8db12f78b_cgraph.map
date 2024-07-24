@@ -1,0 +1,11 @@
+<map id="SH1122Oled::draw_bitmap" name="SH1122Oled::draw_bitmap">
+<area shape="rect" id="Node000001" title="Draws a sh1122 custom run&#45;length&#45;encoded bitmap created with sh1122_encode_bitmap...." alt="" coords="5,76,181,103"/>
+<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#a0d13ae8a730db7045001391a8fe42f29" title="Decodes a single pixel block (an intensity and the amount of pixels it repeats) from sh1122 RLE bitma..." alt="" coords="235,39,377,81"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="181,75,219,69,219,75,181,80"/>
+<area shape="rect" id="Node000005" href="$class_s_h1122_oled.html#a003791e9b607af20e96a11b9cd074d50" title="Sets respective pixel to specified grayscale intensity." alt="" coords="229,105,383,132"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="181,99,214,103,213,109,181,104"/>
+<area shape="rect" id="Node000003" href="$class_s_h1122_oled.html#ae9c2ec8d6c8057fd79c42bf61954b3d6" title="Decodes a byte length pixel block from sh1122 RLE bitmap data." alt="" coords="431,5,572,48"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="377,45,415,39,416,44,378,50"/>
+<area shape="rect" id="Node000004" href="$class_s_h1122_oled.html#a3f8a731bd280d7ed48e4e9f2b1f57608" title="Decodes a word length pixel block from sh1122 RLE bitmap data." alt="" coords="431,72,572,115"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="378,70,416,76,415,81,377,75"/>
+</map>

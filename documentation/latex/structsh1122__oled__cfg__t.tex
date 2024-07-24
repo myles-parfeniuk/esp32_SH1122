@@ -1,0 +1,139 @@
+\doxysection{sh1122\+\_\+oled\+\_\+cfg\+\_\+t Struct Reference}
+\hypertarget{structsh1122__oled__cfg__t}{}\label{structsh1122__oled__cfg__t}\index{sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}}
+
+
+OLED configuration settings structure passed into \doxylink{class_s_h1122_oled}{SH1122\+Oled} constructor.  
+
+
+
+
+{\ttfamily \#include $<$D\+:/development/esp/projects/idf\+\_\+5\+\_\+2/sh1122\+\_\+component\+\_\+dev\+\_\+2/sh1122\+\_\+component\+\_\+dev/components/esp32\+\_\+\+SH1122/\+SH1122\+Oled.\+hpp$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structsh1122__oled__cfg__t_a5c64762714e1afbf71d1302c30ce2dbf}{sh1122\+\_\+oled\+\_\+cfg\+\_\+t}} ()
+\begin{DoxyCompactList}\small\item\em Default display configuration settings constructor for ESP32. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structsh1122__oled__cfg__t_a50c4c7fd54df4e7148b0370b92304cc6}{sh1122\+\_\+oled\+\_\+cfg\+\_\+t}} (spi\+\_\+host\+\_\+device\+\_\+t \mbox{\hyperlink{structsh1122__oled__cfg__t_af553b54b1bdc449e09a9a4c013c38043}{spi\+\_\+peripheral}}, gpio\+\_\+num\+\_\+t \mbox{\hyperlink{structsh1122__oled__cfg__t_a55e71bed986c9ac9e2296d814955d88e}{io\+\_\+mosi}}, gpio\+\_\+num\+\_\+t \mbox{\hyperlink{structsh1122__oled__cfg__t_a02516a618bc825f76213c8e49db8665c}{io\+\_\+sclk}}, gpio\+\_\+num\+\_\+t \mbox{\hyperlink{structsh1122__oled__cfg__t_a6b699f8bcca49ff085c8d1509dce989f}{io\+\_\+cs}}, gpio\+\_\+num\+\_\+t \mbox{\hyperlink{structsh1122__oled__cfg__t_a18cbedefd08f69cdcc353caafaaee8ee}{io\+\_\+rst}}, gpio\+\_\+num\+\_\+t \mbox{\hyperlink{structsh1122__oled__cfg__t_a035093973cede0ca3a9ad06eb68d243b}{io\+\_\+dc}}, spi\+\_\+dma\+\_\+chan\+\_\+t \mbox{\hyperlink{structsh1122__oled__cfg__t_a7558ad775b551bda58c2f4ce27cd44bb}{dma\+\_\+cha}}=SPI\+\_\+\+DMA\+\_\+\+CH\+\_\+\+AUTO)
+\begin{DoxyCompactList}\small\item\em Overloaded display configuration settings constructor for custom pin settings. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+spi\+\_\+host\+\_\+device\+\_\+t \mbox{\hyperlink{structsh1122__oled__cfg__t_af553b54b1bdc449e09a9a4c013c38043}{spi\+\_\+peripheral}}
+\begin{DoxyCompactList}\small\item\em SPI peripheral/host device to be used. \end{DoxyCompactList}\item 
+gpio\+\_\+num\+\_\+t \mbox{\hyperlink{structsh1122__oled__cfg__t_a55e71bed986c9ac9e2296d814955d88e}{io\+\_\+mosi}}
+\begin{DoxyCompactList}\small\item\em MOSI GPIO pin, connects to display SDA pin. \end{DoxyCompactList}\item 
+gpio\+\_\+num\+\_\+t \mbox{\hyperlink{structsh1122__oled__cfg__t_a02516a618bc825f76213c8e49db8665c}{io\+\_\+sclk}}
+\begin{DoxyCompactList}\small\item\em SCLK GPIO pin, connects to display SCL pin. \end{DoxyCompactList}\item 
+gpio\+\_\+num\+\_\+t \mbox{\hyperlink{structsh1122__oled__cfg__t_a6b699f8bcca49ff085c8d1509dce989f}{io\+\_\+cs}}
+\begin{DoxyCompactList}\small\item\em Chip select GPIO pin, connects to display CS pin. \end{DoxyCompactList}\item 
+gpio\+\_\+num\+\_\+t \mbox{\hyperlink{structsh1122__oled__cfg__t_a18cbedefd08f69cdcc353caafaaee8ee}{io\+\_\+rst}}
+\begin{DoxyCompactList}\small\item\em Reset GPIO pin, connects to display RST pin. \end{DoxyCompactList}\item 
+gpio\+\_\+num\+\_\+t \mbox{\hyperlink{structsh1122__oled__cfg__t_a035093973cede0ca3a9ad06eb68d243b}{io\+\_\+dc}}
+\begin{DoxyCompactList}\small\item\em Data/\+Command GPIO pin, connects to display DC pin. \end{DoxyCompactList}\item 
+spi\+\_\+dma\+\_\+chan\+\_\+t \mbox{\hyperlink{structsh1122__oled__cfg__t_a7558ad775b551bda58c2f4ce27cd44bb}{dma\+\_\+cha}}
+\begin{DoxyCompactList}\small\item\em DMA channel to be used for SPI. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+OLED configuration settings structure passed into \doxylink{class_s_h1122_oled}{SH1122\+Oled} constructor. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{structsh1122__oled__cfg__t_a5c64762714e1afbf71d1302c30ce2dbf}\label{structsh1122__oled__cfg__t_a5c64762714e1afbf71d1302c30ce2dbf} 
+\index{sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}!sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}}
+\index{sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}!sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}}
+\doxysubsubsection{\texorpdfstring{sh1122\_oled\_cfg\_t()}{sh1122\_oled\_cfg\_t()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily sh1122\+\_\+oled\+\_\+cfg\+\_\+t\+::sh1122\+\_\+oled\+\_\+cfg\+\_\+t (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Default display configuration settings constructor for ESP32. 
+
+\Hypertarget{structsh1122__oled__cfg__t_a50c4c7fd54df4e7148b0370b92304cc6}\label{structsh1122__oled__cfg__t_a50c4c7fd54df4e7148b0370b92304cc6} 
+\index{sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}!sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}}
+\index{sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}!sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}}
+\doxysubsubsection{\texorpdfstring{sh1122\_oled\_cfg\_t()}{sh1122\_oled\_cfg\_t()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily sh1122\+\_\+oled\+\_\+cfg\+\_\+t\+::sh1122\+\_\+oled\+\_\+cfg\+\_\+t (\begin{DoxyParamCaption}\item[{spi\+\_\+host\+\_\+device\+\_\+t}]{spi\+\_\+peripheral,  }\item[{gpio\+\_\+num\+\_\+t}]{io\+\_\+mosi,  }\item[{gpio\+\_\+num\+\_\+t}]{io\+\_\+sclk,  }\item[{gpio\+\_\+num\+\_\+t}]{io\+\_\+cs,  }\item[{gpio\+\_\+num\+\_\+t}]{io\+\_\+rst,  }\item[{gpio\+\_\+num\+\_\+t}]{io\+\_\+dc,  }\item[{spi\+\_\+dma\+\_\+chan\+\_\+t}]{dma\+\_\+cha = {\ttfamily SPI\+\_\+DMA\+\_\+CH\+\_\+AUTO} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Overloaded display configuration settings constructor for custom pin settings. 
+
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{structsh1122__oled__cfg__t_a7558ad775b551bda58c2f4ce27cd44bb}\label{structsh1122__oled__cfg__t_a7558ad775b551bda58c2f4ce27cd44bb} 
+\index{sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}!dma\_cha@{dma\_cha}}
+\index{dma\_cha@{dma\_cha}!sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}}
+\doxysubsubsection{\texorpdfstring{dma\_cha}{dma\_cha}}
+{\footnotesize\ttfamily spi\+\_\+dma\+\_\+chan\+\_\+t sh1122\+\_\+oled\+\_\+cfg\+\_\+t\+::dma\+\_\+cha}
+
+
+
+DMA channel to be used for SPI. 
+
+\Hypertarget{structsh1122__oled__cfg__t_a6b699f8bcca49ff085c8d1509dce989f}\label{structsh1122__oled__cfg__t_a6b699f8bcca49ff085c8d1509dce989f} 
+\index{sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}!io\_cs@{io\_cs}}
+\index{io\_cs@{io\_cs}!sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}}
+\doxysubsubsection{\texorpdfstring{io\_cs}{io\_cs}}
+{\footnotesize\ttfamily gpio\+\_\+num\+\_\+t sh1122\+\_\+oled\+\_\+cfg\+\_\+t\+::io\+\_\+cs}
+
+
+
+Chip select GPIO pin, connects to display CS pin. 
+
+\Hypertarget{structsh1122__oled__cfg__t_a035093973cede0ca3a9ad06eb68d243b}\label{structsh1122__oled__cfg__t_a035093973cede0ca3a9ad06eb68d243b} 
+\index{sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}!io\_dc@{io\_dc}}
+\index{io\_dc@{io\_dc}!sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}}
+\doxysubsubsection{\texorpdfstring{io\_dc}{io\_dc}}
+{\footnotesize\ttfamily gpio\+\_\+num\+\_\+t sh1122\+\_\+oled\+\_\+cfg\+\_\+t\+::io\+\_\+dc}
+
+
+
+Data/\+Command GPIO pin, connects to display DC pin. 
+
+\Hypertarget{structsh1122__oled__cfg__t_a55e71bed986c9ac9e2296d814955d88e}\label{structsh1122__oled__cfg__t_a55e71bed986c9ac9e2296d814955d88e} 
+\index{sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}!io\_mosi@{io\_mosi}}
+\index{io\_mosi@{io\_mosi}!sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}}
+\doxysubsubsection{\texorpdfstring{io\_mosi}{io\_mosi}}
+{\footnotesize\ttfamily gpio\+\_\+num\+\_\+t sh1122\+\_\+oled\+\_\+cfg\+\_\+t\+::io\+\_\+mosi}
+
+
+
+MOSI GPIO pin, connects to display SDA pin. 
+
+\Hypertarget{structsh1122__oled__cfg__t_a18cbedefd08f69cdcc353caafaaee8ee}\label{structsh1122__oled__cfg__t_a18cbedefd08f69cdcc353caafaaee8ee} 
+\index{sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}!io\_rst@{io\_rst}}
+\index{io\_rst@{io\_rst}!sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}}
+\doxysubsubsection{\texorpdfstring{io\_rst}{io\_rst}}
+{\footnotesize\ttfamily gpio\+\_\+num\+\_\+t sh1122\+\_\+oled\+\_\+cfg\+\_\+t\+::io\+\_\+rst}
+
+
+
+Reset GPIO pin, connects to display RST pin. 
+
+\Hypertarget{structsh1122__oled__cfg__t_a02516a618bc825f76213c8e49db8665c}\label{structsh1122__oled__cfg__t_a02516a618bc825f76213c8e49db8665c} 
+\index{sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}!io\_sclk@{io\_sclk}}
+\index{io\_sclk@{io\_sclk}!sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}}
+\doxysubsubsection{\texorpdfstring{io\_sclk}{io\_sclk}}
+{\footnotesize\ttfamily gpio\+\_\+num\+\_\+t sh1122\+\_\+oled\+\_\+cfg\+\_\+t\+::io\+\_\+sclk}
+
+
+
+SCLK GPIO pin, connects to display SCL pin. 
+
+\Hypertarget{structsh1122__oled__cfg__t_af553b54b1bdc449e09a9a4c013c38043}\label{structsh1122__oled__cfg__t_af553b54b1bdc449e09a9a4c013c38043} 
+\index{sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}!spi\_peripheral@{spi\_peripheral}}
+\index{spi\_peripheral@{spi\_peripheral}!sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}}
+\doxysubsubsection{\texorpdfstring{spi\_peripheral}{spi\_peripheral}}
+{\footnotesize\ttfamily spi\+\_\+host\+\_\+device\+\_\+t sh1122\+\_\+oled\+\_\+cfg\+\_\+t\+::spi\+\_\+peripheral}
+
+
+
+SPI peripheral/host device to be used. 
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+esp32\+\_\+\+SH1122/\mbox{\hyperlink{_s_h1122_oled_8hpp}{SH1122\+Oled.\+hpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,7 @@
+<map id="SH1122Oled::bitmap_read_byte" name="SH1122Oled::bitmap_read_byte">
+<area shape="rect" id="Node000001" title="Decodes a byte length pixel block from sh1122 RLE bitmap data." alt="" coords="419,5,560,48"/>
+<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#a0d13ae8a730db7045001391a8fe42f29" title="Decodes a single pixel block (an intensity and the amount of pixels it repeats) from sh1122 RLE bitma..." alt="" coords="229,5,371,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="404,29,372,29,372,24,404,24"/>
+<area shape="rect" id="Node000003" href="$class_s_h1122_oled.html#aa8af3daa933bda16bcf067f8db12f78b" title="Draws a sh1122 custom run&#45;length&#45;encoded bitmap created with sh1122_encode_bitmap...." alt="" coords="5,13,181,40"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="213,29,181,29,181,24,213,24"/>
+</map>

@@ -1,0 +1,141 @@
+\doxysection{SH1122\+Oled\+::sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t Struct Reference}
+\hypertarget{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t}{}\label{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t}\index{SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}}
+
+
+Glyph decode information structure, used to contain information about glyphs being decoded and drawn.  
+
+
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+const uint8\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_ac89132faf969500f8b64a3a07772af11}{decode\+\_\+ptr}}
+\begin{DoxyCompactList}\small\item\em Pointer to the glyph data being decoded. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a7a23e855a6ca199b69b3d2c931577946}{bit\+\_\+pos}}
+\begin{DoxyCompactList}\small\item\em Current bit position in decoding/drawing process. \end{DoxyCompactList}\item 
+int8\+\_\+t \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a936e37ad68a9e797b99bbf01956ca16b}{glyph\+\_\+width}}
+\begin{DoxyCompactList}\small\item\em Glyph width. \end{DoxyCompactList}\item 
+int8\+\_\+t \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_adbb6e3d28e17e1b4f8ce0952cee6e6fe}{glyph\+\_\+height}}
+\begin{DoxyCompactList}\small\item\em Glyph height. \end{DoxyCompactList}\item 
+int8\+\_\+t \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a544b0cdda146a01944838b710d0416b7}{x}}
+\begin{DoxyCompactList}\small\item\em Current x position to be drawn at. \end{DoxyCompactList}\item 
+int8\+\_\+t \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_aba0bfe6232b5bb5d4c2322d2730bc943}{y}}
+\begin{DoxyCompactList}\small\item\em Current y position to be drawn at. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_af97a1c2290538086cc098c84b4f401db}{target\+\_\+x}}
+\begin{DoxyCompactList}\small\item\em Target x position of the glyph. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a1e4465efe63ae22ba748a699a661455a}{target\+\_\+y}}
+\begin{DoxyCompactList}\small\item\em Target y position of the glyph. \end{DoxyCompactList}\item 
+int8\+\_\+t \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a23cc69ce9554716233d24106275e97ef}{glyph\+\_\+x\+\_\+offset}}
+\begin{DoxyCompactList}\small\item\em Glyph x offset used for string width calculations only. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a5aabbe7032a4f9258b4c33a9e5a5494e}{fg\+\_\+intensity}}
+\begin{DoxyCompactList}\small\item\em Foreground intensity to draw. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Glyph decode information structure, used to contain information about glyphs being decoded and drawn. 
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a7a23e855a6ca199b69b3d2c931577946}\label{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a7a23e855a6ca199b69b3d2c931577946} 
+\index{SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}!bit\_pos@{bit\_pos}}
+\index{bit\_pos@{bit\_pos}!SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}}
+\doxysubsubsection{\texorpdfstring{bit\_pos}{bit\_pos}}
+{\footnotesize\ttfamily uint8\+\_\+t SH1122\+Oled\+::sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t\+::bit\+\_\+pos}
+
+
+
+Current bit position in decoding/drawing process. 
+
+\Hypertarget{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_ac89132faf969500f8b64a3a07772af11}\label{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_ac89132faf969500f8b64a3a07772af11} 
+\index{SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}!decode\_ptr@{decode\_ptr}}
+\index{decode\_ptr@{decode\_ptr}!SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}}
+\doxysubsubsection{\texorpdfstring{decode\_ptr}{decode\_ptr}}
+{\footnotesize\ttfamily const uint8\+\_\+t\texorpdfstring{$\ast$}{*} SH1122\+Oled\+::sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t\+::decode\+\_\+ptr}
+
+
+
+Pointer to the glyph data being decoded. 
+
+\Hypertarget{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a5aabbe7032a4f9258b4c33a9e5a5494e}\label{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a5aabbe7032a4f9258b4c33a9e5a5494e} 
+\index{SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}!fg\_intensity@{fg\_intensity}}
+\index{fg\_intensity@{fg\_intensity}!SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}}
+\doxysubsubsection{\texorpdfstring{fg\_intensity}{fg\_intensity}}
+{\footnotesize\ttfamily uint8\+\_\+t SH1122\+Oled\+::sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t\+::fg\+\_\+intensity}
+
+
+
+Foreground intensity to draw. 
+
+\Hypertarget{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_adbb6e3d28e17e1b4f8ce0952cee6e6fe}\label{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_adbb6e3d28e17e1b4f8ce0952cee6e6fe} 
+\index{SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}!glyph\_height@{glyph\_height}}
+\index{glyph\_height@{glyph\_height}!SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}}
+\doxysubsubsection{\texorpdfstring{glyph\_height}{glyph\_height}}
+{\footnotesize\ttfamily int8\+\_\+t SH1122\+Oled\+::sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t\+::glyph\+\_\+height}
+
+
+
+Glyph height. 
+
+\Hypertarget{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a936e37ad68a9e797b99bbf01956ca16b}\label{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a936e37ad68a9e797b99bbf01956ca16b} 
+\index{SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}!glyph\_width@{glyph\_width}}
+\index{glyph\_width@{glyph\_width}!SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}}
+\doxysubsubsection{\texorpdfstring{glyph\_width}{glyph\_width}}
+{\footnotesize\ttfamily int8\+\_\+t SH1122\+Oled\+::sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t\+::glyph\+\_\+width}
+
+
+
+Glyph width. 
+
+\Hypertarget{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a23cc69ce9554716233d24106275e97ef}\label{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a23cc69ce9554716233d24106275e97ef} 
+\index{SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}!glyph\_x\_offset@{glyph\_x\_offset}}
+\index{glyph\_x\_offset@{glyph\_x\_offset}!SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}}
+\doxysubsubsection{\texorpdfstring{glyph\_x\_offset}{glyph\_x\_offset}}
+{\footnotesize\ttfamily int8\+\_\+t SH1122\+Oled\+::sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t\+::glyph\+\_\+x\+\_\+offset}
+
+
+
+Glyph x offset used for string width calculations only. 
+
+\Hypertarget{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_af97a1c2290538086cc098c84b4f401db}\label{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_af97a1c2290538086cc098c84b4f401db} 
+\index{SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}!target\_x@{target\_x}}
+\index{target\_x@{target\_x}!SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}}
+\doxysubsubsection{\texorpdfstring{target\_x}{target\_x}}
+{\footnotesize\ttfamily uint16\+\_\+t SH1122\+Oled\+::sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t\+::target\+\_\+x}
+
+
+
+Target x position of the glyph. 
+
+\Hypertarget{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a1e4465efe63ae22ba748a699a661455a}\label{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a1e4465efe63ae22ba748a699a661455a} 
+\index{SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}!target\_y@{target\_y}}
+\index{target\_y@{target\_y}!SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}}
+\doxysubsubsection{\texorpdfstring{target\_y}{target\_y}}
+{\footnotesize\ttfamily uint16\+\_\+t SH1122\+Oled\+::sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t\+::target\+\_\+y}
+
+
+
+Target y position of the glyph. 
+
+\Hypertarget{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a544b0cdda146a01944838b710d0416b7}\label{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a544b0cdda146a01944838b710d0416b7} 
+\index{SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}!x@{x}}
+\index{x@{x}!SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}}
+\doxysubsubsection{\texorpdfstring{x}{x}}
+{\footnotesize\ttfamily int8\+\_\+t SH1122\+Oled\+::sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t\+::x}
+
+
+
+Current x position to be drawn at. 
+
+\Hypertarget{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_aba0bfe6232b5bb5d4c2322d2730bc943}\label{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_aba0bfe6232b5bb5d4c2322d2730bc943} 
+\index{SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}!y@{y}}
+\index{y@{y}!SH1122Oled::sh1122\_oled\_font\_decode\_t@{SH1122Oled::sh1122\_oled\_font\_decode\_t}}
+\doxysubsubsection{\texorpdfstring{y}{y}}
+{\footnotesize\ttfamily int8\+\_\+t SH1122\+Oled\+::sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t\+::y}
+
+
+
+Current y position to be drawn at. 
+
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+esp32\+\_\+\+SH1122/\mbox{\hyperlink{_s_h1122_oled_8hpp}{SH1122\+Oled.\+hpp}}\end{DoxyCompactItemize}

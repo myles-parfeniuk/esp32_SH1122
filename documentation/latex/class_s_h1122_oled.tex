@@ -1,0 +1,2954 @@
+\doxysection{SH1122\+Oled Class Reference}
+\hypertarget{class_s_h1122_oled}{}\label{class_s_h1122_oled}\index{SH1122Oled@{SH1122Oled}}
+
+
+SH1122 OLED driver class.  
+
+
+
+
+{\ttfamily \#include $<$D\+:/development/esp/projects/idf\+\_\+5\+\_\+2/sh1122\+\_\+component\+\_\+dev\+\_\+2/sh1122\+\_\+component\+\_\+dev/components/esp32\+\_\+\+SH1122/\+SH1122\+Oled.\+hpp$>$}
+
+
+
+Collaboration diagram for SH1122\+Oled\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=304pt]{class_s_h1122_oled__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__2d__point__t}{sh1122\+\_\+2d\+\_\+point\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Represents point on OLED screen, used in drawing functions. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t}{sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Glyph decode information structure, used to contain information about glyphs being decoded and drawn. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t}{sh1122\+\_\+oled\+\_\+font\+\_\+info\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Font information structure, used to contain information about the currently loaded font. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum class \mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9}{Font\+Direction}} \{ \mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9a1f8f6a66881ca551a945cf0ab4765dc1}{left\+\_\+to\+\_\+right}}
+, \mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9ad7ea855d3aeb1a739a24e932a7bce30f}{top\+\_\+to\+\_\+bottom}}
+, \mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9a74ecbc5c277e2952aac1ac167699d74c}{right\+\_\+to\+\_\+left}}
+, \mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9ab0bbb8506521265f19fa24cf86c91b9d}{bottom\+\_\+to\+\_\+top}}
+ \}
+\begin{DoxyCompactList}\small\item\em Drawing directions for strings, passed to \doxylink{class_s_h1122_oled_ae1d7a94ff416bc9a558a1fc4c7ff35ec}{set\+\_\+font\+\_\+direction()}. \end{DoxyCompactList}\item 
+enum class \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}} \{ \newline
+\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4ab7bed2dc97436a0501ba5a774443ea64}{level\+\_\+0}}
+, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4ac98a679441798bdb9c194f9ca471e6cd}{level\+\_\+1}}
+, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a4eb5d6bd65ed1b4f5ac431b04a2cac1f}{level\+\_\+2}}
+, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4aee54449478c54a5a5cc4f774e3d4ba34}{level\+\_\+3}}
+, \newline
+\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a49e3c1983311a275fadc1509148f7ff1}{level\+\_\+4}}
+, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4ac4d34107574167d0d7df7edf1169012b}{level\+\_\+5}}
+, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a390f15df565c93c0a56e50b24dc0d5ec}{level\+\_\+6}}
+, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4af62a5fcd32eaea4a780a1e07590044f0}{level\+\_\+7}}
+, \newline
+\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a4644e8641609ebfc6592f54684a0327d}{level\+\_\+8}}
+, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4aba1c19b08f58adf45bdc3b1ec7031cf4}{level\+\_\+9}}
+, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a8e43ab279ebe8f429fcd78d6118a535e}{level\+\_\+10}}
+, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4acbfc013d5dd314f8f19a42c9a6bdea09}{level\+\_\+11}}
+, \newline
+\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4ab947969bfcaa4fbafe6a9baad232c870}{level\+\_\+12}}
+, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a0e2058acb38c1be6aaa88110a6113de1}{level\+\_\+13}}
+, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a284db4add314301df3eb5081e9ae00bf}{level\+\_\+14}}
+, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a823f22afd79716eecd814bcc35a68f00}{level\+\_\+15}}
+, \newline
+\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a30ef25429edb51d4600306155fd454b1}{level\+\_\+transparent}}
+, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a2ffe4e77325d9a7152f7086ea7aa5114}{max}}
+ \}
+\begin{DoxyCompactList}\small\item\em Pixel intensity/grayscale level passed to drawing functions, SH1122 supports 16 different shades. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_s_h1122_oled_a7f420d6b65d23d7f985403bcbb5678c4}{SH1122\+Oled}} (\mbox{\hyperlink{structsh1122__oled__cfg__t}{sh1122\+\_\+oled\+\_\+cfg\+\_\+t}} settings=\mbox{\hyperlink{structsh1122__oled__cfg__t}{sh1122\+\_\+oled\+\_\+cfg\+\_\+t}}())
+\begin{DoxyCompactList}\small\item\em \doxylink{class_s_h1122_oled}{SH1122\+Oled} constructor. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_adc65debb1bc5cfc1d999e26d82a50c11}{update\+\_\+screen}} ()
+\begin{DoxyCompactList}\small\item\em Updates OLED display with current frame buffer. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_ae9c9bf415c7848c01e52596556a3bb6e}{clear\+\_\+buffer}} ()
+\begin{DoxyCompactList}\small\item\em Clears the buffer containing the pixel data sent to SH1122. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_a003791e9b607af20e96a11b9cd074d50}{set\+\_\+pixel}} (uint16\+\_\+t x, uint16\+\_\+t y, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}} intensity)
+\begin{DoxyCompactList}\small\item\em Sets respective pixel to specified grayscale intensity. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_afdc6accc8d7fd602781c66db6e0ce956}{draw\+\_\+line}} (int16\+\_\+t x\+\_\+1, int16\+\_\+t y\+\_\+1, int16\+\_\+t x\+\_\+2, int16\+\_\+t y\+\_\+2, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}} intensity)
+\begin{DoxyCompactList}\small\item\em Draws a line between two points. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_a12600c4d2c22996c87be1446989bf7d0}{draw\+\_\+rectangle\+\_\+frame}} (int16\+\_\+t x\+\_\+1, int16\+\_\+t y\+\_\+1, int16\+\_\+t width, int16\+\_\+t height, int16\+\_\+t thickness, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}} intensity)
+\begin{DoxyCompactList}\small\item\em Draws rectangular frame at the specified location. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_a6102a5313bff0ba8a4725b803309789c}{draw\+\_\+rectangle}} (int16\+\_\+t x\+\_\+1, int16\+\_\+t y\+\_\+1, int16\+\_\+t width, int16\+\_\+t height, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}} intensity)
+\begin{DoxyCompactList}\small\item\em Draws a filled rectangle at the specified location. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_ab260f74fc232167563981e1d10b2b6e0}{draw\+\_\+circle\+\_\+frame}} (int16\+\_\+t x\+\_\+c, int16\+\_\+t y\+\_\+c, int16\+\_\+t r, int16\+\_\+t thickness, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}} intensity)
+\begin{DoxyCompactList}\small\item\em Draws a circular frame at the specified location. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_a159f736ac2228779cd736ec1010d0bfe}{draw\+\_\+circle}} (int16\+\_\+t x\+\_\+c, int16\+\_\+t y\+\_\+c, int16\+\_\+t r, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}} intensity)
+\begin{DoxyCompactList}\small\item\em Draws a filled circle at the specified location. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_a24718f02884b9c6cc40208133eb30950}{draw\+\_\+ellipse\+\_\+frame}} (int16\+\_\+t x\+\_\+c, int16\+\_\+t y\+\_\+c, int16\+\_\+t r\+\_\+x, int16\+\_\+t r\+\_\+y, int16\+\_\+t thickness, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}} intensity)
+\begin{DoxyCompactList}\small\item\em Draws an ellipse frame at the specified location. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_a1da72c1ec0d254373074975aca0bb718}{draw\+\_\+ellipse}} (int16\+\_\+t x\+\_\+c, int16\+\_\+t y\+\_\+c, int16\+\_\+t r\+\_\+x, int16\+\_\+t r\+\_\+y, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}} intensity)
+\begin{DoxyCompactList}\small\item\em Draws a filled ellipse at the specified location. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_ad65919c509de2a2f7dd400213c841387}{draw\+\_\+glyph}} (uint16\+\_\+t x, uint16\+\_\+t y, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}} intensity, uint16\+\_\+t encoding)
+\begin{DoxyCompactList}\small\item\em Draws the selected glyph/character using the currently loaded font. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_afe2872705b72dfb528bd0832a89fc58a}{draw\+\_\+string}} (uint16\+\_\+t x, uint16\+\_\+t y, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}} intensity, const char \texorpdfstring{$\ast$}{*}format,...)
+\begin{DoxyCompactList}\small\item\em Draws a string at the specified location using the currently loaded font. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_aa8af3daa933bda16bcf067f8db12f78b}{draw\+\_\+bitmap}} (uint16\+\_\+t x, uint16\+\_\+t y, const uint8\+\_\+t \texorpdfstring{$\ast$}{*}bitmap, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}} bg\+\_\+intensity=\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a30ef25429edb51d4600306155fd454b1}{Pixel\+Intensity\+::level\+\_\+transparent}})
+\begin{DoxyCompactList}\small\item\em Draws a sh1122 custom run-\/length-\/encoded bitmap created with sh1122\+\_\+encode\+\_\+bitmap.\+py. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_ae1d7a94ff416bc9a558a1fc4c7ff35ec}{set\+\_\+font\+\_\+direction}} (\mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9}{Font\+Direction}} dir)
+\begin{DoxyCompactList}\small\item\em Sets the draw direction for strings and glyphs, default is left to right. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a86155554c86a14a9b89e8c554cecb691}{font\+\_\+get\+\_\+string\+\_\+width}} (const char \texorpdfstring{$\ast$}{*}format,...)
+\begin{DoxyCompactList}\small\item\em Returns the width of specified string using the currently loaded font. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a8322d2ced6b528001c14a6fd695ef1db}{font\+\_\+get\+\_\+string\+\_\+height}} (const char \texorpdfstring{$\ast$}{*}format,...)
+\begin{DoxyCompactList}\small\item\em Returns the height (tallest character height) of specified string using the currently loaded font. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_ab7eefc47c2dc09a37bdb6d8d90982e04}{font\+\_\+get\+\_\+glyph\+\_\+width}} (uint16\+\_\+t encoding)
+\begin{DoxyCompactList}\small\item\em Returns the width of specified glyph using the currently loaded font. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a6ed995d587a6b3d20e3fa082130c35cb}{font\+\_\+get\+\_\+glyph\+\_\+height}} (uint16\+\_\+t encoding)
+\begin{DoxyCompactList}\small\item\em Returns the height of specified glyph using the currently loaded font. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a2e1585db0fd1b9fcb92c561405cbcc72}{font\+\_\+get\+\_\+string\+\_\+center\+\_\+x}} (const char \texorpdfstring{$\ast$}{*}str)
+\begin{DoxyCompactList}\small\item\em Returns the x position required to horizontally center a given string. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a469839045764fccd33cf3483ce1d2447}{font\+\_\+get\+\_\+string\+\_\+center\+\_\+y}} (const char \texorpdfstring{$\ast$}{*}str)
+\begin{DoxyCompactList}\small\item\em Returns the y position required to vertically center a given string. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_a92010fddd147fc64038929dc7b40243c}{take\+\_\+screen\+\_\+shot}} ()
+\begin{DoxyCompactList}\small\item\em Sends frame buffer to sh1122\+\_\+screenshot.\+py to create a screen shot. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_a96b1b46a7c1a22561b855b5aad92457f}{reset}} ()
+\begin{DoxyCompactList}\small\item\em Hard resets the SH1122 using the RST pin. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_ab154cadf1937648d6120898aa3d6bc04}{power\+\_\+off}} ()
+\begin{DoxyCompactList}\small\item\em Sends power off command. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_a3451d7390126f548201a805f5e6abc9d}{power\+\_\+on}} ()
+\begin{DoxyCompactList}\small\item\em Sends power on command. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_aeff5399c17bc82f44742d033739d361c}{set\+\_\+contrast}} (uint8\+\_\+t contrast\+\_\+reg\+\_\+val)
+\begin{DoxyCompactList}\small\item\em Sets the contrast of the display. Display must be powered off before calling. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_ab99bd32e75f8e779bd4d4d36a2ebe9a5}{set\+\_\+multiplex\+\_\+ratio}} (uint8\+\_\+t multiplex\+\_\+ratio\+\_\+reg\+\_\+val)
+\begin{DoxyCompactList}\small\item\em Sets the multiplex ratio of the display. Display must be powered off before calling. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_ac16ce3e20b50763e3df0772a50aa4283}{set\+\_\+dc\+\_\+dc\+\_\+control\+\_\+mod}} (uint8\+\_\+t mod)
+\begin{DoxyCompactList}\small\item\em Sets the DC-\/\+DC voltage converter status and switch frequency. Display must be powered off before calling. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_a7a22357242e851f2a64ea8444f0dc1ca}{set\+\_\+oscillator\+\_\+freq}} (uint8\+\_\+t freq\+\_\+reg\+\_\+val)
+\begin{DoxyCompactList}\small\item\em Sets clock divide ratio/oscillator frequency of internal display clocks. Display must be powered off before calling. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_a50494e4bcd3e1b6d159f5bc019e165e6}{set\+\_\+display\+\_\+offset\+\_\+mod}} (uint8\+\_\+t mod)
+\begin{DoxyCompactList}\small\item\em Sets display offset modifier. Display must be powered off before calling. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_ac83a69bbc79dc3c057179b9d958f6a85}{set\+\_\+precharge\+\_\+period}} (uint8\+\_\+t period\+\_\+reg\+\_\+val)
+\begin{DoxyCompactList}\small\item\em Sets duration of precharge/discharge period of display. Display must be powered off before calling. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_aaa87c3bccddc1da7cebcf8b8db31639c}{set\+\_\+vcom}} (uint8\+\_\+t vcom\+\_\+reg\+\_\+val)
+\begin{DoxyCompactList}\small\item\em Sets common pad output voltage of display at deselect stage. Display must be powered off before calling. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_a29f8aa9893da7d04dfc785bd6781e599}{set\+\_\+vseg}} (uint8\+\_\+t vseg\+\_\+reg\+\_\+val)
+\begin{DoxyCompactList}\small\item\em Sets segment pad output voltage level at precharge stage. Display must be powered off before calling. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_af97ba3a723487a6942b811c36c4c3a52}{set\+\_\+row\+\_\+addr}} (uint8\+\_\+t row\+\_\+addr)
+\begin{DoxyCompactList}\small\item\em Sets the current row address in display internal RAM. Display must be powered off before calling. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_a5f14953bbe4fb051025d0501ec516f69}{set\+\_\+start\+\_\+line}} (uint8\+\_\+t start\+\_\+line)
+\begin{DoxyCompactList}\small\item\em Sets the row address to be used as initial display line/\+COM0. Display must be powered off before calling. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_a9555edfce2feaf0d4e0d61f63c6ae58e}{set\+\_\+vseg\+\_\+discharge\+\_\+level}} (uint8\+\_\+t discharge\+\_\+level)
+\begin{DoxyCompactList}\small\item\em Sets segment output discharge voltage level. Display must be powered off before calling. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_a121a11c25273b6e4cc90513274b6dd04}{set\+\_\+high\+\_\+column\+\_\+address}} (uint8\+\_\+t high\+\_\+column\+\_\+addr)
+\begin{DoxyCompactList}\small\item\em Sets the high column address of display. Display must be powered off before calling. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_af1417429d4dcd4153176af27af55e50a}{set\+\_\+low\+\_\+column\+\_\+address}} (uint8\+\_\+t low\+\_\+column\+\_\+addr)
+\begin{DoxyCompactList}\small\item\em Sets the low column address of display. Display must be powered off before calling. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_ac1fc1026116fad7874e1230efbc10c11}{set\+\_\+inverted\+\_\+intensity}} (bool inverted)
+\begin{DoxyCompactList}\small\item\em Inverts display pixel intensity. Display must be powered off before calling. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_aed0f6a05c8af394bf3688477375dd7c3}{set\+\_\+segment\+\_\+remap}} (bool remapped)
+\begin{DoxyCompactList}\small\item\em Change relationship between RAM column address and segment driver. Display must be powered off before calling. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_a2445641bf8444f5f36e3943ff2f4e576}{set\+\_\+orientation}} (bool flipped)
+\begin{DoxyCompactList}\small\item\em Changes scan direction of display from 0 to N, to N to 0, thus vertically flipping display. Display must be powered off before calling. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{class_s_h1122_oled_ab7bcdc3fa8313f91c05d37570816fb17}{load\+\_\+font}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}font)
+\begin{DoxyCompactList}\small\item\em Loads a font for drawing strings and glyphs. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static const constexpr uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a19a266d7e191a80f5aa3830f061523cd}{WIDTH}} = 256U
+\begin{DoxyCompactList}\small\item\em Display width. \end{DoxyCompactList}\item 
+static const constexpr uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a2262e8942e3aac1dfd2b01220a2fc7d4}{HEIGHT}} = 64U
+\begin{DoxyCompactList}\small\item\em Display height. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct SH1122\+Oled\+::sh1122\+\_\+oled\+\_\+font\+\_\+info\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a3c3d79af886110fb86315a3259b752f8}{sh1122\+\_\+oled\+\_\+font\+\_\+info\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Font information structure, used to contain information about the currently loaded font. \end{DoxyCompactList}\item 
+typedef struct SH1122\+Oled\+::sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_abdb36da48c6c30f11d35686d91dc030c}{sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Glyph decode information structure, used to contain information about glyphs being decoded and drawn. \end{DoxyCompactList}\item 
+typedef struct SH1122\+Oled\+::sh1122\+\_\+2d\+\_\+point\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a70af700c5576f1f8f6e4001b92af9e86}{sh1122\+\_\+2d\+\_\+point\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Represents point on OLED screen, used in drawing functions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{class_s_h1122_oled_aba88d2d86818ead888fd67013092f041}{default\+\_\+init}} ()
+\begin{DoxyCompactList}\small\item\em Sends commands to initialize display for use. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_ac6dfaaa4196a0884e4fb667f7f2074cf}{send\+\_\+commands}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}cmds, uint16\+\_\+t length)
+\begin{DoxyCompactList}\small\item\em Sends commands to SH1122 over SPI. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_afbe7825390dc2b04088519ffeca5b77d}{send\+\_\+data}} (uint8\+\_\+t \texorpdfstring{$\ast$}{*}data, uint16\+\_\+t length)
+\begin{DoxyCompactList}\small\item\em Sends data to SH1122 over SPI. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_aa2a376249df70b0d7371b7848c444def}{fill\+\_\+ellipse\+\_\+frame\+\_\+quadrant}} (std\+::vector$<$ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__2d__point__t}{sh1122\+\_\+2d\+\_\+point\+\_\+t}} $>$ \&outter\+\_\+points, std\+::vector$<$ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__2d__point__t}{sh1122\+\_\+2d\+\_\+point\+\_\+t}} $>$ \&inner\+\_\+points, int16\+\_\+t y\+\_\+c, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}} intensity)
+\begin{DoxyCompactList}\small\item\em Fill quadrants of an ellipse frame. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_aea74a84a1a7c77538cf10acd006fedfa}{get\+\_\+ascii\+\_\+next}} (uint8\+\_\+t b)
+\begin{DoxyCompactList}\small\item\em Checks a passed glyph for EOL conditions. \end{DoxyCompactList}\item 
+const uint8\+\_\+t \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_s_h1122_oled_a08193b37bce29edab80eca0a174a98e3}{font\+\_\+get\+\_\+glyph\+\_\+data}} (uint16\+\_\+t encoding)
+\begin{DoxyCompactList}\small\item\em Returns pointer to glyph data from current font lookup table. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a436c5f84cf50f9f54e0ffde015ca2597}{font\+\_\+get\+\_\+glyph\+\_\+width}} (\mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t}{sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t}} \texorpdfstring{$\ast$}{*}decode, uint16\+\_\+t encoding)
+\begin{DoxyCompactList}\small\item\em Returns the width of specified glyph using the currently loaded font. Overloaded with decode structure for calls to \doxylink{class_s_h1122_oled_a86155554c86a14a9b89e8c554cecb691}{font\+\_\+get\+\_\+string\+\_\+width()} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_aa79b0bc9fe78fbf5005bb196f2be01e5}{font\+\_\+setup\+\_\+glyph\+\_\+decode}} (\mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t}{sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t}} \texorpdfstring{$\ast$}{*}decode, const uint8\+\_\+t \texorpdfstring{$\ast$}{*}glyph\+\_\+data)
+\begin{DoxyCompactList}\small\item\em Sets up glyph decoding structure with values from glyph data for decoding process. \end{DoxyCompactList}\item 
+int8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_aa5e8a8d1e70b5c61c4d15a8adae72c96}{font\+\_\+decode\+\_\+and\+\_\+draw\+\_\+glyph}} (\mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t}{sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t}} \texorpdfstring{$\ast$}{*}decode, const uint8\+\_\+t \texorpdfstring{$\ast$}{*}glyph\+\_\+data)
+\begin{DoxyCompactList}\small\item\em Decodes and draws a single glyph/character. \end{DoxyCompactList}\item 
+uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_af50199e0503a8d4608cd2d798d369f5e}{font\+\_\+decode\+\_\+get\+\_\+unsigned\+\_\+bits}} (\mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t}{sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t}} \texorpdfstring{$\ast$}{*}decode, uint8\+\_\+t cnt)
+\begin{DoxyCompactList}\small\item\em Decodes bit values from font lookup table and returns them as an unsigned integer. \end{DoxyCompactList}\item 
+int8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_af34ec9eab6c67f9b41a67ff83c9dcb1f}{font\+\_\+decode\+\_\+get\+\_\+signed\+\_\+bits}} (\mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t}{sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t}} \texorpdfstring{$\ast$}{*}decode, uint8\+\_\+t cnt)
+\begin{DoxyCompactList}\small\item\em Decodes bit values from font lookup table and returns them as a signed integer. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a61416c2cf61025eec856d9ebe723101c}{font\+\_\+apply\+\_\+direction\+\_\+y}} (uint16\+\_\+t dy, int8\+\_\+t x, int8\+\_\+t y, \mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9}{Font\+Direction}} dir)
+\begin{DoxyCompactList}\small\item\em Apply rotation to y coordinate of lines being drawn for current glyph such that they match passed direction. \end{DoxyCompactList}\item 
+uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a04e6d8b29a6d7be2af038255c2fe0303}{font\+\_\+apply\+\_\+direction\+\_\+x}} (uint16\+\_\+t dx, int8\+\_\+t x, int8\+\_\+t y, \mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9}{Font\+Direction}} dir)
+\begin{DoxyCompactList}\small\item\em Apply rotation to x coordinate of lines being drawn for current glyph such that they match passed direction. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_a82fd42daedda58b4872568f4def4fdc6}{font\+\_\+draw\+\_\+lines}} (\mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t}{sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t}} \texorpdfstring{$\ast$}{*}decode, uint8\+\_\+t len, uint8\+\_\+t is\+\_\+foreground)
+\begin{DoxyCompactList}\small\item\em Draws lines/pixels for glyph being drawn. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_a68b5b4726aafb82116a7f9c6f4fa61f3}{font\+\_\+draw\+\_\+line}} (\mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t}{sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t}} \texorpdfstring{$\ast$}{*}decode, int16\+\_\+t x, int16\+\_\+t y, uint16\+\_\+t length, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}} intensity)
+\begin{DoxyCompactList}\small\item\em Draws a single font line, called from font\+\_\+draw\+\_\+lines. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_a0d13ae8a730db7045001391a8fe42f29}{bitmap\+\_\+decode\+\_\+pixel\+\_\+block}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}data\+\_\+ptr, int16\+\_\+t \&r\+\_\+val\+\_\+lim, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}} \&intensity)
+\begin{DoxyCompactList}\small\item\em Decodes a single pixel block (an intensity and the amount of pixels it repeats) from sh1122 RLE bitmap data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_ae9c2ec8d6c8057fd79c42bf61954b3d6}{bitmap\+\_\+read\+\_\+byte}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}data\+\_\+ptr, int16\+\_\+t \&r\+\_\+val\+\_\+lim, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}} \&intensity)
+\begin{DoxyCompactList}\small\item\em Decodes a byte length pixel block from sh1122 RLE bitmap data. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_s_h1122_oled_a3f8a731bd280d7ed48e4e9f2b1f57608}{bitmap\+\_\+read\+\_\+word}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}data\+\_\+ptr, int16\+\_\+t \&r\+\_\+val\+\_\+lim, \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}} \&intensity)
+\begin{DoxyCompactList}\small\item\em Decodes a word length pixel block from sh1122 RLE bitmap data. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a3474f62559f1422c513f268bd0ef1d0e}{font\+\_\+lookup\+\_\+table\+\_\+read\+\_\+char}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}font, uint8\+\_\+t offset)
+\begin{DoxyCompactList}\small\item\em Reads an 8 bit value from specified font lookup table. \end{DoxyCompactList}\item 
+static uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_af61635f67414cacee544f05623706ef0}{font\+\_\+lookup\+\_\+table\+\_\+read\+\_\+word}} (const uint8\+\_\+t \texorpdfstring{$\ast$}{*}font, uint8\+\_\+t offset)
+\begin{DoxyCompactList}\small\item\em Reads a 16 bit value from specified font lookup table. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+spi\+\_\+bus\+\_\+config\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a8aaa71e256dcebd9e99082eba78923b8}{spi\+\_\+bus\+\_\+cfg}}
+\begin{DoxyCompactList}\small\item\em SPI peripheral config struct. \end{DoxyCompactList}\item 
+spi\+\_\+device\+\_\+interface\+\_\+config\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_aa92164c7db52556e7e16f14d5c16b5f6}{oled\+\_\+interface\+\_\+cfg}}
+\begin{DoxyCompactList}\small\item\em SPI interface struct for SH1122. \end{DoxyCompactList}\item 
+spi\+\_\+device\+\_\+handle\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a23d90d2c3e8ba08c8bc924da308fe9d8}{spi\+\_\+hdl}}
+\begin{DoxyCompactList}\small\item\em Handle to perform SPI transactions with. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{structsh1122__oled__cfg__t}{sh1122\+\_\+oled\+\_\+cfg\+\_\+t}} \mbox{\hyperlink{class_s_h1122_oled_a0d5df271e419f1a5a8df11acb2aa7f73}{oled\+\_\+cfg}}
+\begin{DoxyCompactList}\small\item\em Holds configuration struct passed to constructor, used for GPIO pins and SPI. \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9}{Font\+Direction}} \mbox{\hyperlink{class_s_h1122_oled_a4fb503745866f11f1785305129088203}{font\+\_\+dir}} = \mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9a1f8f6a66881ca551a945cf0ab4765dc1}{SH1122\+Oled\+::\+Font\+Direction\+::left\+\_\+to\+\_\+right}}
+\begin{DoxyCompactList}\small\item\em The currently selected font direction, default is left to right. \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t}{sh1122\+\_\+oled\+\_\+font\+\_\+info\+\_\+t}} \mbox{\hyperlink{class_s_h1122_oled_ad58c7db5f63260d4611cfccae4510c8b}{font\+\_\+info}}
+\begin{DoxyCompactList}\small\item\em Contains information about the currently loaded font. \end{DoxyCompactList}\item 
+static const constexpr uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_afd462082bdd4ad29573d20d5aa5e5d3a}{FRAME\+\_\+\+BUFFER\+\_\+\+LENGTH}} = \mbox{\hyperlink{class_s_h1122_oled_a19a266d7e191a80f5aa3830f061523cd}{WIDTH}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_s_h1122_oled_a2262e8942e3aac1dfd2b01220a2fc7d4}{HEIGHT}} / 2
+\begin{DoxyCompactList}\small\item\em Length of frame buffer being sent over SPI. \end{DoxyCompactList}\item 
+static uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_abee6954ef1412b2596d11711386dc957}{frame\+\_\+buffer}} \mbox{[}\mbox{\hyperlink{class_s_h1122_oled_afd462082bdd4ad29573d20d5aa5e5d3a}{FRAME\+\_\+\+BUFFER\+\_\+\+LENGTH}}\mbox{]}
+\begin{DoxyCompactList}\small\item\em Frame buffer to contain pixel data being sent over SPI. \end{DoxyCompactList}\item 
+static const constexpr uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_ad3beec9ffecbef962900d51811dd6497}{FRAME\+\_\+\+CHUNK\+\_\+1\+\_\+\+LENGTH}}
+\begin{DoxyCompactList}\small\item\em Length of first frame chunk being sent over SPI (frame buffer length exceeds esp-\/idf\textquotesingle{}s SPI max transfer sz) \end{DoxyCompactList}\item 
+static const constexpr uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a5346d620aa6154288c2fd501671dedc8}{FRAME\+\_\+\+CHUNK\+\_\+2\+\_\+\+LENGTH}}
+\begin{DoxyCompactList}\small\item\em Length of second frame chunk being sent over SPI (frame buffer length exceeds esp-\/idf\textquotesingle{}s SPI max transfer sz) \end{DoxyCompactList}\item 
+static const constexpr uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a6dec7aad7d1c51d1f8e6706e2f5a6aa9}{FRAME\+\_\+\+CHUNK\+\_\+3\+\_\+\+LENGTH}}
+\begin{DoxyCompactList}\small\item\em Length of third frame chunk being sent over SPI (frame buffer length exceeds esp-\/idf\textquotesingle{}s SPI max transfer sz) \end{DoxyCompactList}\item 
+static const constexpr uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a902b63747363fe1ab33c529602e420b8}{FRAME\+\_\+\+CHUNK\+\_\+\+LENGTHS}} \mbox{[}3\mbox{]}
+\begin{DoxyCompactList}\small\item\em Length of frame chunks being sent over SPI (frame buffer length exceeds esp-\/idf\textquotesingle{}s SPI max transfer sz) \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_aeefac42005c9109aed9106154da435d6}{BITMAP\+\_\+\+DECODE\+\_\+\+WORD\+\_\+\+FLG\+\_\+\+BIT}} = BIT7
+\begin{DoxyCompactList}\small\item\em Indicates word length pixel block. \end{DoxyCompactList}\item 
+static const constexpr uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a012f800031e09a22e78a893b0714aaac}{BITMAP\+\_\+\+DECODE\+\_\+\+R\+\_\+\+VAL\+\_\+\+LOW\+\_\+\+BIT\+\_\+\+POS}} = 5
+\begin{DoxyCompactList}\small\item\em Shift for lower repeated value bits. \end{DoxyCompactList}\item 
+static const constexpr uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a71d34a2f0329c74df4c47c6e63f4f43b}{BITMAP\+\_\+\+DECODE\+\_\+\+R\+\_\+\+VAL\+\_\+\+LOW\+\_\+\+MASK}}
+\begin{DoxyCompactList}\small\item\em Mask for isolating the 3 lsbs of repeated value count with word length pixel block. \end{DoxyCompactList}\item 
+static const constexpr uint16\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_aa8c21f166a3287affe10d3eee7c40e27}{BITMAP\+\_\+\+DECODE\+\_\+\+R\+\_\+\+VAL\+\_\+\+B\+\_\+\+MASK}}
+\begin{DoxyCompactList}\small\item\em Mask for isolating repeated value count with byte length pixel block. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a3ecc1f97866aafeaa6f5d4d234632d69}{BITMAP\+\_\+\+DECODE\+\_\+\+PIXEL\+\_\+\+INTENSITY\+\_\+\+MASK}}
+\begin{DoxyCompactList}\small\item\em Mask for isolating grayscale intensity value. \end{DoxyCompactList}\item 
+static const constexpr uint64\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_aefff5f5f6dc7e25b86b8ed4661fc6c33}{SPI\+\_\+\+CLK\+\_\+\+SPEED\+\_\+\+HZ}} = 4000000\+ULL
+\begin{DoxyCompactList}\small\item\em Serial clockspeed of SPI transactions. \end{DoxyCompactList}\item 
+static const constexpr uint64\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a24b3de23489ca7f901e00cf7197134c1}{SPI\+\_\+\+TRANS\+\_\+\+TIMEOUT\+\_\+\+MS}} = 10\+ULL
+\begin{DoxyCompactList}\small\item\em Timeout for SPI transactions. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a2964b2a282a8d6a2cba6d2cdf2e234e1}{SPI\+\_\+\+INTERRUPT\+\_\+\+MODE\+\_\+\+QUEUE\+\_\+\+SIZE}} = 1
+\begin{DoxyCompactList}\small\item\em Maximum amount of queued SPI transactions. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a1c124bd3383f372bf6b8c7b2d5f89643}{OLED\+\_\+\+CMD\+\_\+\+POWER\+\_\+\+ON}} = 0x\+AF
+\begin{DoxyCompactList}\small\item\em Power on command. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_aca3d70952aae528ab2619c12e766eff4}{OLED\+\_\+\+CMD\+\_\+\+POWER\+\_\+\+OFF}} = 0x\+AE
+\begin{DoxyCompactList}\small\item\em Power off command. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_ac17fd82e0721177f795f9517ebdacb55}{OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+ROW\+\_\+\+ADDR}} = 0x\+B0
+\begin{DoxyCompactList}\small\item\em Set row address command. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a405304572afe85841b7ca9e866f5dc46}{OLED\+\_\+\+CMD\+\_\+\+SCAN\+\_\+0\+\_\+\+TO\+\_\+N}} = 0x\+C0
+\begin{DoxyCompactList}\small\item\em Scan from bottom to top command. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a5d3d96475512d084e8bf3cf7e2aded3c}{OLED\+\_\+\+CMD\+\_\+\+SCAN\+\_\+\+N\+\_\+\+TO\+\_\+0}} = 0x\+C8
+\begin{DoxyCompactList}\small\item\em Scan from top to bottom command. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a9bdbfba1d14f4bb8e2dc9895b86dce8f}{OLED\+\_\+\+CMD\+\_\+\+NORM\+\_\+\+SEG\+\_\+\+MAP}} = 0x\+A0
+\begin{DoxyCompactList}\small\item\em Regular segment driver output pad assignment command. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a371303be5a154299a6c68d457e9ef84d}{OLED\+\_\+\+CMD\+\_\+\+REV\+\_\+\+SEG\+\_\+\+MAP}} = 0x\+A1
+\begin{DoxyCompactList}\small\item\em Reversed segment driver output pads assignment command. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a14a5f7919b7bd8557214b7d52cbed0c6}{OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+MULTIPLEX\+\_\+\+RATION}} = 0x\+A8
+\begin{DoxyCompactList}\small\item\em Multiplex ratio set command. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_aada79481bc61abadb5ef7583547907e3}{OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+DC\+\_\+\+DC\+\_\+\+CONTROL\+\_\+\+MOD}}
+\begin{DoxyCompactList}\small\item\em Set onboard oled DC-\/\+DC voltage converter status and switch frequency command. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_afe27cc5858383bdb9db3a33908a0c9ae}{OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+OSCILLATOR\+\_\+\+FREQ}} = 0x\+D5
+\begin{DoxyCompactList}\small\item\em Set display clock frequency command. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a3bd058540cc75517a669c3d879b9e2bc}{OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+DISP\+\_\+\+START\+\_\+\+LINE}} = 0x40
+\begin{DoxyCompactList}\small\item\em Set display starting row address command. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_ad5786ef911ff07670eb8cd1e71f26b95}{OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+DISP\+\_\+\+CONTRAST}} = 0x81
+\begin{DoxyCompactList}\small\item\em Set display contrast command. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_ae56af72f473123f999a94bc06009340d}{OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+DISP\+\_\+\+OFFSET\+\_\+\+MOD}} = 0x\+D3
+\begin{DoxyCompactList}\small\item\em Set display offset command. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a97817cc6d38374b164784b61fd1bd04c}{OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+PRE\+\_\+\+CHARGE\+\_\+\+PERIOD}} = 0x\+D9
+\begin{DoxyCompactList}\small\item\em Set precharge period command. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_aecc270914ae7872e0167b162f183776e}{OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+VCOM}} = 0x\+DB
+\begin{DoxyCompactList}\small\item\em Set common pad output voltage at deselect command. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_aee2702c845eedc85afb91116eeb2e362}{OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+VSEG}} = 0x\+DC
+\begin{DoxyCompactList}\small\item\em Set segment pad output voltage at precharge stage. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a993475a6e62043c8248ed296fac2e98a}{OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+DISCHARGE\+\_\+\+LEVEL}} = 0x30
+\begin{DoxyCompactList}\small\item\em Set segment output discharge voltage level command. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_ab5333e4f1fbd97f95120a4f413c78e18}{OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+NORMAL\+\_\+\+DISPLAY}} = 0x\+A6
+\begin{DoxyCompactList}\small\item\em Set non inverted pixel intensity command. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a5514cdcbf77f0f9f54a0be622e9e3ce2}{OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+INV\+\_\+\+DISPLAY}} = 0x\+A7
+\begin{DoxyCompactList}\small\item\em Set inverted pixel intensity command. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a83f3cd54480f03fb4d3bc30118db0e57}{OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+HIGH\+\_\+\+COLUMN\+\_\+\+ADDR}} = 0x10
+\begin{DoxyCompactList}\small\item\em Set high column address command. \end{DoxyCompactList}\item 
+static const constexpr uint8\+\_\+t \mbox{\hyperlink{class_s_h1122_oled_a06838f47f318807fb74aedc756d4ecf4}{OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+LOW\+\_\+\+COLUMN\+\_\+\+ADDR}} = 0x00
+\begin{DoxyCompactList}\small\item\em Set low column address command. \end{DoxyCompactList}\item 
+static const constexpr char \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_s_h1122_oled_af39205d189bbc123188e770af948aeec}{TAG}} = "{}SH1122\+Oled"{}
+\begin{DoxyCompactList}\small\item\em Class tag, used in debug statements. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+SH1122 OLED driver class. 
+
+Controls an SH1122 driven OLED display interfaced via SPI. Contains methods to draw to the display and modify its settings.
+
+\begin{DoxyAuthor}{Author}
+Myles Parfeniuk 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Member Typedef Documentation}
+\Hypertarget{class_s_h1122_oled_a70af700c5576f1f8f6e4001b92af9e86}\label{class_s_h1122_oled_a70af700c5576f1f8f6e4001b92af9e86} 
+\index{SH1122Oled@{SH1122Oled}!sh1122\_2d\_point\_t@{sh1122\_2d\_point\_t}}
+\index{sh1122\_2d\_point\_t@{sh1122\_2d\_point\_t}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{sh1122\_2d\_point\_t}{sh1122\_2d\_point\_t}}
+{\footnotesize\ttfamily typedef struct SH1122\+Oled\+::sh1122\+\_\+2d\+\_\+point\+\_\+t SH1122\+Oled\+::sh1122\+\_\+2d\+\_\+point\+\_\+t\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Represents point on OLED screen, used in drawing functions. 
+
+\Hypertarget{class_s_h1122_oled_abdb36da48c6c30f11d35686d91dc030c}\label{class_s_h1122_oled_abdb36da48c6c30f11d35686d91dc030c} 
+\index{SH1122Oled@{SH1122Oled}!sh1122\_oled\_font\_decode\_t@{sh1122\_oled\_font\_decode\_t}}
+\index{sh1122\_oled\_font\_decode\_t@{sh1122\_oled\_font\_decode\_t}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{sh1122\_oled\_font\_decode\_t}{sh1122\_oled\_font\_decode\_t}}
+{\footnotesize\ttfamily typedef struct SH1122\+Oled\+::sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t SH1122\+Oled\+::sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Glyph decode information structure, used to contain information about glyphs being decoded and drawn. 
+
+\Hypertarget{class_s_h1122_oled_a3c3d79af886110fb86315a3259b752f8}\label{class_s_h1122_oled_a3c3d79af886110fb86315a3259b752f8} 
+\index{SH1122Oled@{SH1122Oled}!sh1122\_oled\_font\_info\_t@{sh1122\_oled\_font\_info\_t}}
+\index{sh1122\_oled\_font\_info\_t@{sh1122\_oled\_font\_info\_t}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{sh1122\_oled\_font\_info\_t}{sh1122\_oled\_font\_info\_t}}
+{\footnotesize\ttfamily typedef struct SH1122\+Oled\+::sh1122\+\_\+oled\+\_\+font\+\_\+info\+\_\+t SH1122\+Oled\+::sh1122\+\_\+oled\+\_\+font\+\_\+info\+\_\+t\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Font information structure, used to contain information about the currently loaded font. 
+
+
+
+\doxysubsection{Member Enumeration Documentation}
+\Hypertarget{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9}\label{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9} 
+\index{SH1122Oled@{SH1122Oled}!FontDirection@{FontDirection}}
+\index{FontDirection@{FontDirection}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{FontDirection}{FontDirection}}
+{\footnotesize\ttfamily enum class \mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9}{SH1122\+Oled\+::\+Font\+Direction}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Drawing directions for strings, passed to \doxylink{class_s_h1122_oled_ae1d7a94ff416bc9a558a1fc4c7ff35ec}{set\+\_\+font\+\_\+direction()}. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{left\_to\_right@{left\_to\_right}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!left\_to\_right@{left\_to\_right}}}\Hypertarget{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9a1f8f6a66881ca551a945cf0ab4765dc1}\label{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9a1f8f6a66881ca551a945cf0ab4765dc1} 
+left\+\_\+to\+\_\+right&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{top\_to\_bottom@{top\_to\_bottom}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!top\_to\_bottom@{top\_to\_bottom}}}\Hypertarget{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9ad7ea855d3aeb1a739a24e932a7bce30f}\label{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9ad7ea855d3aeb1a739a24e932a7bce30f} 
+top\+\_\+to\+\_\+bottom&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{right\_to\_left@{right\_to\_left}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!right\_to\_left@{right\_to\_left}}}\Hypertarget{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9a74ecbc5c277e2952aac1ac167699d74c}\label{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9a74ecbc5c277e2952aac1ac167699d74c} 
+right\+\_\+to\+\_\+left&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{bottom\_to\_top@{bottom\_to\_top}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!bottom\_to\_top@{bottom\_to\_top}}}\Hypertarget{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9ab0bbb8506521265f19fa24cf86c91b9d}\label{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9ab0bbb8506521265f19fa24cf86c91b9d} 
+bottom\+\_\+to\+\_\+top&\\
+\hline
+
+\end{DoxyEnumFields}
+\Hypertarget{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}\label{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4} 
+\index{SH1122Oled@{SH1122Oled}!PixelIntensity@{PixelIntensity}}
+\index{PixelIntensity@{PixelIntensity}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{PixelIntensity}{PixelIntensity}}
+{\footnotesize\ttfamily enum class \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{SH1122\+Oled\+::\+Pixel\+Intensity}}\hspace{0.3cm}{\ttfamily [strong]}}
+
+
+
+Pixel intensity/grayscale level passed to drawing functions, SH1122 supports 16 different shades. 
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{level\_0@{level\_0}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!level\_0@{level\_0}}}\Hypertarget{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4ab7bed2dc97436a0501ba5a774443ea64}\label{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4ab7bed2dc97436a0501ba5a774443ea64} 
+level\+\_\+0&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{level\_1@{level\_1}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!level\_1@{level\_1}}}\Hypertarget{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4ac98a679441798bdb9c194f9ca471e6cd}\label{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4ac98a679441798bdb9c194f9ca471e6cd} 
+level\+\_\+1&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{level\_2@{level\_2}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!level\_2@{level\_2}}}\Hypertarget{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a4eb5d6bd65ed1b4f5ac431b04a2cac1f}\label{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a4eb5d6bd65ed1b4f5ac431b04a2cac1f} 
+level\+\_\+2&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{level\_3@{level\_3}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!level\_3@{level\_3}}}\Hypertarget{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4aee54449478c54a5a5cc4f774e3d4ba34}\label{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4aee54449478c54a5a5cc4f774e3d4ba34} 
+level\+\_\+3&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{level\_4@{level\_4}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!level\_4@{level\_4}}}\Hypertarget{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a49e3c1983311a275fadc1509148f7ff1}\label{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a49e3c1983311a275fadc1509148f7ff1} 
+level\+\_\+4&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{level\_5@{level\_5}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!level\_5@{level\_5}}}\Hypertarget{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4ac4d34107574167d0d7df7edf1169012b}\label{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4ac4d34107574167d0d7df7edf1169012b} 
+level\+\_\+5&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{level\_6@{level\_6}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!level\_6@{level\_6}}}\Hypertarget{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a390f15df565c93c0a56e50b24dc0d5ec}\label{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a390f15df565c93c0a56e50b24dc0d5ec} 
+level\+\_\+6&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{level\_7@{level\_7}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!level\_7@{level\_7}}}\Hypertarget{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4af62a5fcd32eaea4a780a1e07590044f0}\label{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4af62a5fcd32eaea4a780a1e07590044f0} 
+level\+\_\+7&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{level\_8@{level\_8}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!level\_8@{level\_8}}}\Hypertarget{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a4644e8641609ebfc6592f54684a0327d}\label{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a4644e8641609ebfc6592f54684a0327d} 
+level\+\_\+8&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{level\_9@{level\_9}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!level\_9@{level\_9}}}\Hypertarget{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4aba1c19b08f58adf45bdc3b1ec7031cf4}\label{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4aba1c19b08f58adf45bdc3b1ec7031cf4} 
+level\+\_\+9&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{level\_10@{level\_10}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!level\_10@{level\_10}}}\Hypertarget{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a8e43ab279ebe8f429fcd78d6118a535e}\label{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a8e43ab279ebe8f429fcd78d6118a535e} 
+level\+\_\+10&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{level\_11@{level\_11}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!level\_11@{level\_11}}}\Hypertarget{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4acbfc013d5dd314f8f19a42c9a6bdea09}\label{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4acbfc013d5dd314f8f19a42c9a6bdea09} 
+level\+\_\+11&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{level\_12@{level\_12}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!level\_12@{level\_12}}}\Hypertarget{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4ab947969bfcaa4fbafe6a9baad232c870}\label{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4ab947969bfcaa4fbafe6a9baad232c870} 
+level\+\_\+12&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{level\_13@{level\_13}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!level\_13@{level\_13}}}\Hypertarget{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a0e2058acb38c1be6aaa88110a6113de1}\label{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a0e2058acb38c1be6aaa88110a6113de1} 
+level\+\_\+13&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{level\_14@{level\_14}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!level\_14@{level\_14}}}\Hypertarget{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a284db4add314301df3eb5081e9ae00bf}\label{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a284db4add314301df3eb5081e9ae00bf} 
+level\+\_\+14&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{level\_15@{level\_15}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!level\_15@{level\_15}}}\Hypertarget{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a823f22afd79716eecd814bcc35a68f00}\label{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a823f22afd79716eecd814bcc35a68f00} 
+level\+\_\+15&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{level\_transparent@{level\_transparent}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!level\_transparent@{level\_transparent}}}\Hypertarget{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a30ef25429edb51d4600306155fd454b1}\label{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a30ef25429edb51d4600306155fd454b1} 
+level\+\_\+transparent&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{max@{max}!SH1122Oled@{SH1122Oled}}\index{SH1122Oled@{SH1122Oled}!max@{max}}}\Hypertarget{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a2ffe4e77325d9a7152f7086ea7aa5114}\label{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a2ffe4e77325d9a7152f7086ea7aa5114} 
+max&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_s_h1122_oled_a7f420d6b65d23d7f985403bcbb5678c4}\label{class_s_h1122_oled_a7f420d6b65d23d7f985403bcbb5678c4} 
+\index{SH1122Oled@{SH1122Oled}!SH1122Oled@{SH1122Oled}}
+\index{SH1122Oled@{SH1122Oled}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{SH1122Oled()}{SH1122Oled()}}
+{\footnotesize\ttfamily SH1122\+Oled\+::\+SH1122\+Oled (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structsh1122__oled__cfg__t}{sh1122\+\_\+oled\+\_\+cfg\+\_\+t}}}]{settings = {\ttfamily \mbox{\hyperlink{structsh1122__oled__cfg__t}{sh1122\+\_\+oled\+\_\+cfg\+\_\+t}}()} }\end{DoxyParamCaption})}
+
+
+
+\doxylink{class_s_h1122_oled}{SH1122\+Oled} constructor. 
+
+Construct a \doxylink{class_s_h1122_oled}{SH1122\+Oled} object for managing a \doxylink{class_s_h1122_oled}{SH1122\+Oled} driven OLED display. Initializes required GPIO pins and SPI peripheral then sends out several commands to initialize SH1122. Commands can be seen in \doxylink{class_s_h1122_oled_aba88d2d86818ead888fd67013092f041}{default\+\_\+init()}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em oled\+\_\+cfg} & Configuration settings (optional), default settings can be seen in \doxylink{structsh1122__oled__cfg__t}{sh1122\+\_\+oled\+\_\+cfg\+\_\+t} and are selectable. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a7f420d6b65d23d7f985403bcbb5678c4_cgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_s_h1122_oled_a0d13ae8a730db7045001391a8fe42f29}\label{class_s_h1122_oled_a0d13ae8a730db7045001391a8fe42f29} 
+\index{SH1122Oled@{SH1122Oled}!bitmap\_decode\_pixel\_block@{bitmap\_decode\_pixel\_block}}
+\index{bitmap\_decode\_pixel\_block@{bitmap\_decode\_pixel\_block}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{bitmap\_decode\_pixel\_block()}{bitmap\_decode\_pixel\_block()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::bitmap\+\_\+decode\+\_\+pixel\+\_\+block (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{data\+\_\+ptr,  }\item[{int16\+\_\+t \&}]{r\+\_\+val\+\_\+lim,  }\item[{\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}} \&}]{intensity }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Decodes a single pixel block (an intensity and the amount of pixels it repeats) from sh1122 RLE bitmap data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data\+\_\+ptr} & Pointer to current pixel block in bitmap data. Incremented after read is completed to next pixel block. \\
+\hline
+{\em r\+\_\+val\+\_\+lim} & Repeated value limit returned from data, total amount of pixels returned intensity repeats for. \\
+\hline
+{\em intensity} & Grayscale intensity value returned from data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=329pt]{class_s_h1122_oled_a0d13ae8a730db7045001391a8fe42f29_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a0d13ae8a730db7045001391a8fe42f29_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_ae9c2ec8d6c8057fd79c42bf61954b3d6}\label{class_s_h1122_oled_ae9c2ec8d6c8057fd79c42bf61954b3d6} 
+\index{SH1122Oled@{SH1122Oled}!bitmap\_read\_byte@{bitmap\_read\_byte}}
+\index{bitmap\_read\_byte@{bitmap\_read\_byte}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{bitmap\_read\_byte()}{bitmap\_read\_byte()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::bitmap\+\_\+read\+\_\+byte (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{data\+\_\+ptr,  }\item[{int16\+\_\+t \&}]{r\+\_\+val\+\_\+lim,  }\item[{\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}} \&}]{intensity }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Decodes a byte length pixel block from sh1122 RLE bitmap data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data\+\_\+ptr} & Pointer to current pixel block in bitmap data. Incremented by 1 after read is completed to next pixel block. \\
+\hline
+{\em r\+\_\+val\+\_\+lim} & Repeated value limit returned from data, total amount of pixels returned intensity repeats for. \\
+\hline
+{\em intensity} & Grayscale intensity value returned from data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_ae9c2ec8d6c8057fd79c42bf61954b3d6_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a3f8a731bd280d7ed48e4e9f2b1f57608}\label{class_s_h1122_oled_a3f8a731bd280d7ed48e4e9f2b1f57608} 
+\index{SH1122Oled@{SH1122Oled}!bitmap\_read\_word@{bitmap\_read\_word}}
+\index{bitmap\_read\_word@{bitmap\_read\_word}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{bitmap\_read\_word()}{bitmap\_read\_word()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::bitmap\+\_\+read\+\_\+word (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}\texorpdfstring{$\ast$}{*}}]{data\+\_\+ptr,  }\item[{int16\+\_\+t \&}]{r\+\_\+val\+\_\+lim,  }\item[{\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}} \&}]{intensity }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Decodes a word length pixel block from sh1122 RLE bitmap data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em data\+\_\+ptr} & Pointer to current pixel block in bitmap data. Incremented by 2 after read is completed to next pixel block. \\
+\hline
+{\em r\+\_\+val\+\_\+lim} & Repeated value limit returned from data, total amount of pixels returned intensity repeats for. \\
+\hline
+{\em intensity} & Grayscale intensity value returned from data. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a3f8a731bd280d7ed48e4e9f2b1f57608_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_ae9c9bf415c7848c01e52596556a3bb6e}\label{class_s_h1122_oled_ae9c9bf415c7848c01e52596556a3bb6e} 
+\index{SH1122Oled@{SH1122Oled}!clear\_buffer@{clear\_buffer}}
+\index{clear\_buffer@{clear\_buffer}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{clear\_buffer()}{clear\_buffer()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::clear\+\_\+buffer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Clears the buffer containing the pixel data sent to SH1122. 
+
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_ae9c9bf415c7848c01e52596556a3bb6e_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_aba88d2d86818ead888fd67013092f041}\label{class_s_h1122_oled_aba88d2d86818ead888fd67013092f041} 
+\index{SH1122Oled@{SH1122Oled}!default\_init@{default\_init}}
+\index{default\_init@{default\_init}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{default\_init()}{default\_init()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::default\+\_\+init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Sends commands to initialize display for use. 
+
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{class_s_h1122_oled_aba88d2d86818ead888fd67013092f041_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_aba88d2d86818ead888fd67013092f041_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_aa8af3daa933bda16bcf067f8db12f78b}\label{class_s_h1122_oled_aa8af3daa933bda16bcf067f8db12f78b} 
+\index{SH1122Oled@{SH1122Oled}!draw\_bitmap@{draw\_bitmap}}
+\index{draw\_bitmap@{draw\_bitmap}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{draw\_bitmap()}{draw\_bitmap()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::draw\+\_\+bitmap (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{x,  }\item[{uint16\+\_\+t}]{y,  }\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{bitmap,  }\item[{\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}}}]{bg\+\_\+intensity = {\ttfamily \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a30ef25429edb51d4600306155fd454b1}{Pixel\+Intensity\+::level\+\_\+transparent}}} }\end{DoxyParamCaption})}
+
+
+
+Draws a sh1122 custom run-\/length-\/encoded bitmap created with sh1122\+\_\+encode\+\_\+bitmap.\+py. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & Bitmap x location (upper left corner of bitmap) \\
+\hline
+{\em y} & Bitmap y location (upper left corner of bitmap) \\
+\hline
+{\em bg\+\_\+intensity} & Background intensity (optional, default transparent), fills transparent pixels with bg\+\_\+intensity if used \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_aa8af3daa933bda16bcf067f8db12f78b_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a159f736ac2228779cd736ec1010d0bfe}\label{class_s_h1122_oled_a159f736ac2228779cd736ec1010d0bfe} 
+\index{SH1122Oled@{SH1122Oled}!draw\_circle@{draw\_circle}}
+\index{draw\_circle@{draw\_circle}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{draw\_circle()}{draw\_circle()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::draw\+\_\+circle (\begin{DoxyParamCaption}\item[{int16\+\_\+t}]{x\+\_\+c,  }\item[{int16\+\_\+t}]{y\+\_\+c,  }\item[{int16\+\_\+t}]{r,  }\item[{\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}}}]{intensity }\end{DoxyParamCaption})}
+
+
+
+Draws a filled circle at the specified location. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x\+\_\+c} & Circle center x position. \\
+\hline
+{\em y\+\_\+c} & Circle center y position. \\
+\hline
+{\em r} & Circle radius. \\
+\hline
+{\em intensity} & Grayscale intensity of the drawn circle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a159f736ac2228779cd736ec1010d0bfe_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_ab260f74fc232167563981e1d10b2b6e0}\label{class_s_h1122_oled_ab260f74fc232167563981e1d10b2b6e0} 
+\index{SH1122Oled@{SH1122Oled}!draw\_circle\_frame@{draw\_circle\_frame}}
+\index{draw\_circle\_frame@{draw\_circle\_frame}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{draw\_circle\_frame()}{draw\_circle\_frame()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::draw\+\_\+circle\+\_\+frame (\begin{DoxyParamCaption}\item[{int16\+\_\+t}]{x\+\_\+c,  }\item[{int16\+\_\+t}]{y\+\_\+c,  }\item[{int16\+\_\+t}]{r,  }\item[{int16\+\_\+t}]{thickness,  }\item[{\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}}}]{intensity }\end{DoxyParamCaption})}
+
+
+
+Draws a circular frame at the specified location. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x\+\_\+c} & Circle center x position. \\
+\hline
+{\em y\+\_\+c} & Circle center y position. \\
+\hline
+{\em r} & Circle radius. \\
+\hline
+{\em thickness} & Frame thickness (drawn towards center of circle) \\
+\hline
+{\em intensity} & Grayscale intensity of the drawn circle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_ab260f74fc232167563981e1d10b2b6e0_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_ab260f74fc232167563981e1d10b2b6e0_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a1da72c1ec0d254373074975aca0bb718}\label{class_s_h1122_oled_a1da72c1ec0d254373074975aca0bb718} 
+\index{SH1122Oled@{SH1122Oled}!draw\_ellipse@{draw\_ellipse}}
+\index{draw\_ellipse@{draw\_ellipse}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{draw\_ellipse()}{draw\_ellipse()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::draw\+\_\+ellipse (\begin{DoxyParamCaption}\item[{int16\+\_\+t}]{x\+\_\+c,  }\item[{int16\+\_\+t}]{y\+\_\+c,  }\item[{int16\+\_\+t}]{r\+\_\+x,  }\item[{int16\+\_\+t}]{r\+\_\+y,  }\item[{\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}}}]{intensity }\end{DoxyParamCaption})}
+
+
+
+Draws a filled ellipse at the specified location. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x\+\_\+c} & Ellipse center x position. \\
+\hline
+{\em y\+\_\+c} & Ellipse center y position. \\
+\hline
+{\em r\+\_\+x} & Horizontal radius (ellipse parameter a) \\
+\hline
+{\em r\+\_\+y} & Vertical radius (ellipse parameter b) \\
+\hline
+{\em intensity} & Grayscale intensity of the drawn ellipse. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a1da72c1ec0d254373074975aca0bb718_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a24718f02884b9c6cc40208133eb30950}\label{class_s_h1122_oled_a24718f02884b9c6cc40208133eb30950} 
+\index{SH1122Oled@{SH1122Oled}!draw\_ellipse\_frame@{draw\_ellipse\_frame}}
+\index{draw\_ellipse\_frame@{draw\_ellipse\_frame}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{draw\_ellipse\_frame()}{draw\_ellipse\_frame()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::draw\+\_\+ellipse\+\_\+frame (\begin{DoxyParamCaption}\item[{int16\+\_\+t}]{x\+\_\+c,  }\item[{int16\+\_\+t}]{y\+\_\+c,  }\item[{int16\+\_\+t}]{r\+\_\+x,  }\item[{int16\+\_\+t}]{r\+\_\+y,  }\item[{int16\+\_\+t}]{thickness,  }\item[{\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}}}]{intensity }\end{DoxyParamCaption})}
+
+
+
+Draws an ellipse frame at the specified location. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x\+\_\+c} & Ellipse center x position. \\
+\hline
+{\em y\+\_\+c} & Ellipse center y position. \\
+\hline
+{\em r\+\_\+x} & Horizontal radius (ellipse parameter a) \\
+\hline
+{\em r\+\_\+y} & Vertical radius (ellipse parameter b) \\
+\hline
+{\em thickness} & Frame thickness (drawn towards center of ellipse) \\
+\hline
+{\em intensity} & Grayscale intensity of the drawn ellipse. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a24718f02884b9c6cc40208133eb30950_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a24718f02884b9c6cc40208133eb30950_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_ad65919c509de2a2f7dd400213c841387}\label{class_s_h1122_oled_ad65919c509de2a2f7dd400213c841387} 
+\index{SH1122Oled@{SH1122Oled}!draw\_glyph@{draw\_glyph}}
+\index{draw\_glyph@{draw\_glyph}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{draw\_glyph()}{draw\_glyph()}}
+{\footnotesize\ttfamily uint16\+\_\+t SH1122\+Oled\+::draw\+\_\+glyph (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{x,  }\item[{uint16\+\_\+t}]{y,  }\item[{\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}}}]{intensity,  }\item[{uint16\+\_\+t}]{encoding }\end{DoxyParamCaption})}
+
+
+
+Draws the selected glyph/character using the currently loaded font. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & Glyph x location (upper left corner of glyph) \\
+\hline
+{\em y} & Glyph y location (upper left corner of glyph) \\
+\hline
+{\em intensity} & Grayscale intensity of the drawn glyph \\
+\hline
+{\em encoding} & The encoding of the character to be drawn, supports UTF-\/8 and UTF-\/16. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The change in x required to draw the next glyph in string without overlapping. 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_ad65919c509de2a2f7dd400213c841387_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_ad65919c509de2a2f7dd400213c841387_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_afdc6accc8d7fd602781c66db6e0ce956}\label{class_s_h1122_oled_afdc6accc8d7fd602781c66db6e0ce956} 
+\index{SH1122Oled@{SH1122Oled}!draw\_line@{draw\_line}}
+\index{draw\_line@{draw\_line}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{draw\_line()}{draw\_line()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::draw\+\_\+line (\begin{DoxyParamCaption}\item[{int16\+\_\+t}]{x\+\_\+1,  }\item[{int16\+\_\+t}]{y\+\_\+1,  }\item[{int16\+\_\+t}]{x\+\_\+2,  }\item[{int16\+\_\+t}]{y\+\_\+2,  }\item[{\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}}}]{intensity }\end{DoxyParamCaption})}
+
+
+
+Draws a line between two points. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x\+\_\+1} & Line starting x location. \\
+\hline
+{\em y\+\_\+1} & Line starting y location. \\
+\hline
+{\em x\+\_\+2} & Line ending x location. \\
+\hline
+{\em y\+\_\+2} & Line ending y location. \\
+\hline
+{\em intensity} & Grayscale intensity of the drawn line. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=349pt]{class_s_h1122_oled_afdc6accc8d7fd602781c66db6e0ce956_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_afdc6accc8d7fd602781c66db6e0ce956_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a6102a5313bff0ba8a4725b803309789c}\label{class_s_h1122_oled_a6102a5313bff0ba8a4725b803309789c} 
+\index{SH1122Oled@{SH1122Oled}!draw\_rectangle@{draw\_rectangle}}
+\index{draw\_rectangle@{draw\_rectangle}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{draw\_rectangle()}{draw\_rectangle()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::draw\+\_\+rectangle (\begin{DoxyParamCaption}\item[{int16\+\_\+t}]{x\+\_\+1,  }\item[{int16\+\_\+t}]{y\+\_\+1,  }\item[{int16\+\_\+t}]{width,  }\item[{int16\+\_\+t}]{height,  }\item[{\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}}}]{intensity }\end{DoxyParamCaption})}
+
+
+
+Draws a filled rectangle at the specified location. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & Rectangle x location (upper left corner of rectangle) \\
+\hline
+{\em y} & Rectangle y location (upper left corner of rectangle) \\
+\hline
+{\em width} & Rectangle width. \\
+\hline
+{\em height} & Rectangle height. \\
+\hline
+{\em intensity} & Grayscale intensity of the drawn rectangle. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a6102a5313bff0ba8a4725b803309789c_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a12600c4d2c22996c87be1446989bf7d0}\label{class_s_h1122_oled_a12600c4d2c22996c87be1446989bf7d0} 
+\index{SH1122Oled@{SH1122Oled}!draw\_rectangle\_frame@{draw\_rectangle\_frame}}
+\index{draw\_rectangle\_frame@{draw\_rectangle\_frame}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{draw\_rectangle\_frame()}{draw\_rectangle\_frame()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::draw\+\_\+rectangle\+\_\+frame (\begin{DoxyParamCaption}\item[{int16\+\_\+t}]{x\+\_\+1,  }\item[{int16\+\_\+t}]{y\+\_\+1,  }\item[{int16\+\_\+t}]{width,  }\item[{int16\+\_\+t}]{height,  }\item[{int16\+\_\+t}]{thickness,  }\item[{\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}}}]{intensity }\end{DoxyParamCaption})}
+
+
+
+Draws rectangular frame at the specified location. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & Frame x location (upper left corner of frame) \\
+\hline
+{\em y} & Frame y location (upper left corner of frame) \\
+\hline
+{\em width} & Frame width. \\
+\hline
+{\em height} & Frame height. \\
+\hline
+{\em thickness} & Frame thickness (drawn towards center of rectangle) \\
+\hline
+{\em intensity} & Grayscale intensity of the drawn frame. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a12600c4d2c22996c87be1446989bf7d0_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_afe2872705b72dfb528bd0832a89fc58a}\label{class_s_h1122_oled_afe2872705b72dfb528bd0832a89fc58a} 
+\index{SH1122Oled@{SH1122Oled}!draw\_string@{draw\_string}}
+\index{draw\_string@{draw\_string}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{draw\_string()}{draw\_string()}}
+{\footnotesize\ttfamily uint16\+\_\+t SH1122\+Oled\+::draw\+\_\+string (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{x,  }\item[{uint16\+\_\+t}]{y,  }\item[{\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}}}]{intensity,  }\item[{const char \texorpdfstring{$\ast$}{*}}]{format,  }\item[{}]{... }\end{DoxyParamCaption})}
+
+
+
+Draws a string at the specified location using the currently loaded font. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & String x location (upper left corner of string) \\
+\hline
+{\em y} & String y location (upper left corner of string) \\
+\hline
+{\em intensity} & Grayscale intensity of the drawn string \\
+\hline
+{\em format} & The string to be drawn, supports variable arguments (ie printf style formatting) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The width of the drawn string. 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_afe2872705b72dfb528bd0832a89fc58a_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_aa2a376249df70b0d7371b7848c444def}\label{class_s_h1122_oled_aa2a376249df70b0d7371b7848c444def} 
+\index{SH1122Oled@{SH1122Oled}!fill\_ellipse\_frame\_quadrant@{fill\_ellipse\_frame\_quadrant}}
+\index{fill\_ellipse\_frame\_quadrant@{fill\_ellipse\_frame\_quadrant}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{fill\_ellipse\_frame\_quadrant()}{fill\_ellipse\_frame\_quadrant()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::fill\+\_\+ellipse\+\_\+frame\+\_\+quadrant (\begin{DoxyParamCaption}\item[{std\+::vector$<$ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__2d__point__t}{sh1122\+\_\+2d\+\_\+point\+\_\+t}} $>$ \&}]{outter\+\_\+points,  }\item[{std\+::vector$<$ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__2d__point__t}{sh1122\+\_\+2d\+\_\+point\+\_\+t}} $>$ \&}]{inner\+\_\+points,  }\item[{int16\+\_\+t}]{y\+\_\+c,  }\item[{\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}}}]{intensity }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Fill quadrants of an ellipse frame. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em outter\+\_\+points} & Vector containing all outter ring points for quadrant. \\
+\hline
+{\em inner\+\_\+points} & Vector containing all inner ring points for quadrant. \\
+\hline
+{\em y\+\_\+c} & Ellipse center y position. \\
+\hline
+{\em intensity} & Grayscale intensity of the ellipse fill. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_aa2a376249df70b0d7371b7848c444def_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_aa2a376249df70b0d7371b7848c444def_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a04e6d8b29a6d7be2af038255c2fe0303}\label{class_s_h1122_oled_a04e6d8b29a6d7be2af038255c2fe0303} 
+\index{SH1122Oled@{SH1122Oled}!font\_apply\_direction\_x@{font\_apply\_direction\_x}}
+\index{font\_apply\_direction\_x@{font\_apply\_direction\_x}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{font\_apply\_direction\_x()}{font\_apply\_direction\_x()}}
+{\footnotesize\ttfamily uint16\+\_\+t SH1122\+Oled\+::font\+\_\+apply\+\_\+direction\+\_\+x (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{dx,  }\item[{int8\+\_\+t}]{x,  }\item[{int8\+\_\+t}]{y,  }\item[{\mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9}{Font\+Direction}}}]{dir }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Apply rotation to x coordinate of lines being drawn for current glyph such that they match passed direction. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dx} & Target x position of the glyph being drawn. \\
+\hline
+{\em x} & Local x position of glyph being drawn. \\
+\hline
+{\em y} & Local y position of glyph being drawn. \\
+\hline
+{\em dir} & The desired drawing direction of the font, default is left to right. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Rotated x value. 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a04e6d8b29a6d7be2af038255c2fe0303_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a61416c2cf61025eec856d9ebe723101c}\label{class_s_h1122_oled_a61416c2cf61025eec856d9ebe723101c} 
+\index{SH1122Oled@{SH1122Oled}!font\_apply\_direction\_y@{font\_apply\_direction\_y}}
+\index{font\_apply\_direction\_y@{font\_apply\_direction\_y}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{font\_apply\_direction\_y()}{font\_apply\_direction\_y()}}
+{\footnotesize\ttfamily uint16\+\_\+t SH1122\+Oled\+::font\+\_\+apply\+\_\+direction\+\_\+y (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{dy,  }\item[{int8\+\_\+t}]{x,  }\item[{int8\+\_\+t}]{y,  }\item[{\mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9}{Font\+Direction}}}]{dir }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Apply rotation to y coordinate of lines being drawn for current glyph such that they match passed direction. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dy} & Target y position of the glyph being drawn. \\
+\hline
+{\em x} & Local x position of glyph being drawn. \\
+\hline
+{\em y} & Local y position of glyph being drawn. \\
+\hline
+{\em dir} & The desired drawing direction of the font, default is left to right. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Rotated y value. 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a61416c2cf61025eec856d9ebe723101c_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_aa5e8a8d1e70b5c61c4d15a8adae72c96}\label{class_s_h1122_oled_aa5e8a8d1e70b5c61c4d15a8adae72c96} 
+\index{SH1122Oled@{SH1122Oled}!font\_decode\_and\_draw\_glyph@{font\_decode\_and\_draw\_glyph}}
+\index{font\_decode\_and\_draw\_glyph@{font\_decode\_and\_draw\_glyph}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{font\_decode\_and\_draw\_glyph()}{font\_decode\_and\_draw\_glyph()}}
+{\footnotesize\ttfamily int8\+\_\+t SH1122\+Oled\+::font\+\_\+decode\+\_\+and\+\_\+draw\+\_\+glyph (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t}{sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{decode,  }\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{glyph\+\_\+data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Decodes and draws a single glyph/character. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em decode} & Pointer to decode structure containing information about the glyph to be drawn. \\
+\hline
+{\em glyph\+\_\+data} & Pointer to the initial element of the data for the glyph to be drawn. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Amount for which x should be incremented before drawing the next glyph. 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_aa5e8a8d1e70b5c61c4d15a8adae72c96_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_aa5e8a8d1e70b5c61c4d15a8adae72c96_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_af34ec9eab6c67f9b41a67ff83c9dcb1f}\label{class_s_h1122_oled_af34ec9eab6c67f9b41a67ff83c9dcb1f} 
+\index{SH1122Oled@{SH1122Oled}!font\_decode\_get\_signed\_bits@{font\_decode\_get\_signed\_bits}}
+\index{font\_decode\_get\_signed\_bits@{font\_decode\_get\_signed\_bits}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{font\_decode\_get\_signed\_bits()}{font\_decode\_get\_signed\_bits()}}
+{\footnotesize\ttfamily int8\+\_\+t SH1122\+Oled\+::font\+\_\+decode\+\_\+get\+\_\+signed\+\_\+bits (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t}{sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{decode,  }\item[{uint8\+\_\+t}]{cnt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Decodes bit values from font lookup table and returns them as a signed integer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cnt} & Amount to increment current bit position by. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Signed decoded values. 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_af34ec9eab6c67f9b41a67ff83c9dcb1f_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_af34ec9eab6c67f9b41a67ff83c9dcb1f_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_af50199e0503a8d4608cd2d798d369f5e}\label{class_s_h1122_oled_af50199e0503a8d4608cd2d798d369f5e} 
+\index{SH1122Oled@{SH1122Oled}!font\_decode\_get\_unsigned\_bits@{font\_decode\_get\_unsigned\_bits}}
+\index{font\_decode\_get\_unsigned\_bits@{font\_decode\_get\_unsigned\_bits}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{font\_decode\_get\_unsigned\_bits()}{font\_decode\_get\_unsigned\_bits()}}
+{\footnotesize\ttfamily uint8\+\_\+t SH1122\+Oled\+::font\+\_\+decode\+\_\+get\+\_\+unsigned\+\_\+bits (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t}{sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{decode,  }\item[{uint8\+\_\+t}]{cnt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Decodes bit values from font lookup table and returns them as an unsigned integer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cnt} & Amount to increment current bit position by. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Unsigned decoded values. 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_af50199e0503a8d4608cd2d798d369f5e_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a68b5b4726aafb82116a7f9c6f4fa61f3}\label{class_s_h1122_oled_a68b5b4726aafb82116a7f9c6f4fa61f3} 
+\index{SH1122Oled@{SH1122Oled}!font\_draw\_line@{font\_draw\_line}}
+\index{font\_draw\_line@{font\_draw\_line}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{font\_draw\_line()}{font\_draw\_line()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::font\+\_\+draw\+\_\+line (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t}{sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{decode,  }\item[{int16\+\_\+t}]{x,  }\item[{int16\+\_\+t}]{y,  }\item[{uint16\+\_\+t}]{length,  }\item[{\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}}}]{intensity }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Draws a single font line, called from font\+\_\+draw\+\_\+lines. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em decode} & Pointer to decode structure containing information about the glyph currently being drawn. \\
+\hline
+{\em x} & Starting x position of line. \\
+\hline
+{\em y} & Starting y position of line. \\
+\hline
+{\em length} & Length of line in pixels. \\
+\hline
+{\em intensity} & Grayscale intensity of the line being drawn. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a68b5b4726aafb82116a7f9c6f4fa61f3_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a68b5b4726aafb82116a7f9c6f4fa61f3_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a82fd42daedda58b4872568f4def4fdc6}\label{class_s_h1122_oled_a82fd42daedda58b4872568f4def4fdc6} 
+\index{SH1122Oled@{SH1122Oled}!font\_draw\_lines@{font\_draw\_lines}}
+\index{font\_draw\_lines@{font\_draw\_lines}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{font\_draw\_lines()}{font\_draw\_lines()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::font\+\_\+draw\+\_\+lines (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t}{sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{decode,  }\item[{uint8\+\_\+t}]{len,  }\item[{uint8\+\_\+t}]{is\+\_\+foreground }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Draws lines/pixels for glyph being drawn. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em decode} & Pointer to decode structure containing information about the glyph currently being drawn. \\
+\hline
+{\em len} & Total number of pixels which must be drawn for specified glyph. \\
+\hline
+{\em is\+\_\+foreground} & 0 if pixels are background/whitespace around the glyph, 1 if the actual glyph content to be drawn. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a82fd42daedda58b4872568f4def4fdc6_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a82fd42daedda58b4872568f4def4fdc6_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a08193b37bce29edab80eca0a174a98e3}\label{class_s_h1122_oled_a08193b37bce29edab80eca0a174a98e3} 
+\index{SH1122Oled@{SH1122Oled}!font\_get\_glyph\_data@{font\_get\_glyph\_data}}
+\index{font\_get\_glyph\_data@{font\_get\_glyph\_data}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{font\_get\_glyph\_data()}{font\_get\_glyph\_data()}}
+{\footnotesize\ttfamily const uint8\+\_\+t \texorpdfstring{$\ast$}{*} SH1122\+Oled\+::font\+\_\+get\+\_\+glyph\+\_\+data (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{encoding }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Returns pointer to glyph data from current font lookup table. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em encoding} & Encoding of the glyph data is desired for. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+a pointer to the first element of respective glyph data, NULL if not found. 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a08193b37bce29edab80eca0a174a98e3_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a08193b37bce29edab80eca0a174a98e3_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a6ed995d587a6b3d20e3fa082130c35cb}\label{class_s_h1122_oled_a6ed995d587a6b3d20e3fa082130c35cb} 
+\index{SH1122Oled@{SH1122Oled}!font\_get\_glyph\_height@{font\_get\_glyph\_height}}
+\index{font\_get\_glyph\_height@{font\_get\_glyph\_height}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{font\_get\_glyph\_height()}{font\_get\_glyph\_height()}}
+{\footnotesize\ttfamily uint16\+\_\+t SH1122\+Oled\+::font\+\_\+get\+\_\+glyph\+\_\+height (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{encoding }\end{DoxyParamCaption})}
+
+
+
+Returns the height of specified glyph using the currently loaded font. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em encoding} & The encoding of the character for which height is desired, supports UTF-\/8 and UTF-\/16. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The height of the specified glyph. 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a6ed995d587a6b3d20e3fa082130c35cb_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a6ed995d587a6b3d20e3fa082130c35cb_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a436c5f84cf50f9f54e0ffde015ca2597}\label{class_s_h1122_oled_a436c5f84cf50f9f54e0ffde015ca2597} 
+\index{SH1122Oled@{SH1122Oled}!font\_get\_glyph\_width@{font\_get\_glyph\_width}}
+\index{font\_get\_glyph\_width@{font\_get\_glyph\_width}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{font\_get\_glyph\_width()}{font\_get\_glyph\_width()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily uint16\+\_\+t SH1122\+Oled\+::font\+\_\+get\+\_\+glyph\+\_\+width (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t}{sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{decode,  }\item[{uint16\+\_\+t}]{encoding }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Returns the width of specified glyph using the currently loaded font. Overloaded with decode structure for calls to \doxylink{class_s_h1122_oled_a86155554c86a14a9b89e8c554cecb691}{font\+\_\+get\+\_\+string\+\_\+width()} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em decode} & The decode structure to save the glyph x offset in, for use within get\+\_\+string\+\_\+width() \\
+\hline
+{\em encoding} & The encoding of the character for which width is desired, supports UTF-\/8 and UTF-\/16. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The width of the specified glyph. 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a436c5f84cf50f9f54e0ffde015ca2597_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_ab7eefc47c2dc09a37bdb6d8d90982e04}\label{class_s_h1122_oled_ab7eefc47c2dc09a37bdb6d8d90982e04} 
+\index{SH1122Oled@{SH1122Oled}!font\_get\_glyph\_width@{font\_get\_glyph\_width}}
+\index{font\_get\_glyph\_width@{font\_get\_glyph\_width}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{font\_get\_glyph\_width()}{font\_get\_glyph\_width()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily uint16\+\_\+t SH1122\+Oled\+::font\+\_\+get\+\_\+glyph\+\_\+width (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{encoding }\end{DoxyParamCaption})}
+
+
+
+Returns the width of specified glyph using the currently loaded font. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em encoding} & The encoding of the character for which width is desired, supports UTF-\/8 and UTF-\/16. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The width of the specified glyph. 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_ab7eefc47c2dc09a37bdb6d8d90982e04_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_ab7eefc47c2dc09a37bdb6d8d90982e04_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a2e1585db0fd1b9fcb92c561405cbcc72}\label{class_s_h1122_oled_a2e1585db0fd1b9fcb92c561405cbcc72} 
+\index{SH1122Oled@{SH1122Oled}!font\_get\_string\_center\_x@{font\_get\_string\_center\_x}}
+\index{font\_get\_string\_center\_x@{font\_get\_string\_center\_x}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{font\_get\_string\_center\_x()}{font\_get\_string\_center\_x()}}
+{\footnotesize\ttfamily uint16\+\_\+t SH1122\+Oled\+::font\+\_\+get\+\_\+string\+\_\+center\+\_\+x (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{str }\end{DoxyParamCaption})}
+
+
+
+Returns the x position required to horizontally center a given string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & The string for which a horizontal centering is desired. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The x position the string should be drawn at to center it horizontally. 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a2e1585db0fd1b9fcb92c561405cbcc72_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a469839045764fccd33cf3483ce1d2447}\label{class_s_h1122_oled_a469839045764fccd33cf3483ce1d2447} 
+\index{SH1122Oled@{SH1122Oled}!font\_get\_string\_center\_y@{font\_get\_string\_center\_y}}
+\index{font\_get\_string\_center\_y@{font\_get\_string\_center\_y}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{font\_get\_string\_center\_y()}{font\_get\_string\_center\_y()}}
+{\footnotesize\ttfamily uint16\+\_\+t SH1122\+Oled\+::font\+\_\+get\+\_\+string\+\_\+center\+\_\+y (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{str }\end{DoxyParamCaption})}
+
+
+
+Returns the y position required to vertically center a given string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & The string for which a vertical centering is desired. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The y position the string should be drawn at to center it vertically. 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a469839045764fccd33cf3483ce1d2447_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a8322d2ced6b528001c14a6fd695ef1db}\label{class_s_h1122_oled_a8322d2ced6b528001c14a6fd695ef1db} 
+\index{SH1122Oled@{SH1122Oled}!font\_get\_string\_height@{font\_get\_string\_height}}
+\index{font\_get\_string\_height@{font\_get\_string\_height}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{font\_get\_string\_height()}{font\_get\_string\_height()}}
+{\footnotesize\ttfamily uint16\+\_\+t SH1122\+Oled\+::font\+\_\+get\+\_\+string\+\_\+height (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{format,  }\item[{}]{... }\end{DoxyParamCaption})}
+
+
+
+Returns the height (tallest character height) of specified string using the currently loaded font. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em format} & The string for which height is desired, supports variable arguments (ie printf style formatting) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The width of the specified string. 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a8322d2ced6b528001c14a6fd695ef1db_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=339pt]{class_s_h1122_oled_a8322d2ced6b528001c14a6fd695ef1db_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a86155554c86a14a9b89e8c554cecb691}\label{class_s_h1122_oled_a86155554c86a14a9b89e8c554cecb691} 
+\index{SH1122Oled@{SH1122Oled}!font\_get\_string\_width@{font\_get\_string\_width}}
+\index{font\_get\_string\_width@{font\_get\_string\_width}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{font\_get\_string\_width()}{font\_get\_string\_width()}}
+{\footnotesize\ttfamily uint16\+\_\+t SH1122\+Oled\+::font\+\_\+get\+\_\+string\+\_\+width (\begin{DoxyParamCaption}\item[{const char \texorpdfstring{$\ast$}{*}}]{format,  }\item[{}]{... }\end{DoxyParamCaption})}
+
+
+
+Returns the width of specified string using the currently loaded font. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em format} & The string for which width is desired, supports variable arguments (ie printf style formatting) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The width of the specified string. 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a86155554c86a14a9b89e8c554cecb691_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=339pt]{class_s_h1122_oled_a86155554c86a14a9b89e8c554cecb691_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a3474f62559f1422c513f268bd0ef1d0e}\label{class_s_h1122_oled_a3474f62559f1422c513f268bd0ef1d0e} 
+\index{SH1122Oled@{SH1122Oled}!font\_lookup\_table\_read\_char@{font\_lookup\_table\_read\_char}}
+\index{font\_lookup\_table\_read\_char@{font\_lookup\_table\_read\_char}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{font\_lookup\_table\_read\_char()}{font\_lookup\_table\_read\_char()}}
+{\footnotesize\ttfamily uint8\+\_\+t SH1122\+Oled\+::font\+\_\+lookup\+\_\+table\+\_\+read\+\_\+char (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{font,  }\item[{uint8\+\_\+t}]{offset }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Reads an 8 bit value from specified font lookup table. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em font} & Pointer to first element of font lookup table. \\
+\hline
+{\em offset} & Offset from initial address of lookup table to element desired to be read. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Read 8-\/bit value read from lookup table. 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a3474f62559f1422c513f268bd0ef1d0e_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_af61635f67414cacee544f05623706ef0}\label{class_s_h1122_oled_af61635f67414cacee544f05623706ef0} 
+\index{SH1122Oled@{SH1122Oled}!font\_lookup\_table\_read\_word@{font\_lookup\_table\_read\_word}}
+\index{font\_lookup\_table\_read\_word@{font\_lookup\_table\_read\_word}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{font\_lookup\_table\_read\_word()}{font\_lookup\_table\_read\_word()}}
+{\footnotesize\ttfamily uint16\+\_\+t SH1122\+Oled\+::font\+\_\+lookup\+\_\+table\+\_\+read\+\_\+word (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{font,  }\item[{uint8\+\_\+t}]{offset }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Reads a 16 bit value from specified font lookup table. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em font} & Pointer to first element of font lookup table. \\
+\hline
+{\em offset} & Offset from initial address of lookup table to element desired to be read. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Read 16-\/bit value read from lookup table. 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_af61635f67414cacee544f05623706ef0_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_aa79b0bc9fe78fbf5005bb196f2be01e5}\label{class_s_h1122_oled_aa79b0bc9fe78fbf5005bb196f2be01e5} 
+\index{SH1122Oled@{SH1122Oled}!font\_setup\_glyph\_decode@{font\_setup\_glyph\_decode}}
+\index{font\_setup\_glyph\_decode@{font\_setup\_glyph\_decode}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{font\_setup\_glyph\_decode()}{font\_setup\_glyph\_decode()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::font\+\_\+setup\+\_\+glyph\+\_\+decode (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t}{sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t}} \texorpdfstring{$\ast$}{*}}]{decode,  }\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{glyph\+\_\+data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Sets up glyph decoding structure with values from glyph data for decoding process. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em encoding} & Encoding of the glyph being decoded. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_aa79b0bc9fe78fbf5005bb196f2be01e5_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_aa79b0bc9fe78fbf5005bb196f2be01e5_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_aea74a84a1a7c77538cf10acd006fedfa}\label{class_s_h1122_oled_aea74a84a1a7c77538cf10acd006fedfa} 
+\index{SH1122Oled@{SH1122Oled}!get\_ascii\_next@{get\_ascii\_next}}
+\index{get\_ascii\_next@{get\_ascii\_next}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{get\_ascii\_next()}{get\_ascii\_next()}}
+{\footnotesize\ttfamily uint16\+\_\+t SH1122\+Oled\+::get\+\_\+ascii\+\_\+next (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{b }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Checks a passed glyph for EOL conditions. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em b} & Encoding of the glyph being checked. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ascii value/encoding of the glyph, 0x0ffff if EOL. 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_aea74a84a1a7c77538cf10acd006fedfa_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_ab7bcdc3fa8313f91c05d37570816fb17}\label{class_s_h1122_oled_ab7bcdc3fa8313f91c05d37570816fb17} 
+\index{SH1122Oled@{SH1122Oled}!load\_font@{load\_font}}
+\index{load\_font@{load\_font}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{load\_font()}{load\_font()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::load\+\_\+font (\begin{DoxyParamCaption}\item[{const uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{font }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Loads a font for drawing strings and glyphs. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em font} & A pointer to the first element of the respective font lookup table, font tables are located in fonts directory. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_ab7bcdc3fa8313f91c05d37570816fb17_cgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_ab154cadf1937648d6120898aa3d6bc04}\label{class_s_h1122_oled_ab154cadf1937648d6120898aa3d6bc04} 
+\index{SH1122Oled@{SH1122Oled}!power\_off@{power\_off}}
+\index{power\_off@{power\_off}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{power\_off()}{power\_off()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::power\+\_\+off (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Sends power off command. 
+
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_ab154cadf1937648d6120898aa3d6bc04_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_ab154cadf1937648d6120898aa3d6bc04_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a3451d7390126f548201a805f5e6abc9d}\label{class_s_h1122_oled_a3451d7390126f548201a805f5e6abc9d} 
+\index{SH1122Oled@{SH1122Oled}!power\_on@{power\_on}}
+\index{power\_on@{power\_on}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{power\_on()}{power\_on()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::power\+\_\+on (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Sends power on command. 
+
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a3451d7390126f548201a805f5e6abc9d_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a3451d7390126f548201a805f5e6abc9d_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a96b1b46a7c1a22561b855b5aad92457f}\label{class_s_h1122_oled_a96b1b46a7c1a22561b855b5aad92457f} 
+\index{SH1122Oled@{SH1122Oled}!reset@{reset}}
+\index{reset@{reset}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Hard resets the SH1122 using the RST pin. 
+
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a96b1b46a7c1a22561b855b5aad92457f_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_ac6dfaaa4196a0884e4fb667f7f2074cf}\label{class_s_h1122_oled_ac6dfaaa4196a0884e4fb667f7f2074cf} 
+\index{SH1122Oled@{SH1122Oled}!send\_commands@{send\_commands}}
+\index{send\_commands@{send\_commands}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{send\_commands()}{send\_commands()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::send\+\_\+commands (\begin{DoxyParamCaption}\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{cmds,  }\item[{uint16\+\_\+t}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Sends commands to SH1122 over SPI. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cmds} & Pointer to buffer containing commands to be sent. \\
+\hline
+{\em length} & Total length of command buffer. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_ac6dfaaa4196a0884e4fb667f7f2074cf_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_afbe7825390dc2b04088519ffeca5b77d}\label{class_s_h1122_oled_afbe7825390dc2b04088519ffeca5b77d} 
+\index{SH1122Oled@{SH1122Oled}!send\_data@{send\_data}}
+\index{send\_data@{send\_data}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{send\_data()}{send\_data()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::send\+\_\+data (\begin{DoxyParamCaption}\item[{uint8\+\_\+t \texorpdfstring{$\ast$}{*}}]{data,  }\item[{uint16\+\_\+t}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Sends data to SH1122 over SPI. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cmds} & Pointer to buffer containing data to be sent. \\
+\hline
+{\em length} & Total length of data buffer. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_afbe7825390dc2b04088519ffeca5b77d_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_aeff5399c17bc82f44742d033739d361c}\label{class_s_h1122_oled_aeff5399c17bc82f44742d033739d361c} 
+\index{SH1122Oled@{SH1122Oled}!set\_contrast@{set\_contrast}}
+\index{set\_contrast@{set\_contrast}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{set\_contrast()}{set\_contrast()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::set\+\_\+contrast (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{contrast\+\_\+reg\+\_\+val }\end{DoxyParamCaption})}
+
+
+
+Sets the contrast of the display. Display must be powered off before calling. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em contrast\+\_\+reg\+\_\+val} & The desired contrast, SH1122 has 256 contrast steps from 0x00 to 0x\+FF. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_aeff5399c17bc82f44742d033739d361c_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_aeff5399c17bc82f44742d033739d361c_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_ac16ce3e20b50763e3df0772a50aa4283}\label{class_s_h1122_oled_ac16ce3e20b50763e3df0772a50aa4283} 
+\index{SH1122Oled@{SH1122Oled}!set\_dc\_dc\_control\_mod@{set\_dc\_dc\_control\_mod}}
+\index{set\_dc\_dc\_control\_mod@{set\_dc\_dc\_control\_mod}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{set\_dc\_dc\_control\_mod()}{set\_dc\_dc\_control\_mod()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::set\+\_\+dc\+\_\+dc\+\_\+control\+\_\+mod (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{mod }\end{DoxyParamCaption})}
+
+
+
+Sets the DC-\/\+DC voltage converter status and switch frequency. Display must be powered off before calling. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mod} & DC-\/\+DC register value, see section 12 of commands in SH1122 datasheet. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_ac16ce3e20b50763e3df0772a50aa4283_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_ac16ce3e20b50763e3df0772a50aa4283_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a50494e4bcd3e1b6d159f5bc019e165e6}\label{class_s_h1122_oled_a50494e4bcd3e1b6d159f5bc019e165e6} 
+\index{SH1122Oled@{SH1122Oled}!set\_display\_offset\_mod@{set\_display\_offset\_mod}}
+\index{set\_display\_offset\_mod@{set\_display\_offset\_mod}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{set\_display\_offset\_mod()}{set\_display\_offset\_mod()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::set\+\_\+display\+\_\+offset\+\_\+mod (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{mod }\end{DoxyParamCaption})}
+
+
+
+Sets display offset modifier. Display must be powered off before calling. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mod} & Offset modifier value, see section 16 of commands in SH1122 datasheet. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a50494e4bcd3e1b6d159f5bc019e165e6_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a50494e4bcd3e1b6d159f5bc019e165e6_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_ae1d7a94ff416bc9a558a1fc4c7ff35ec}\label{class_s_h1122_oled_ae1d7a94ff416bc9a558a1fc4c7ff35ec} 
+\index{SH1122Oled@{SH1122Oled}!set\_font\_direction@{set\_font\_direction}}
+\index{set\_font\_direction@{set\_font\_direction}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{set\_font\_direction()}{set\_font\_direction()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::set\+\_\+font\+\_\+direction (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9}{Font\+Direction}}}]{dir }\end{DoxyParamCaption})}
+
+
+
+Sets the draw direction for strings and glyphs, default is left to right. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dir} & The direction strings and glyphs should be drawn in, see Font\+Direction definition. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+\Hypertarget{class_s_h1122_oled_a121a11c25273b6e4cc90513274b6dd04}\label{class_s_h1122_oled_a121a11c25273b6e4cc90513274b6dd04} 
+\index{SH1122Oled@{SH1122Oled}!set\_high\_column\_address@{set\_high\_column\_address}}
+\index{set\_high\_column\_address@{set\_high\_column\_address}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{set\_high\_column\_address()}{set\_high\_column\_address()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::set\+\_\+high\+\_\+column\+\_\+address (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{high\+\_\+column\+\_\+addr }\end{DoxyParamCaption})}
+
+
+
+Sets the high column address of display. Display must be powered off before calling. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em high\+\_\+column\+\_\+addr} & High column address desired, from 0x10 to 0x17. (column address is 7 bits, with 3 msbs in higher column address register) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a121a11c25273b6e4cc90513274b6dd04_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a121a11c25273b6e4cc90513274b6dd04_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_ac1fc1026116fad7874e1230efbc10c11}\label{class_s_h1122_oled_ac1fc1026116fad7874e1230efbc10c11} 
+\index{SH1122Oled@{SH1122Oled}!set\_inverted\_intensity@{set\_inverted\_intensity}}
+\index{set\_inverted\_intensity@{set\_inverted\_intensity}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{set\_inverted\_intensity()}{set\_inverted\_intensity()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::set\+\_\+inverted\+\_\+intensity (\begin{DoxyParamCaption}\item[{bool}]{inverted }\end{DoxyParamCaption})}
+
+
+
+Inverts display pixel intensity. Display must be powered off before calling. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em inverted} & True if an inverted pixel intensity id desired, false if otherwise. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_ac1fc1026116fad7874e1230efbc10c11_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_ac1fc1026116fad7874e1230efbc10c11_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_af1417429d4dcd4153176af27af55e50a}\label{class_s_h1122_oled_af1417429d4dcd4153176af27af55e50a} 
+\index{SH1122Oled@{SH1122Oled}!set\_low\_column\_address@{set\_low\_column\_address}}
+\index{set\_low\_column\_address@{set\_low\_column\_address}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{set\_low\_column\_address()}{set\_low\_column\_address()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::set\+\_\+low\+\_\+column\+\_\+address (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{low\+\_\+column\+\_\+addr }\end{DoxyParamCaption})}
+
+
+
+Sets the low column address of display. Display must be powered off before calling. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em low\+\_\+column\+\_\+addr} & Low column address desired, from 0x00 to 0x0F. (column address is 7 bits, with 4 lsbs in lower column address register) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_af1417429d4dcd4153176af27af55e50a_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_af1417429d4dcd4153176af27af55e50a_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_ab99bd32e75f8e779bd4d4d36a2ebe9a5}\label{class_s_h1122_oled_ab99bd32e75f8e779bd4d4d36a2ebe9a5} 
+\index{SH1122Oled@{SH1122Oled}!set\_multiplex\_ratio@{set\_multiplex\_ratio}}
+\index{set\_multiplex\_ratio@{set\_multiplex\_ratio}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{set\_multiplex\_ratio()}{set\_multiplex\_ratio()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::set\+\_\+multiplex\+\_\+ratio (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{multiplex\+\_\+ratio\+\_\+reg\+\_\+val }\end{DoxyParamCaption})}
+
+
+
+Sets the multiplex ratio of the display. Display must be powered off before calling. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em multiplex\+\_\+ratio\+\_\+reg\+\_\+val} & Desired multiplex ratio step, from 1 to 64 \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_ab99bd32e75f8e779bd4d4d36a2ebe9a5_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_ab99bd32e75f8e779bd4d4d36a2ebe9a5_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a2445641bf8444f5f36e3943ff2f4e576}\label{class_s_h1122_oled_a2445641bf8444f5f36e3943ff2f4e576} 
+\index{SH1122Oled@{SH1122Oled}!set\_orientation@{set\_orientation}}
+\index{set\_orientation@{set\_orientation}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{set\_orientation()}{set\_orientation()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::set\+\_\+orientation (\begin{DoxyParamCaption}\item[{bool}]{flipped }\end{DoxyParamCaption})}
+
+
+
+Changes scan direction of display from 0 to N, to N to 0, thus vertically flipping display. Display must be powered off before calling. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em flipped} & True if a flipped orientation is desired, false if otherwise. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a2445641bf8444f5f36e3943ff2f4e576_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a2445641bf8444f5f36e3943ff2f4e576_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a7a22357242e851f2a64ea8444f0dc1ca}\label{class_s_h1122_oled_a7a22357242e851f2a64ea8444f0dc1ca} 
+\index{SH1122Oled@{SH1122Oled}!set\_oscillator\_freq@{set\_oscillator\_freq}}
+\index{set\_oscillator\_freq@{set\_oscillator\_freq}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{set\_oscillator\_freq()}{set\_oscillator\_freq()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::set\+\_\+oscillator\+\_\+freq (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{freq\+\_\+reg\+\_\+val }\end{DoxyParamCaption})}
+
+
+
+Sets clock divide ratio/oscillator frequency of internal display clocks. Display must be powered off before calling. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em freq\+\_\+reg\+\_\+val} & Clock divide ratio register value, see section 17 of commands in SH1122 datasheet. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a7a22357242e851f2a64ea8444f0dc1ca_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a7a22357242e851f2a64ea8444f0dc1ca_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a003791e9b607af20e96a11b9cd074d50}\label{class_s_h1122_oled_a003791e9b607af20e96a11b9cd074d50} 
+\index{SH1122Oled@{SH1122Oled}!set\_pixel@{set\_pixel}}
+\index{set\_pixel@{set\_pixel}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{set\_pixel()}{set\_pixel()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::set\+\_\+pixel (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{x,  }\item[{uint16\+\_\+t}]{y,  }\item[{\mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{Pixel\+Intensity}}}]{intensity }\end{DoxyParamCaption})}
+
+
+
+Sets respective pixel to specified grayscale intensity. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em x} & Pixel x location. \\
+\hline
+{\em y} & Pixel y location. \\
+\hline
+{\em intensity} & Grayscale intensity of the drawn pixel. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a003791e9b607af20e96a11b9cd074d50_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_ac83a69bbc79dc3c057179b9d958f6a85}\label{class_s_h1122_oled_ac83a69bbc79dc3c057179b9d958f6a85} 
+\index{SH1122Oled@{SH1122Oled}!set\_precharge\_period@{set\_precharge\_period}}
+\index{set\_precharge\_period@{set\_precharge\_period}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{set\_precharge\_period()}{set\_precharge\_period()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::set\+\_\+precharge\+\_\+period (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{period\+\_\+reg\+\_\+val }\end{DoxyParamCaption})}
+
+
+
+Sets duration of precharge/discharge period of display. Display must be powered off before calling. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em period\+\_\+reg\+\_\+val} & Period register value, see section 18 of commands in SH1122 datasheet. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_ac83a69bbc79dc3c057179b9d958f6a85_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_ac83a69bbc79dc3c057179b9d958f6a85_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_af97ba3a723487a6942b811c36c4c3a52}\label{class_s_h1122_oled_af97ba3a723487a6942b811c36c4c3a52} 
+\index{SH1122Oled@{SH1122Oled}!set\_row\_addr@{set\_row\_addr}}
+\index{set\_row\_addr@{set\_row\_addr}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{set\_row\_addr()}{set\_row\_addr()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::set\+\_\+row\+\_\+addr (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{row\+\_\+addr }\end{DoxyParamCaption})}
+
+
+
+Sets the current row address in display internal RAM. Display must be powered off before calling. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em row\+\_\+addr} & Desired row address from 0x00 (POR) to 0x3F. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_af97ba3a723487a6942b811c36c4c3a52_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_af97ba3a723487a6942b811c36c4c3a52_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_aed0f6a05c8af394bf3688477375dd7c3}\label{class_s_h1122_oled_aed0f6a05c8af394bf3688477375dd7c3} 
+\index{SH1122Oled@{SH1122Oled}!set\_segment\_remap@{set\_segment\_remap}}
+\index{set\_segment\_remap@{set\_segment\_remap}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{set\_segment\_remap()}{set\_segment\_remap()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::set\+\_\+segment\+\_\+remap (\begin{DoxyParamCaption}\item[{bool}]{remapped }\end{DoxyParamCaption})}
+
+
+
+Change relationship between RAM column address and segment driver. Display must be powered off before calling. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em remapped} & True if remapped segment scheme is desired, false if otherwise. See section 8 of commands in SH1122 datasheet. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_aed0f6a05c8af394bf3688477375dd7c3_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_aed0f6a05c8af394bf3688477375dd7c3_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a5f14953bbe4fb051025d0501ec516f69}\label{class_s_h1122_oled_a5f14953bbe4fb051025d0501ec516f69} 
+\index{SH1122Oled@{SH1122Oled}!set\_start\_line@{set\_start\_line}}
+\index{set\_start\_line@{set\_start\_line}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{set\_start\_line()}{set\_start\_line()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::set\+\_\+start\+\_\+line (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{start\+\_\+line }\end{DoxyParamCaption})}
+
+
+
+Sets the row address to be used as initial display line/\+COM0. Display must be powered off before calling. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em start\+\_\+line} & Desired starting row address, from 0x00 (POR) to 0x3F. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a5f14953bbe4fb051025d0501ec516f69_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a5f14953bbe4fb051025d0501ec516f69_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_aaa87c3bccddc1da7cebcf8b8db31639c}\label{class_s_h1122_oled_aaa87c3bccddc1da7cebcf8b8db31639c} 
+\index{SH1122Oled@{SH1122Oled}!set\_vcom@{set\_vcom}}
+\index{set\_vcom@{set\_vcom}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{set\_vcom()}{set\_vcom()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::set\+\_\+vcom (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{vcom\+\_\+reg\+\_\+val }\end{DoxyParamCaption})}
+
+
+
+Sets common pad output voltage of display at deselect stage. Display must be powered off before calling. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vcom\+\_\+reg\+\_\+val} & VCOM deselect level register value, see section 19 of commands in SH1122 datasheet. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_aaa87c3bccddc1da7cebcf8b8db31639c_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_aaa87c3bccddc1da7cebcf8b8db31639c_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a29f8aa9893da7d04dfc785bd6781e599}\label{class_s_h1122_oled_a29f8aa9893da7d04dfc785bd6781e599} 
+\index{SH1122Oled@{SH1122Oled}!set\_vseg@{set\_vseg}}
+\index{set\_vseg@{set\_vseg}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{set\_vseg()}{set\_vseg()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::set\+\_\+vseg (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{vseg\+\_\+reg\+\_\+val }\end{DoxyParamCaption})}
+
+
+
+Sets segment pad output voltage level at precharge stage. Display must be powered off before calling. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em vseg\+\_\+reg\+\_\+val} & VSEGM precharge level register value, see section 20 of commands in SH1122 datasheet. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a29f8aa9893da7d04dfc785bd6781e599_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a29f8aa9893da7d04dfc785bd6781e599_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a9555edfce2feaf0d4e0d61f63c6ae58e}\label{class_s_h1122_oled_a9555edfce2feaf0d4e0d61f63c6ae58e} 
+\index{SH1122Oled@{SH1122Oled}!set\_vseg\_discharge\_level@{set\_vseg\_discharge\_level}}
+\index{set\_vseg\_discharge\_level@{set\_vseg\_discharge\_level}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{set\_vseg\_discharge\_level()}{set\_vseg\_discharge\_level()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::set\+\_\+vseg\+\_\+discharge\+\_\+level (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{discharge\+\_\+level }\end{DoxyParamCaption})}
+
+
+
+Sets segment output discharge voltage level. Display must be powered off before calling. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em discharge\+\_\+level} & VSEGM discharge level register value, see section 21 of commands in SH1122 datasheet. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a9555edfce2feaf0d4e0d61f63c6ae58e_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_a9555edfce2feaf0d4e0d61f63c6ae58e_icgraph}
+\end{center}
+\end{figure}
+\Hypertarget{class_s_h1122_oled_a92010fddd147fc64038929dc7b40243c}\label{class_s_h1122_oled_a92010fddd147fc64038929dc7b40243c} 
+\index{SH1122Oled@{SH1122Oled}!take\_screen\_shot@{take\_screen\_shot}}
+\index{take\_screen\_shot@{take\_screen\_shot}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{take\_screen\_shot()}{take\_screen\_shot()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::take\+\_\+screen\+\_\+shot (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Sends frame buffer to sh1122\+\_\+screenshot.\+py to create a screen shot. 
+
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+\Hypertarget{class_s_h1122_oled_adc65debb1bc5cfc1d999e26d82a50c11}\label{class_s_h1122_oled_adc65debb1bc5cfc1d999e26d82a50c11} 
+\index{SH1122Oled@{SH1122Oled}!update\_screen@{update\_screen}}
+\index{update\_screen@{update\_screen}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{update\_screen()}{update\_screen()}}
+{\footnotesize\ttfamily void SH1122\+Oled\+::update\+\_\+screen (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Updates OLED display with current frame buffer. 
+
+Sends frame buffer to SH1122 over SPI, should be called after performing draw operations.
+
+\begin{DoxyReturn}{Returns}
+void, nothing to return 
+\end{DoxyReturn}
+Here is the call graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=344pt]{class_s_h1122_oled_adc65debb1bc5cfc1d999e26d82a50c11_cgraph}
+\end{center}
+\end{figure}
+Here is the caller graph for this function\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{class_s_h1122_oled_adc65debb1bc5cfc1d999e26d82a50c11_icgraph}
+\end{center}
+\end{figure}
+
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_s_h1122_oled_a3ecc1f97866aafeaa6f5d4d234632d69}\label{class_s_h1122_oled_a3ecc1f97866aafeaa6f5d4d234632d69} 
+\index{SH1122Oled@{SH1122Oled}!BITMAP\_DECODE\_PIXEL\_INTENSITY\_MASK@{BITMAP\_DECODE\_PIXEL\_INTENSITY\_MASK}}
+\index{BITMAP\_DECODE\_PIXEL\_INTENSITY\_MASK@{BITMAP\_DECODE\_PIXEL\_INTENSITY\_MASK}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{BITMAP\_DECODE\_PIXEL\_INTENSITY\_MASK}{BITMAP\_DECODE\_PIXEL\_INTENSITY\_MASK}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+BITMAP\+\_\+\+DECODE\+\_\+\+PIXEL\+\_\+\+INTENSITY\+\_\+\+MASK\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (BIT4\ |\ BIT3\ |\ BIT2\ |\ BIT1\ |\ BIT0)}
+
+\end{DoxyCode}
+
+
+Mask for isolating grayscale intensity value. 
+
+\Hypertarget{class_s_h1122_oled_aa8c21f166a3287affe10d3eee7c40e27}\label{class_s_h1122_oled_aa8c21f166a3287affe10d3eee7c40e27} 
+\index{SH1122Oled@{SH1122Oled}!BITMAP\_DECODE\_R\_VAL\_B\_MASK@{BITMAP\_DECODE\_R\_VAL\_B\_MASK}}
+\index{BITMAP\_DECODE\_R\_VAL\_B\_MASK@{BITMAP\_DECODE\_R\_VAL\_B\_MASK}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{BITMAP\_DECODE\_R\_VAL\_B\_MASK}{BITMAP\_DECODE\_R\_VAL\_B\_MASK}}
+{\footnotesize\ttfamily const constexpr uint16\+\_\+t SH1122\+Oled\+::\+BITMAP\+\_\+\+DECODE\+\_\+\+R\+\_\+\+VAL\+\_\+\+B\+\_\+\+MASK\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (BIT6\ |\ BIT5)}
+
+\end{DoxyCode}
+
+
+Mask for isolating repeated value count with byte length pixel block. 
+
+\Hypertarget{class_s_h1122_oled_a012f800031e09a22e78a893b0714aaac}\label{class_s_h1122_oled_a012f800031e09a22e78a893b0714aaac} 
+\index{SH1122Oled@{SH1122Oled}!BITMAP\_DECODE\_R\_VAL\_LOW\_BIT\_POS@{BITMAP\_DECODE\_R\_VAL\_LOW\_BIT\_POS}}
+\index{BITMAP\_DECODE\_R\_VAL\_LOW\_BIT\_POS@{BITMAP\_DECODE\_R\_VAL\_LOW\_BIT\_POS}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{BITMAP\_DECODE\_R\_VAL\_LOW\_BIT\_POS}{BITMAP\_DECODE\_R\_VAL\_LOW\_BIT\_POS}}
+{\footnotesize\ttfamily const constexpr uint16\+\_\+t SH1122\+Oled\+::\+BITMAP\+\_\+\+DECODE\+\_\+\+R\+\_\+\+VAL\+\_\+\+LOW\+\_\+\+BIT\+\_\+\+POS = 5\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Shift for lower repeated value bits. 
+
+\Hypertarget{class_s_h1122_oled_a71d34a2f0329c74df4c47c6e63f4f43b}\label{class_s_h1122_oled_a71d34a2f0329c74df4c47c6e63f4f43b} 
+\index{SH1122Oled@{SH1122Oled}!BITMAP\_DECODE\_R\_VAL\_LOW\_MASK@{BITMAP\_DECODE\_R\_VAL\_LOW\_MASK}}
+\index{BITMAP\_DECODE\_R\_VAL\_LOW\_MASK@{BITMAP\_DECODE\_R\_VAL\_LOW\_MASK}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{BITMAP\_DECODE\_R\_VAL\_LOW\_MASK}{BITMAP\_DECODE\_R\_VAL\_LOW\_MASK}}
+{\footnotesize\ttfamily const constexpr uint16\+\_\+t SH1122\+Oled\+::\+BITMAP\+\_\+\+DECODE\+\_\+\+R\+\_\+\+VAL\+\_\+\+LOW\+\_\+\+MASK\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (BIT7\ |\ BIT6\ |\ BIT5)}
+
+\end{DoxyCode}
+
+
+Mask for isolating the 3 lsbs of repeated value count with word length pixel block. 
+
+\Hypertarget{class_s_h1122_oled_aeefac42005c9109aed9106154da435d6}\label{class_s_h1122_oled_aeefac42005c9109aed9106154da435d6} 
+\index{SH1122Oled@{SH1122Oled}!BITMAP\_DECODE\_WORD\_FLG\_BIT@{BITMAP\_DECODE\_WORD\_FLG\_BIT}}
+\index{BITMAP\_DECODE\_WORD\_FLG\_BIT@{BITMAP\_DECODE\_WORD\_FLG\_BIT}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{BITMAP\_DECODE\_WORD\_FLG\_BIT}{BITMAP\_DECODE\_WORD\_FLG\_BIT}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+BITMAP\+\_\+\+DECODE\+\_\+\+WORD\+\_\+\+FLG\+\_\+\+BIT = BIT7\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Indicates word length pixel block. 
+
+\Hypertarget{class_s_h1122_oled_a4fb503745866f11f1785305129088203}\label{class_s_h1122_oled_a4fb503745866f11f1785305129088203} 
+\index{SH1122Oled@{SH1122Oled}!font\_dir@{font\_dir}}
+\index{font\_dir@{font\_dir}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{font\_dir}{font\_dir}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9}{SH1122\+Oled\+::\+Font\+Direction}} SH1122\+Oled\+::font\+\_\+dir = \mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9a1f8f6a66881ca551a945cf0ab4765dc1}{SH1122\+Oled\+::\+Font\+Direction\+::left\+\_\+to\+\_\+right}}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+The currently selected font direction, default is left to right. 
+
+\Hypertarget{class_s_h1122_oled_ad58c7db5f63260d4611cfccae4510c8b}\label{class_s_h1122_oled_ad58c7db5f63260d4611cfccae4510c8b} 
+\index{SH1122Oled@{SH1122Oled}!font\_info@{font\_info}}
+\index{font\_info@{font\_info}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{font\_info}{font\_info}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t}{SH1122\+Oled\+::sh1122\+\_\+oled\+\_\+font\+\_\+info\+\_\+t}} SH1122\+Oled\+::font\+\_\+info\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Contains information about the currently loaded font. 
+
+\Hypertarget{class_s_h1122_oled_abee6954ef1412b2596d11711386dc957}\label{class_s_h1122_oled_abee6954ef1412b2596d11711386dc957} 
+\index{SH1122Oled@{SH1122Oled}!frame\_buffer@{frame\_buffer}}
+\index{frame\_buffer@{frame\_buffer}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{frame\_buffer}{frame\_buffer}}
+{\footnotesize\ttfamily uint8\+\_\+t SH1122\+Oled\+::frame\+\_\+buffer\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Frame buffer to contain pixel data being sent over SPI. 
+
+\Hypertarget{class_s_h1122_oled_afd462082bdd4ad29573d20d5aa5e5d3a}\label{class_s_h1122_oled_afd462082bdd4ad29573d20d5aa5e5d3a} 
+\index{SH1122Oled@{SH1122Oled}!FRAME\_BUFFER\_LENGTH@{FRAME\_BUFFER\_LENGTH}}
+\index{FRAME\_BUFFER\_LENGTH@{FRAME\_BUFFER\_LENGTH}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{FRAME\_BUFFER\_LENGTH}{FRAME\_BUFFER\_LENGTH}}
+{\footnotesize\ttfamily const constexpr uint16\+\_\+t SH1122\+Oled\+::\+FRAME\+\_\+\+BUFFER\+\_\+\+LENGTH = \mbox{\hyperlink{class_s_h1122_oled_a19a266d7e191a80f5aa3830f061523cd}{WIDTH}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_s_h1122_oled_a2262e8942e3aac1dfd2b01220a2fc7d4}{HEIGHT}} / 2\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Length of frame buffer being sent over SPI. 
+
+\Hypertarget{class_s_h1122_oled_ad3beec9ffecbef962900d51811dd6497}\label{class_s_h1122_oled_ad3beec9ffecbef962900d51811dd6497} 
+\index{SH1122Oled@{SH1122Oled}!FRAME\_CHUNK\_1\_LENGTH@{FRAME\_CHUNK\_1\_LENGTH}}
+\index{FRAME\_CHUNK\_1\_LENGTH@{FRAME\_CHUNK\_1\_LENGTH}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{FRAME\_CHUNK\_1\_LENGTH}{FRAME\_CHUNK\_1\_LENGTH}}
+{\footnotesize\ttfamily const constexpr uint16\+\_\+t SH1122\+Oled\+::\+FRAME\+\_\+\+CHUNK\+\_\+1\+\_\+\+LENGTH\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_afd462082bdd4ad29573d20d5aa5e5d3a}{FRAME\_BUFFER\_LENGTH}}\ /}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 3}
+
+\end{DoxyCode}
+
+
+Length of first frame chunk being sent over SPI (frame buffer length exceeds esp-\/idf\textquotesingle{}s SPI max transfer sz) 
+
+\Hypertarget{class_s_h1122_oled_a5346d620aa6154288c2fd501671dedc8}\label{class_s_h1122_oled_a5346d620aa6154288c2fd501671dedc8} 
+\index{SH1122Oled@{SH1122Oled}!FRAME\_CHUNK\_2\_LENGTH@{FRAME\_CHUNK\_2\_LENGTH}}
+\index{FRAME\_CHUNK\_2\_LENGTH@{FRAME\_CHUNK\_2\_LENGTH}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{FRAME\_CHUNK\_2\_LENGTH}{FRAME\_CHUNK\_2\_LENGTH}}
+{\footnotesize\ttfamily const constexpr uint16\+\_\+t SH1122\+Oled\+::\+FRAME\+\_\+\+CHUNK\+\_\+2\+\_\+\+LENGTH\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ad3beec9ffecbef962900d51811dd6497}{FRAME\_CHUNK\_1\_LENGTH}}}
+
+\end{DoxyCode}
+
+
+Length of second frame chunk being sent over SPI (frame buffer length exceeds esp-\/idf\textquotesingle{}s SPI max transfer sz) 
+
+\Hypertarget{class_s_h1122_oled_a6dec7aad7d1c51d1f8e6706e2f5a6aa9}\label{class_s_h1122_oled_a6dec7aad7d1c51d1f8e6706e2f5a6aa9} 
+\index{SH1122Oled@{SH1122Oled}!FRAME\_CHUNK\_3\_LENGTH@{FRAME\_CHUNK\_3\_LENGTH}}
+\index{FRAME\_CHUNK\_3\_LENGTH@{FRAME\_CHUNK\_3\_LENGTH}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{FRAME\_CHUNK\_3\_LENGTH}{FRAME\_CHUNK\_3\_LENGTH}}
+{\footnotesize\ttfamily const constexpr uint16\+\_\+t SH1122\+Oled\+::\+FRAME\+\_\+\+CHUNK\+\_\+3\+\_\+\+LENGTH\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_afd462082bdd4ad29573d20d5aa5e5d3a}{FRAME\_BUFFER\_LENGTH}}\ -\/\ \mbox{\hyperlink{class_s_h1122_oled_ad3beec9ffecbef962900d51811dd6497}{FRAME\_CHUNK\_1\_LENGTH}}\ -\/}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_a5346d620aa6154288c2fd501671dedc8}{FRAME\_CHUNK\_2\_LENGTH}}}
+
+\end{DoxyCode}
+
+
+Length of third frame chunk being sent over SPI (frame buffer length exceeds esp-\/idf\textquotesingle{}s SPI max transfer sz) 
+
+\Hypertarget{class_s_h1122_oled_a902b63747363fe1ab33c529602e420b8}\label{class_s_h1122_oled_a902b63747363fe1ab33c529602e420b8} 
+\index{SH1122Oled@{SH1122Oled}!FRAME\_CHUNK\_LENGTHS@{FRAME\_CHUNK\_LENGTHS}}
+\index{FRAME\_CHUNK\_LENGTHS@{FRAME\_CHUNK\_LENGTHS}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{FRAME\_CHUNK\_LENGTHS}{FRAME\_CHUNK\_LENGTHS}}
+{\footnotesize\ttfamily const constexpr uint16\+\_\+t SH1122\+Oled\+::\+FRAME\+\_\+\+CHUNK\+\_\+\+LENGTHS\mbox{[}3\mbox{]}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=\ \{\mbox{\hyperlink{class_s_h1122_oled_ad3beec9ffecbef962900d51811dd6497}{FRAME\_CHUNK\_1\_LENGTH}},\ \mbox{\hyperlink{class_s_h1122_oled_a5346d620aa6154288c2fd501671dedc8}{FRAME\_CHUNK\_2\_LENGTH}},}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_a6dec7aad7d1c51d1f8e6706e2f5a6aa9}{FRAME\_CHUNK\_3\_LENGTH}}\}}
+
+\end{DoxyCode}
+
+
+Length of frame chunks being sent over SPI (frame buffer length exceeds esp-\/idf\textquotesingle{}s SPI max transfer sz) 
+
+\Hypertarget{class_s_h1122_oled_a2262e8942e3aac1dfd2b01220a2fc7d4}\label{class_s_h1122_oled_a2262e8942e3aac1dfd2b01220a2fc7d4} 
+\index{SH1122Oled@{SH1122Oled}!HEIGHT@{HEIGHT}}
+\index{HEIGHT@{HEIGHT}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{HEIGHT}{HEIGHT}}
+{\footnotesize\ttfamily const constexpr uint16\+\_\+t SH1122\+Oled\+::\+HEIGHT = 64U\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+Display height. 
+
+\Hypertarget{class_s_h1122_oled_a0d5df271e419f1a5a8df11acb2aa7f73}\label{class_s_h1122_oled_a0d5df271e419f1a5a8df11acb2aa7f73} 
+\index{SH1122Oled@{SH1122Oled}!oled\_cfg@{oled\_cfg}}
+\index{oled\_cfg@{oled\_cfg}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{oled\_cfg}{oled\_cfg}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structsh1122__oled__cfg__t}{sh1122\+\_\+oled\+\_\+cfg\+\_\+t}} SH1122\+Oled\+::oled\+\_\+cfg\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Holds configuration struct passed to constructor, used for GPIO pins and SPI. 
+
+\Hypertarget{class_s_h1122_oled_a9bdbfba1d14f4bb8e2dc9895b86dce8f}\label{class_s_h1122_oled_a9bdbfba1d14f4bb8e2dc9895b86dce8f} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_NORM\_SEG\_MAP@{OLED\_CMD\_NORM\_SEG\_MAP}}
+\index{OLED\_CMD\_NORM\_SEG\_MAP@{OLED\_CMD\_NORM\_SEG\_MAP}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_NORM\_SEG\_MAP}{OLED\_CMD\_NORM\_SEG\_MAP}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+NORM\+\_\+\+SEG\+\_\+\+MAP = 0x\+A0\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Regular segment driver output pad assignment command. 
+
+\Hypertarget{class_s_h1122_oled_aca3d70952aae528ab2619c12e766eff4}\label{class_s_h1122_oled_aca3d70952aae528ab2619c12e766eff4} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_POWER\_OFF@{OLED\_CMD\_POWER\_OFF}}
+\index{OLED\_CMD\_POWER\_OFF@{OLED\_CMD\_POWER\_OFF}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_POWER\_OFF}{OLED\_CMD\_POWER\_OFF}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+POWER\+\_\+\+OFF = 0x\+AE\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Power off command. 
+
+\Hypertarget{class_s_h1122_oled_a1c124bd3383f372bf6b8c7b2d5f89643}\label{class_s_h1122_oled_a1c124bd3383f372bf6b8c7b2d5f89643} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_POWER\_ON@{OLED\_CMD\_POWER\_ON}}
+\index{OLED\_CMD\_POWER\_ON@{OLED\_CMD\_POWER\_ON}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_POWER\_ON}{OLED\_CMD\_POWER\_ON}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+POWER\+\_\+\+ON = 0x\+AF\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Power on command. 
+
+\Hypertarget{class_s_h1122_oled_a371303be5a154299a6c68d457e9ef84d}\label{class_s_h1122_oled_a371303be5a154299a6c68d457e9ef84d} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_REV\_SEG\_MAP@{OLED\_CMD\_REV\_SEG\_MAP}}
+\index{OLED\_CMD\_REV\_SEG\_MAP@{OLED\_CMD\_REV\_SEG\_MAP}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_REV\_SEG\_MAP}{OLED\_CMD\_REV\_SEG\_MAP}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+REV\+\_\+\+SEG\+\_\+\+MAP = 0x\+A1\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Reversed segment driver output pads assignment command. 
+
+\Hypertarget{class_s_h1122_oled_a405304572afe85841b7ca9e866f5dc46}\label{class_s_h1122_oled_a405304572afe85841b7ca9e866f5dc46} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_SCAN\_0\_TO\_N@{OLED\_CMD\_SCAN\_0\_TO\_N}}
+\index{OLED\_CMD\_SCAN\_0\_TO\_N@{OLED\_CMD\_SCAN\_0\_TO\_N}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_SCAN\_0\_TO\_N}{OLED\_CMD\_SCAN\_0\_TO\_N}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+SCAN\+\_\+0\+\_\+\+TO\+\_\+N = 0x\+C0\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Scan from bottom to top command. 
+
+\Hypertarget{class_s_h1122_oled_a5d3d96475512d084e8bf3cf7e2aded3c}\label{class_s_h1122_oled_a5d3d96475512d084e8bf3cf7e2aded3c} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_SCAN\_N\_TO\_0@{OLED\_CMD\_SCAN\_N\_TO\_0}}
+\index{OLED\_CMD\_SCAN\_N\_TO\_0@{OLED\_CMD\_SCAN\_N\_TO\_0}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_SCAN\_N\_TO\_0}{OLED\_CMD\_SCAN\_N\_TO\_0}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+SCAN\+\_\+\+N\+\_\+\+TO\+\_\+0 = 0x\+C8\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Scan from top to bottom command. 
+
+\Hypertarget{class_s_h1122_oled_aada79481bc61abadb5ef7583547907e3}\label{class_s_h1122_oled_aada79481bc61abadb5ef7583547907e3} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_SET\_DC\_DC\_CONTROL\_MOD@{OLED\_CMD\_SET\_DC\_DC\_CONTROL\_MOD}}
+\index{OLED\_CMD\_SET\_DC\_DC\_CONTROL\_MOD@{OLED\_CMD\_SET\_DC\_DC\_CONTROL\_MOD}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_SET\_DC\_DC\_CONTROL\_MOD}{OLED\_CMD\_SET\_DC\_DC\_CONTROL\_MOD}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+DC\+\_\+\+DC\+\_\+\+CONTROL\+\_\+\+MOD\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{=}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xAD}
+
+\end{DoxyCode}
+
+
+Set onboard oled DC-\/\+DC voltage converter status and switch frequency command. 
+
+\Hypertarget{class_s_h1122_oled_a993475a6e62043c8248ed296fac2e98a}\label{class_s_h1122_oled_a993475a6e62043c8248ed296fac2e98a} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_SET\_DISCHARGE\_LEVEL@{OLED\_CMD\_SET\_DISCHARGE\_LEVEL}}
+\index{OLED\_CMD\_SET\_DISCHARGE\_LEVEL@{OLED\_CMD\_SET\_DISCHARGE\_LEVEL}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_SET\_DISCHARGE\_LEVEL}{OLED\_CMD\_SET\_DISCHARGE\_LEVEL}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+DISCHARGE\+\_\+\+LEVEL = 0x30\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Set segment output discharge voltage level command. 
+
+\Hypertarget{class_s_h1122_oled_ad5786ef911ff07670eb8cd1e71f26b95}\label{class_s_h1122_oled_ad5786ef911ff07670eb8cd1e71f26b95} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_SET\_DISP\_CONTRAST@{OLED\_CMD\_SET\_DISP\_CONTRAST}}
+\index{OLED\_CMD\_SET\_DISP\_CONTRAST@{OLED\_CMD\_SET\_DISP\_CONTRAST}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_SET\_DISP\_CONTRAST}{OLED\_CMD\_SET\_DISP\_CONTRAST}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+DISP\+\_\+\+CONTRAST = 0x81\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Set display contrast command. 
+
+\Hypertarget{class_s_h1122_oled_ae56af72f473123f999a94bc06009340d}\label{class_s_h1122_oled_ae56af72f473123f999a94bc06009340d} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_SET\_DISP\_OFFSET\_MOD@{OLED\_CMD\_SET\_DISP\_OFFSET\_MOD}}
+\index{OLED\_CMD\_SET\_DISP\_OFFSET\_MOD@{OLED\_CMD\_SET\_DISP\_OFFSET\_MOD}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_SET\_DISP\_OFFSET\_MOD}{OLED\_CMD\_SET\_DISP\_OFFSET\_MOD}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+DISP\+\_\+\+OFFSET\+\_\+\+MOD = 0x\+D3\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Set display offset command. 
+
+\Hypertarget{class_s_h1122_oled_a3bd058540cc75517a669c3d879b9e2bc}\label{class_s_h1122_oled_a3bd058540cc75517a669c3d879b9e2bc} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_SET\_DISP\_START\_LINE@{OLED\_CMD\_SET\_DISP\_START\_LINE}}
+\index{OLED\_CMD\_SET\_DISP\_START\_LINE@{OLED\_CMD\_SET\_DISP\_START\_LINE}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_SET\_DISP\_START\_LINE}{OLED\_CMD\_SET\_DISP\_START\_LINE}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+DISP\+\_\+\+START\+\_\+\+LINE = 0x40\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Set display starting row address command. 
+
+\Hypertarget{class_s_h1122_oled_a83f3cd54480f03fb4d3bc30118db0e57}\label{class_s_h1122_oled_a83f3cd54480f03fb4d3bc30118db0e57} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_SET\_HIGH\_COLUMN\_ADDR@{OLED\_CMD\_SET\_HIGH\_COLUMN\_ADDR}}
+\index{OLED\_CMD\_SET\_HIGH\_COLUMN\_ADDR@{OLED\_CMD\_SET\_HIGH\_COLUMN\_ADDR}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_SET\_HIGH\_COLUMN\_ADDR}{OLED\_CMD\_SET\_HIGH\_COLUMN\_ADDR}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+HIGH\+\_\+\+COLUMN\+\_\+\+ADDR = 0x10\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Set high column address command. 
+
+\Hypertarget{class_s_h1122_oled_a5514cdcbf77f0f9f54a0be622e9e3ce2}\label{class_s_h1122_oled_a5514cdcbf77f0f9f54a0be622e9e3ce2} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_SET\_INV\_DISPLAY@{OLED\_CMD\_SET\_INV\_DISPLAY}}
+\index{OLED\_CMD\_SET\_INV\_DISPLAY@{OLED\_CMD\_SET\_INV\_DISPLAY}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_SET\_INV\_DISPLAY}{OLED\_CMD\_SET\_INV\_DISPLAY}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+INV\+\_\+\+DISPLAY = 0x\+A7\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Set inverted pixel intensity command. 
+
+\Hypertarget{class_s_h1122_oled_a06838f47f318807fb74aedc756d4ecf4}\label{class_s_h1122_oled_a06838f47f318807fb74aedc756d4ecf4} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_SET\_LOW\_COLUMN\_ADDR@{OLED\_CMD\_SET\_LOW\_COLUMN\_ADDR}}
+\index{OLED\_CMD\_SET\_LOW\_COLUMN\_ADDR@{OLED\_CMD\_SET\_LOW\_COLUMN\_ADDR}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_SET\_LOW\_COLUMN\_ADDR}{OLED\_CMD\_SET\_LOW\_COLUMN\_ADDR}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+LOW\+\_\+\+COLUMN\+\_\+\+ADDR = 0x00\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Set low column address command. 
+
+\Hypertarget{class_s_h1122_oled_a14a5f7919b7bd8557214b7d52cbed0c6}\label{class_s_h1122_oled_a14a5f7919b7bd8557214b7d52cbed0c6} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_SET\_MULTIPLEX\_RATION@{OLED\_CMD\_SET\_MULTIPLEX\_RATION}}
+\index{OLED\_CMD\_SET\_MULTIPLEX\_RATION@{OLED\_CMD\_SET\_MULTIPLEX\_RATION}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_SET\_MULTIPLEX\_RATION}{OLED\_CMD\_SET\_MULTIPLEX\_RATION}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+MULTIPLEX\+\_\+\+RATION = 0x\+A8\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Multiplex ratio set command. 
+
+\Hypertarget{class_s_h1122_oled_ab5333e4f1fbd97f95120a4f413c78e18}\label{class_s_h1122_oled_ab5333e4f1fbd97f95120a4f413c78e18} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_SET\_NORMAL\_DISPLAY@{OLED\_CMD\_SET\_NORMAL\_DISPLAY}}
+\index{OLED\_CMD\_SET\_NORMAL\_DISPLAY@{OLED\_CMD\_SET\_NORMAL\_DISPLAY}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_SET\_NORMAL\_DISPLAY}{OLED\_CMD\_SET\_NORMAL\_DISPLAY}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+NORMAL\+\_\+\+DISPLAY = 0x\+A6\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Set non inverted pixel intensity command. 
+
+\Hypertarget{class_s_h1122_oled_afe27cc5858383bdb9db3a33908a0c9ae}\label{class_s_h1122_oled_afe27cc5858383bdb9db3a33908a0c9ae} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_SET\_OSCILLATOR\_FREQ@{OLED\_CMD\_SET\_OSCILLATOR\_FREQ}}
+\index{OLED\_CMD\_SET\_OSCILLATOR\_FREQ@{OLED\_CMD\_SET\_OSCILLATOR\_FREQ}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_SET\_OSCILLATOR\_FREQ}{OLED\_CMD\_SET\_OSCILLATOR\_FREQ}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+OSCILLATOR\+\_\+\+FREQ = 0x\+D5\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Set display clock frequency command. 
+
+\Hypertarget{class_s_h1122_oled_a97817cc6d38374b164784b61fd1bd04c}\label{class_s_h1122_oled_a97817cc6d38374b164784b61fd1bd04c} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_SET\_PRE\_CHARGE\_PERIOD@{OLED\_CMD\_SET\_PRE\_CHARGE\_PERIOD}}
+\index{OLED\_CMD\_SET\_PRE\_CHARGE\_PERIOD@{OLED\_CMD\_SET\_PRE\_CHARGE\_PERIOD}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_SET\_PRE\_CHARGE\_PERIOD}{OLED\_CMD\_SET\_PRE\_CHARGE\_PERIOD}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+PRE\+\_\+\+CHARGE\+\_\+\+PERIOD = 0x\+D9\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Set precharge period command. 
+
+\Hypertarget{class_s_h1122_oled_ac17fd82e0721177f795f9517ebdacb55}\label{class_s_h1122_oled_ac17fd82e0721177f795f9517ebdacb55} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_SET\_ROW\_ADDR@{OLED\_CMD\_SET\_ROW\_ADDR}}
+\index{OLED\_CMD\_SET\_ROW\_ADDR@{OLED\_CMD\_SET\_ROW\_ADDR}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_SET\_ROW\_ADDR}{OLED\_CMD\_SET\_ROW\_ADDR}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+ROW\+\_\+\+ADDR = 0x\+B0\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Set row address command. 
+
+\Hypertarget{class_s_h1122_oled_aecc270914ae7872e0167b162f183776e}\label{class_s_h1122_oled_aecc270914ae7872e0167b162f183776e} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_SET\_VCOM@{OLED\_CMD\_SET\_VCOM}}
+\index{OLED\_CMD\_SET\_VCOM@{OLED\_CMD\_SET\_VCOM}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_SET\_VCOM}{OLED\_CMD\_SET\_VCOM}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+VCOM = 0x\+DB\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Set common pad output voltage at deselect command. 
+
+\Hypertarget{class_s_h1122_oled_aee2702c845eedc85afb91116eeb2e362}\label{class_s_h1122_oled_aee2702c845eedc85afb91116eeb2e362} 
+\index{SH1122Oled@{SH1122Oled}!OLED\_CMD\_SET\_VSEG@{OLED\_CMD\_SET\_VSEG}}
+\index{OLED\_CMD\_SET\_VSEG@{OLED\_CMD\_SET\_VSEG}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{OLED\_CMD\_SET\_VSEG}{OLED\_CMD\_SET\_VSEG}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+OLED\+\_\+\+CMD\+\_\+\+SET\+\_\+\+VSEG = 0x\+DC\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Set segment pad output voltage at precharge stage. 
+
+\Hypertarget{class_s_h1122_oled_aa92164c7db52556e7e16f14d5c16b5f6}\label{class_s_h1122_oled_aa92164c7db52556e7e16f14d5c16b5f6} 
+\index{SH1122Oled@{SH1122Oled}!oled\_interface\_cfg@{oled\_interface\_cfg}}
+\index{oled\_interface\_cfg@{oled\_interface\_cfg}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{oled\_interface\_cfg}{oled\_interface\_cfg}}
+{\footnotesize\ttfamily spi\+\_\+device\+\_\+interface\+\_\+config\+\_\+t SH1122\+Oled\+::oled\+\_\+interface\+\_\+cfg\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+SPI interface struct for SH1122. 
+
+\Hypertarget{class_s_h1122_oled_a8aaa71e256dcebd9e99082eba78923b8}\label{class_s_h1122_oled_a8aaa71e256dcebd9e99082eba78923b8} 
+\index{SH1122Oled@{SH1122Oled}!spi\_bus\_cfg@{spi\_bus\_cfg}}
+\index{spi\_bus\_cfg@{spi\_bus\_cfg}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{spi\_bus\_cfg}{spi\_bus\_cfg}}
+{\footnotesize\ttfamily spi\+\_\+bus\+\_\+config\+\_\+t SH1122\+Oled\+::spi\+\_\+bus\+\_\+cfg\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+SPI peripheral config struct. 
+
+\Hypertarget{class_s_h1122_oled_aefff5f5f6dc7e25b86b8ed4661fc6c33}\label{class_s_h1122_oled_aefff5f5f6dc7e25b86b8ed4661fc6c33} 
+\index{SH1122Oled@{SH1122Oled}!SPI\_CLK\_SPEED\_HZ@{SPI\_CLK\_SPEED\_HZ}}
+\index{SPI\_CLK\_SPEED\_HZ@{SPI\_CLK\_SPEED\_HZ}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{SPI\_CLK\_SPEED\_HZ}{SPI\_CLK\_SPEED\_HZ}}
+{\footnotesize\ttfamily const constexpr uint64\+\_\+t SH1122\+Oled\+::\+SPI\+\_\+\+CLK\+\_\+\+SPEED\+\_\+\+HZ = 4000000\+ULL\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Serial clockspeed of SPI transactions. 
+
+\Hypertarget{class_s_h1122_oled_a23d90d2c3e8ba08c8bc924da308fe9d8}\label{class_s_h1122_oled_a23d90d2c3e8ba08c8bc924da308fe9d8} 
+\index{SH1122Oled@{SH1122Oled}!spi\_hdl@{spi\_hdl}}
+\index{spi\_hdl@{spi\_hdl}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{spi\_hdl}{spi\_hdl}}
+{\footnotesize\ttfamily spi\+\_\+device\+\_\+handle\+\_\+t SH1122\+Oled\+::spi\+\_\+hdl\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Handle to perform SPI transactions with. 
+
+\Hypertarget{class_s_h1122_oled_a2964b2a282a8d6a2cba6d2cdf2e234e1}\label{class_s_h1122_oled_a2964b2a282a8d6a2cba6d2cdf2e234e1} 
+\index{SH1122Oled@{SH1122Oled}!SPI\_INTERRUPT\_MODE\_QUEUE\_SIZE@{SPI\_INTERRUPT\_MODE\_QUEUE\_SIZE}}
+\index{SPI\_INTERRUPT\_MODE\_QUEUE\_SIZE@{SPI\_INTERRUPT\_MODE\_QUEUE\_SIZE}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{SPI\_INTERRUPT\_MODE\_QUEUE\_SIZE}{SPI\_INTERRUPT\_MODE\_QUEUE\_SIZE}}
+{\footnotesize\ttfamily const constexpr uint8\+\_\+t SH1122\+Oled\+::\+SPI\+\_\+\+INTERRUPT\+\_\+\+MODE\+\_\+\+QUEUE\+\_\+\+SIZE = 1\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Maximum amount of queued SPI transactions. 
+
+\Hypertarget{class_s_h1122_oled_a24b3de23489ca7f901e00cf7197134c1}\label{class_s_h1122_oled_a24b3de23489ca7f901e00cf7197134c1} 
+\index{SH1122Oled@{SH1122Oled}!SPI\_TRANS\_TIMEOUT\_MS@{SPI\_TRANS\_TIMEOUT\_MS}}
+\index{SPI\_TRANS\_TIMEOUT\_MS@{SPI\_TRANS\_TIMEOUT\_MS}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{SPI\_TRANS\_TIMEOUT\_MS}{SPI\_TRANS\_TIMEOUT\_MS}}
+{\footnotesize\ttfamily const constexpr uint64\+\_\+t SH1122\+Oled\+::\+SPI\+\_\+\+TRANS\+\_\+\+TIMEOUT\+\_\+\+MS = 10\+ULL\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Timeout for SPI transactions. 
+
+\Hypertarget{class_s_h1122_oled_af39205d189bbc123188e770af948aeec}\label{class_s_h1122_oled_af39205d189bbc123188e770af948aeec} 
+\index{SH1122Oled@{SH1122Oled}!TAG@{TAG}}
+\index{TAG@{TAG}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{TAG}{TAG}}
+{\footnotesize\ttfamily const constexpr char\texorpdfstring{$\ast$}{*} SH1122\+Oled\+::\+TAG = "{}SH1122\+Oled"{}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}, {\ttfamily [private]}}
+
+
+
+Class tag, used in debug statements. 
+
+\Hypertarget{class_s_h1122_oled_a19a266d7e191a80f5aa3830f061523cd}\label{class_s_h1122_oled_a19a266d7e191a80f5aa3830f061523cd} 
+\index{SH1122Oled@{SH1122Oled}!WIDTH@{WIDTH}}
+\index{WIDTH@{WIDTH}!SH1122Oled@{SH1122Oled}}
+\doxysubsubsection{\texorpdfstring{WIDTH}{WIDTH}}
+{\footnotesize\ttfamily const constexpr uint16\+\_\+t SH1122\+Oled\+::\+WIDTH = 256U\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [constexpr]}}
+
+
+
+Display width. 
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+esp32\+\_\+\+SH1122/\mbox{\hyperlink{_s_h1122_oled_8hpp}{SH1122\+Oled.\+hpp}}\item 
+esp32\+\_\+\+SH1122/\mbox{\hyperlink{_s_h1122_oled_8cpp}{SH1122\+Oled.\+cpp}}\end{DoxyCompactItemize}

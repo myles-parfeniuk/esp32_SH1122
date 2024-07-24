@@ -1,0 +1,11 @@
+<map id="SH1122Oled::draw_ellipse_frame" name="SH1122Oled::draw_ellipse_frame">
+<area shape="rect" id="Node000001" title="Draws an ellipse frame at the specified location." alt="" coords="5,24,179,67"/>
+<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#afdc6accc8d7fd602781c66db6e0ce956" title="Draws a line between two points." alt="" coords="433,32,589,59"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="167,21,226,9,306,3,385,9,455,25,454,30,385,15,306,8,227,15,168,26"/>
+<area shape="rect" id="Node000003" href="$class_s_h1122_oled.html#a003791e9b607af20e96a11b9cd074d50" title="Sets respective pixel to specified grayscale intensity." alt="" coords="637,61,792,88"/>
+<area shape="poly" id="edge5_Node000001_Node000003" title=" " alt="" coords="168,65,227,76,332,85,439,87,622,80,622,85,439,92,332,90,226,81,167,70"/>
+<area shape="rect" id="Node000004" href="$class_s_h1122_oled.html#aa2a376249df70b0d7371b7848c444def" title="Fill quadrants of an ellipse frame." alt="" coords="227,24,385,67"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="179,43,211,43,211,48,179,48"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="590,54,622,59,621,64,589,59"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="386,43,417,43,417,48,386,48"/>
+</map>

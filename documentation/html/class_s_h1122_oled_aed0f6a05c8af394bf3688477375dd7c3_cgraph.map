@@ -1,0 +1,5 @@
+<map id="SH1122Oled::set_segment_remap" name="SH1122Oled::set_segment_remap">
+<area shape="rect" id="Node000001" title="Change relationship between RAM column address and segment driver. Display must be powered off before..." alt="" coords="5,5,183,48"/>
+<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#ac6dfaaa4196a0884e4fb667f7f2074cf" title="Sends commands to SH1122 over SPI." alt="" coords="231,13,432,40"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,24,215,24,215,29,183,29"/>
+</map>

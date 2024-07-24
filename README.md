@@ -188,7 +188,7 @@ To create bitmaps:
 ### Font System
 All the font files are located within the `fonts/` directory. Ensure you load a font before calling functions like
 `draw_string()`, `draw_glyph()`, `get_string_width()`, etc...  
-   
+
 A full list of included fonts can be found at:  
 https://github.com/olikraus/u8g2/wiki/fntlistall
 
@@ -234,7 +234,7 @@ To take screen shots:
 4. The output images (in png format) can be found in the `python_utilities/screenshot/output` directory.  
 
 
-**NOTE:**
+**NOTE:**  
 For minimal latency you should increase your console baud rate in menuconfig to the maximum possible value.  
 For more info see the header at the top of sh1122_screenshot.py.  
 

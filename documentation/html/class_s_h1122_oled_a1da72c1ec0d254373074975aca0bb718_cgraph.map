@@ -1,0 +1,13 @@
+<map id="SH1122Oled::draw_ellipse" name="SH1122Oled::draw_ellipse">
+<area shape="rect" id="Node000001" title="Draws a filled ellipse at the specified location." alt="" coords="5,32,179,59"/>
+<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#a24718f02884b9c6cc40208133eb30950" title="Draws an ellipse frame at the specified location." alt="" coords="227,24,400,67"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="179,43,211,43,211,48,179,48"/>
+<area shape="rect" id="Node000003" href="$class_s_h1122_oled.html#afdc6accc8d7fd602781c66db6e0ce956" title="Draws a line between two points." alt="" coords="654,32,811,59"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="388,21,448,9,527,3,607,9,676,25,675,30,606,15,527,8,448,15,389,26"/>
+<area shape="rect" id="Node000004" href="$class_s_h1122_oled.html#a003791e9b607af20e96a11b9cd074d50" title="Sets respective pixel to specified grayscale intensity." alt="" coords="859,61,1013,88"/>
+<area shape="poly" id="edge6_Node000002_Node000004" title=" " alt="" coords="389,65,448,76,554,85,660,87,843,80,843,85,660,92,554,90,448,81,388,70"/>
+<area shape="rect" id="Node000005" href="$class_s_h1122_oled.html#aa2a376249df70b0d7371b7848c444def" title="Fill quadrants of an ellipse frame." alt="" coords="448,24,606,67"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="401,43,432,43,432,48,401,48"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="811,54,843,59,843,64,810,59"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="607,43,638,43,638,48,607,48"/>
+</map>

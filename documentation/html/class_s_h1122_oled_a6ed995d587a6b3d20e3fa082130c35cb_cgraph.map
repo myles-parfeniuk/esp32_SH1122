@@ -1,0 +1,13 @@
+<map id="SH1122Oled::font_get_glyph_height" name="SH1122Oled::font_get_glyph_height">
+<area shape="rect" id="Node000001" title="Returns the height of specified glyph using the currently loaded font." alt="" coords="5,105,154,148"/>
+<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#a08193b37bce29edab80eca0a174a98e3" title="Returns pointer to glyph data from current font lookup table." alt="" coords="209,72,357,115"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,112,193,105,194,111,154,117"/>
+<area shape="rect" id="Node000005" href="$class_s_h1122_oled.html#aa79b0bc9fe78fbf5005bb196f2be01e5" title="Sets up glyph decoding structure with values from glyph data for decoding process." alt="" coords="202,139,364,181"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="154,136,187,142,186,147,153,141"/>
+<area shape="rect" id="Node000003" href="$class_s_h1122_oled.html#a3474f62559f1422c513f268bd0ef1d0e" title="Reads an 8 bit value from specified font lookup table." alt="" coords="414,5,582,48"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="353,69,411,51,413,56,355,74"/>
+<area shape="rect" id="Node000004" href="$class_s_h1122_oled.html#af61635f67414cacee544f05623706ef0" title="Reads a 16 bit value from specified font lookup table." alt="" coords="414,72,582,115"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="357,91,399,91,399,96,357,96"/>
+<area shape="rect" id="Node000006" href="$class_s_h1122_oled.html#af50199e0503a8d4608cd2d798d369f5e" title="Decodes bit values from font lookup table and returns them as an unsigned integer." alt="" coords="412,139,584,181"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="365,157,396,157,396,163,365,163"/>
+</map>

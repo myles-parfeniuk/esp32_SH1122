@@ -1,0 +1,75 @@
+\doxysection{esp32\+\_\+\+SH1122/\+SH1122\+Oled.hpp File Reference}
+\hypertarget{_s_h1122_oled_8hpp}{}\label{_s_h1122_oled_8hpp}\index{esp32\_SH1122/SH1122Oled.hpp@{esp32\_SH1122/SH1122Oled.hpp}}
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$vector$>$}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$cstring$>$}\newline
+{\ttfamily \#include $<$cstdarg$>$}\newline
+{\ttfamily \#include $<$driver/gpio.\+h$>$}\newline
+{\ttfamily \#include $<$driver/spi\+\_\+common.\+h$>$}\newline
+{\ttfamily \#include $<$driver/spi\+\_\+master.\+h$>$}\newline
+{\ttfamily \#include $<$esp\+\_\+log.\+h$>$}\newline
+{\ttfamily \#include $<$freertos/\+Free\+RTOS.\+h$>$}\newline
+{\ttfamily \#include $<$freertos/task.\+h$>$}\newline
+{\ttfamily \#include $<$esp\+\_\+timer.\+h$>$}\newline
+Include dependency graph for SH1122\+Oled.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{_s_h1122_oled_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=239pt]{_s_h1122_oled_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structsh1122__oled__cfg__t}{sh1122\+\_\+oled\+\_\+cfg\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em OLED configuration settings structure passed into \doxylink{class_s_h1122_oled}{SH1122\+Oled} constructor. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{class_s_h1122_oled}{SH1122\+Oled}}
+\begin{DoxyCompactList}\small\item\em SH1122 OLED driver class. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t}{SH1122\+Oled\+::sh1122\+\_\+oled\+\_\+font\+\_\+info\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Font information structure, used to contain information about the currently loaded font. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t}{SH1122\+Oled\+::sh1122\+\_\+oled\+\_\+font\+\_\+decode\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Glyph decode information structure, used to contain information about glyphs being decoded and drawn. \end{DoxyCompactList}\item 
+struct \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__2d__point__t}{SH1122\+Oled\+::sh1122\+\_\+2d\+\_\+point\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em Represents point on OLED screen, used in drawing functions. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \mbox{\hyperlink{_s_h1122_oled_8hpp_ad2a97d6deb356c5ecc09c29aee3c8a10}{SH1122\+\_\+\+PIXEL\+\_\+\+IN\+\_\+\+BOUNDS}}(x,  y)~(((x $>$= 0) \&\& (x $<$ \mbox{\hyperlink{class_s_h1122_oled_a19a266d7e191a80f5aa3830f061523cd}{SH1122\+Oled\+::\+WIDTH}})) \&\& ((y $>$= 0) \&\& (y $<$ \mbox{\hyperlink{class_s_h1122_oled_a2262e8942e3aac1dfd2b01220a2fc7d4}{SH1122\+Oled\+::\+HEIGHT}})))
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct sh1122\+\_\+oled\+\_\+cfg\+\_\+t \mbox{\hyperlink{_s_h1122_oled_8hpp_a70dae088cdf0826fc4e703d71ec41d70}{sh1122\+\_\+oled\+\_\+cfg\+\_\+t}}
+\begin{DoxyCompactList}\small\item\em OLED configuration settings structure passed into \doxylink{class_s_h1122_oled}{SH1122\+Oled} constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Macro Definition Documentation}
+\Hypertarget{_s_h1122_oled_8hpp_ad2a97d6deb356c5ecc09c29aee3c8a10}\label{_s_h1122_oled_8hpp_ad2a97d6deb356c5ecc09c29aee3c8a10} 
+\index{SH1122Oled.hpp@{SH1122Oled.hpp}!SH1122\_PIXEL\_IN\_BOUNDS@{SH1122\_PIXEL\_IN\_BOUNDS}}
+\index{SH1122\_PIXEL\_IN\_BOUNDS@{SH1122\_PIXEL\_IN\_BOUNDS}!SH1122Oled.hpp@{SH1122Oled.hpp}}
+\doxysubsubsection{\texorpdfstring{SH1122\_PIXEL\_IN\_BOUNDS}{SH1122\_PIXEL\_IN\_BOUNDS}}
+{\footnotesize\ttfamily \#define SH1122\+\_\+\+PIXEL\+\_\+\+IN\+\_\+\+BOUNDS(\begin{DoxyParamCaption}\item[{}]{x,  }\item[{}]{y }\end{DoxyParamCaption})~(((x $>$= 0) \&\& (x $<$ \mbox{\hyperlink{class_s_h1122_oled_a19a266d7e191a80f5aa3830f061523cd}{SH1122\+Oled\+::\+WIDTH}})) \&\& ((y $>$= 0) \&\& (y $<$ \mbox{\hyperlink{class_s_h1122_oled_a2262e8942e3aac1dfd2b01220a2fc7d4}{SH1122\+Oled\+::\+HEIGHT}})))}
+
+
+
+\doxysubsection{Typedef Documentation}
+\Hypertarget{_s_h1122_oled_8hpp_a70dae088cdf0826fc4e703d71ec41d70}\label{_s_h1122_oled_8hpp_a70dae088cdf0826fc4e703d71ec41d70} 
+\index{SH1122Oled.hpp@{SH1122Oled.hpp}!sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}}
+\index{sh1122\_oled\_cfg\_t@{sh1122\_oled\_cfg\_t}!SH1122Oled.hpp@{SH1122Oled.hpp}}
+\doxysubsubsection{\texorpdfstring{sh1122\_oled\_cfg\_t}{sh1122\_oled\_cfg\_t}}
+{\footnotesize\ttfamily typedef struct sh1122\+\_\+oled\+\_\+cfg\+\_\+t sh1122\+\_\+oled\+\_\+cfg\+\_\+t}
+
+
+
+OLED configuration settings structure passed into \doxylink{class_s_h1122_oled}{SH1122\+Oled} constructor. 
+
