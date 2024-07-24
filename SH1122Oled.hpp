@@ -296,7 +296,7 @@ class SH1122Oled
                 (BIT4 | BIT3 | BIT2 | BIT1 | BIT0); ///< Mask for isolating grayscale intensity value.
 
         // spi
-        static const constexpr uint64_t SPI_CLK_SPEED_HZ = 4000000ULL;    ///< Serial clockspeed of SPI transactions.
+        static const constexpr uint64_t SPI_CLK_SPEED_HZ = 8000000ULL;    ///< Serial clockspeed of SPI transactions.
         static const constexpr uint64_t SPI_TRANS_TIMEOUT_MS = 10ULL;     ///< Timeout for SPI transactions.
         static const constexpr uint8_t SPI_INTERRUPT_MODE_QUEUE_SIZE = 1; ///< Maximum amount of queued SPI transactions.
 
