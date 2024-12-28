@@ -1,0 +1,15 @@
+<map id="SH1122Oled::font_get_string_height" name="SH1122Oled::font_get_string_height">
+<area shape="rect" id="Node000001" title="Returns the height (tallest character height) of specified string using the currently loaded font." alt="" coords="5,105,154,148"/>
+<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#a6ed995d587a6b3d20e3fa082130c35cb" title="Returns the height of specified glyph using the currently loaded font." alt="" coords="202,105,350,148"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,124,186,124,186,129,154,129"/>
+<area shape="rect" id="Node000003" href="$class_s_h1122_oled.html#a08193b37bce29edab80eca0a174a98e3" title="Returns pointer to glyph data from current font lookup table." alt="" coords="405,72,553,115"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="350,112,389,105,390,111,351,117"/>
+<area shape="rect" id="Node000006" href="$class_s_h1122_oled.html#aa79b0bc9fe78fbf5005bb196f2be01e5" title="Sets up glyph decoding structure with values from glyph data for decoding process." alt="" coords="398,139,560,181"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="351,136,383,142,382,147,350,141"/>
+<area shape="rect" id="Node000004" href="$class_s_h1122_oled.html#a3474f62559f1422c513f268bd0ef1d0e" title="Reads an 8 bit value from specified font lookup table." alt="" coords="610,5,779,48"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="549,69,608,51,609,56,551,74"/>
+<area shape="rect" id="Node000005" href="$class_s_h1122_oled.html#af61635f67414cacee544f05623706ef0" title="Reads a 16 bit value from specified font lookup table." alt="" coords="610,72,779,115"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="554,91,595,91,595,96,554,96"/>
+<area shape="rect" id="Node000007" href="$class_s_h1122_oled.html#af50199e0503a8d4608cd2d798d369f5e" title="Decodes bit values from font lookup table and returns them as an unsigned integer." alt="" coords="608,139,781,181"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="561,157,592,157,592,163,561,163"/>
+</map>

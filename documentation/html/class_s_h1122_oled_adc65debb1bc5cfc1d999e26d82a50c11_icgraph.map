@@ -1,0 +1,9 @@
+<map id="SH1122Oled::update_screen" name="SH1122Oled::update_screen">
+<area shape="rect" id="Node000001" title="Updates OLED display with current frame buffer." alt="" coords="441,23,582,65"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="272,5,350,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="425,36,349,26,350,21,426,31"/>
+<area shape="rect" id="Node000003" href="$class_s_h1122_oled.html#aba88d2d86818ead888fd67013092f041" title="Sends commands to initialize display for use." alt="" coords="229,56,393,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="426,58,394,62,393,56,425,52"/>
+<area shape="rect" id="Node000004" href="$class_s_h1122_oled.html#a7f420d6b65d23d7f985403bcbb5678c4" title="SH1122Oled constructor." alt="" coords="5,56,181,83"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="213,72,181,72,181,67,213,67"/>
+</map>

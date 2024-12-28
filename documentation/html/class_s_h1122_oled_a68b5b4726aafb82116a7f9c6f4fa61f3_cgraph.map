@@ -1,0 +1,7 @@
+<map id="SH1122Oled::font_draw_line" name="SH1122Oled::font_draw_line">
+<area shape="rect" id="Node000001" title="Draws a single font line, called from font_draw_lines." alt="" coords="5,5,190,32"/>
+<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#afdc6accc8d7fd602781c66db6e0ce956" title="Draws a line between two points." alt="" coords="238,5,394,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="190,16,222,16,222,21,190,21"/>
+<area shape="rect" id="Node000003" href="$class_s_h1122_oled.html#a003791e9b607af20e96a11b9cd074d50" title="Sets respective pixel to specified grayscale intensity." alt="" coords="442,5,596,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="394,16,426,16,426,21,394,21"/>
+</map>

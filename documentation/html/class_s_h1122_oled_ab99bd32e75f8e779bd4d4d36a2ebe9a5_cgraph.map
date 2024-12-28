@@ -1,0 +1,5 @@
+<map id="SH1122Oled::set_multiplex_ratio" name="SH1122Oled::set_multiplex_ratio">
+<area shape="rect" id="Node000001" title="Sets the multiplex ratio of the display. Display must be powered off before calling." alt="" coords="5,5,185,48"/>
+<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#ac6dfaaa4196a0884e4fb667f7f2074cf" title="Sends commands to SH1122 over SPI." alt="" coords="233,13,434,40"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="185,24,217,24,217,29,185,29"/>
+</map>

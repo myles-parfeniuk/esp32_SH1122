@@ -1,0 +1,5 @@
+<map id="SH1122Oled::draw_circle_frame" name="SH1122Oled::draw_circle_frame">
+<area shape="rect" id="Node000001" title="Draws a circular frame at the specified location." alt="" coords="221,5,388,48"/>
+<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#a159f736ac2228779cd736ec1010d0bfe" title="Draws a filled circle at the specified location." alt="" coords="5,13,173,40"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="205,29,173,29,173,24,205,24"/>
+</map>

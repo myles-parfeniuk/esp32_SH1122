@@ -1,0 +1,7 @@
+<map id="SH1122Oled::set_start_line" name="SH1122Oled::set_start_line">
+<area shape="rect" id="Node000001" title="Sets the row address to be used as initial display line/COM0. Display must be powered off before call..." alt="" coords="441,5,621,32"/>
+<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#aba88d2d86818ead888fd67013092f041" title="Sends commands to initialize display for use." alt="" coords="229,5,393,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="426,21,393,21,393,16,426,16"/>
+<area shape="rect" id="Node000003" href="$class_s_h1122_oled.html#a7f420d6b65d23d7f985403bcbb5678c4" title="SH1122Oled constructor." alt="" coords="5,5,181,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="213,21,181,21,181,16,213,16"/>
+</map>

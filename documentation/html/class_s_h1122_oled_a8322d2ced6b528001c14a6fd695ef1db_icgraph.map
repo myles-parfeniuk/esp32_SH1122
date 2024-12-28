@@ -1,0 +1,7 @@
+<map id="SH1122Oled::font_get_string_height" name="SH1122Oled::font_get_string_height">
+<area shape="rect" id="Node000001" title="Returns the height (tallest character height) of specified string using the currently loaded font." alt="" coords="327,5,475,48"/>
+<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#a469839045764fccd33cf3483ce1d2447" title="Returns the y position required to vertically center a given string." alt="" coords="131,5,279,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="312,29,279,29,279,24,312,24"/>
+<area shape="rect" id="Node000003" href="$main_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="5,13,83,40"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="115,29,83,29,83,24,115,24"/>
+</map>

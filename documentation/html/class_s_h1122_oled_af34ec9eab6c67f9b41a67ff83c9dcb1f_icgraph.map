@@ -1,0 +1,20 @@
+<map id="SH1122Oled::font_decode_get_signed_bits" name="SH1122Oled::font_decode_get_signed_bits">
+<area shape="rect" id="Node000001" title="Decodes bit values from font lookup table and returns them as a signed integer." alt="" coords="783,72,955,115"/>
+<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#aa5e8a8d1e70b5c61c4d15a8adae72c96" title="Decodes and draws a single glyph/character." alt="" coords="562,5,735,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="781,70,721,51,722,46,783,65"/>
+<area shape="rect" id="Node000006" href="$class_s_h1122_oled.html#a436c5f84cf50f9f54e0ffde015ca2597" title="Returns the width of specified glyph using the currently loaded font. Overloaded with decode structur..." alt="" coords="574,72,723,115"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="767,96,723,96,723,91,767,91"/>
+<area shape="rect" id="Node000007" href="$class_s_h1122_oled.html#ab7eefc47c2dc09a37bdb6d8d90982e04" title="Returns the width of specified glyph using the currently loaded font." alt="" coords="574,139,723,181"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="783,122,722,141,721,135,781,117"/>
+<area shape="rect" id="Node000003" href="$class_s_h1122_oled.html#ad65919c509de2a2f7dd400213c841387" title="Draws the selected glyph/character using the currently loaded font." alt="" coords="347,19,514,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="547,32,515,33,515,27,547,26"/>
+<area shape="rect" id="Node000004" href="$class_s_h1122_oled.html#afe2872705b72dfb528bd0832a89fc58a" title="Draws a string at the specified location using the currently loaded font." alt="" coords="131,23,299,49"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="332,36,299,37,299,32,332,31"/>
+<area shape="rect" id="Node000005" href="$main_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="5,61,83,88"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="139,56,84,69,82,63,138,51"/>
+<area shape="rect" id="Node000008" href="$class_s_h1122_oled.html#a86155554c86a14a9b89e8c554cecb691" title="Returns the width of specified string using the currently loaded font." alt="" coords="357,101,505,144"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="559,147,505,138,506,133,559,142"/>
+<area shape="rect" id="Node000009" href="$class_s_h1122_oled.html#a2e1585db0fd1b9fcb92c561405cbcc72" title="Returns the x position required to horizontally center a given string." alt="" coords="141,83,289,125"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="341,118,289,113,290,108,341,112"/>
+<area shape="poly" id="edge9_Node000009_Node000005" title=" " alt="" coords="125,91,83,84,84,79,126,86"/>
+</map>

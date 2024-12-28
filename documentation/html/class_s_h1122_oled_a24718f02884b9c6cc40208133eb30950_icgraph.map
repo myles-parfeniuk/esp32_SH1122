@@ -1,0 +1,9 @@
+<map id="SH1122Oled::draw_ellipse_frame" name="SH1122Oled::draw_ellipse_frame">
+<area shape="rect" id="Node000001" title="Draws an ellipse frame at the specified location." alt="" coords="442,35,615,77"/>
+<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#ab260f74fc232167563981e1d10b2b6e0" title="Draws a circular frame at the specified location." alt="" coords="224,5,391,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="426,45,391,40,392,35,427,40"/>
+<area shape="rect" id="Node000004" href="$class_s_h1122_oled.html#a1da72c1ec0d254373074975aca0bb718" title="Draws a filled ellipse at the specified location." alt="" coords="221,72,394,99"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="427,72,395,76,394,71,426,67"/>
+<area shape="rect" id="Node000003" href="$class_s_h1122_oled.html#a159f736ac2228779cd736ec1010d0bfe" title="Draws a filled circle at the specified location." alt="" coords="5,13,173,40"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="208,29,173,29,173,24,208,24"/>
+</map>

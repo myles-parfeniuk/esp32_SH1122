@@ -1,0 +1,29 @@
+<map id="SH1122Oled::draw_line" name="SH1122Oled::draw_line">
+<area shape="rect" id="Node000001" title="Draws a line between two points." alt="" coords="1258,109,1415,136"/>
+<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#a24718f02884b9c6cc40208133eb30950" title="Draws an ellipse frame at the specified location." alt="" coords="805,47,978,89"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1301,103,1259,80,1210,63,1150,53,1090,50,979,57,978,51,1090,45,1151,48,1211,57,1261,75,1304,99"/>
+<area shape="rect" id="Node000006" href="$class_s_h1122_oled.html#a12600c4d2c22996c87be1446989bf7d0" title="Draws rectangular frame at the specified location." alt="" coords="131,131,320,173"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="1243,135,1080,148,893,155,669,155,321,155,321,149,669,149,893,149,1079,143,1243,130"/>
+<area shape="rect" id="Node000008" href="$class_s_h1122_oled.html#aa2a376249df70b0d7371b7848c444def" title="Fill quadrants of an ellipse frame." alt="" coords="1039,72,1197,115"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="1243,113,1197,107,1198,101,1243,107"/>
+<area shape="rect" id="Node000009" href="$class_s_h1122_oled.html#a68b5b4726aafb82116a7f9c6f4fa61f3" title="Draws a single font line, called from font_draw_lines." alt="" coords="1026,193,1210,220"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="1287,144,1156,195,1154,190,1285,139"/>
+<area shape="rect" id="Node000003" href="$class_s_h1122_oled.html#ab260f74fc232167563981e1d10b2b6e0" title="Draws a circular frame at the specified location." alt="" coords="586,5,754,48"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="789,52,754,45,755,40,790,46"/>
+<area shape="rect" id="Node000005" href="$class_s_h1122_oled.html#a1da72c1ec0d254373074975aca0bb718" title="Draws a filled ellipse at the specified location." alt="" coords="583,72,757,99"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="789,79,757,81,757,76,789,73"/>
+<area shape="rect" id="Node000004" href="$class_s_h1122_oled.html#a159f736ac2228779cd736ec1010d0bfe" title="Draws a filled circle at the specified location." alt="" coords="368,13,535,40"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="571,29,536,29,536,24,571,24"/>
+<area shape="rect" id="Node000007" href="$main_8cpp.html#a630544a7f0a2cc40d8a7fefab7e2fe70" title=" " alt="" coords="5,168,83,195"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="116,172,84,178,83,172,115,167"/>
+<area shape="poly" id="edge8_Node000008_Node000002" title=" " alt="" coords="1023,85,978,80,979,75,1024,80"/>
+<area shape="rect" id="Node000010" href="$class_s_h1122_oled.html#a82fd42daedda58b4872568f4def4fdc6" title="Draws lines/pixels for glyph being drawn." alt="" coords="813,189,970,232"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="1011,211,971,212,970,207,1010,206"/>
+<area shape="rect" id="Node000011" href="$class_s_h1122_oled.html#aa5e8a8d1e70b5c61c4d15a8adae72c96" title="Decodes and draws a single glyph/character." alt="" coords="584,189,756,232"/>
+<area shape="poly" id="edge11_Node000010_Node000011" title=" " alt="" coords="797,213,757,213,757,208,797,208"/>
+<area shape="rect" id="Node000012" href="$class_s_h1122_oled.html#ad65919c509de2a2f7dd400213c841387" title="Draws the selected glyph/character using the currently loaded font." alt="" coords="368,197,535,224"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="568,213,536,213,536,208,568,208"/>
+<area shape="rect" id="Node000013" href="$class_s_h1122_oled.html#afe2872705b72dfb528bd0832a89fc58a" title="Draws a string at the specified location using the currently loaded font." alt="" coords="141,197,310,224"/>
+<area shape="poly" id="edge13_Node000012_Node000013" title=" " alt="" coords="353,213,310,213,310,208,353,208"/>
+<area shape="poly" id="edge14_Node000013_Node000007" title=" " alt="" coords="126,197,83,190,84,185,127,192"/>
+</map>

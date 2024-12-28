@@ -1,0 +1,5 @@
+<map id="SH1122Oled::set_dc_dc_control_mod" name="SH1122Oled::set_dc_dc_control_mod">
+<area shape="rect" id="Node000001" title="Sets the DC&#45;DC voltage converter status and switch frequency. Display must be powered off before call..." alt="" coords="5,5,147,48"/>
+<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#ac6dfaaa4196a0884e4fb667f7f2074cf" title="Sends commands to SH1122 over SPI." alt="" coords="195,13,396,40"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,24,179,24,179,29,147,29"/>
+</map>

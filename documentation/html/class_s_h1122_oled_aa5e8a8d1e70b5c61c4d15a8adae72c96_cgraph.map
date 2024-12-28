@@ -1,0 +1,22 @@
+<map id="SH1122Oled::font_decode_and_draw_glyph" name="SH1122Oled::font_decode_and_draw_glyph">
+<area shape="rect" id="Node000001" title="Decodes and draws a single glyph/character." alt="" coords="5,123,178,165"/>
+<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#a04e6d8b29a6d7be2af038255c2fe0303" title="Apply rotation to x coordinate of lines being drawn for current glyph such that they match passed dir..." alt="" coords="458,5,619,48"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="114,120,163,82,193,64,225,49,279,34,336,25,442,19,442,24,337,30,281,39,227,55,195,69,166,87,118,124"/>
+<area shape="rect" id="Node000003" href="$class_s_h1122_oled.html#a61416c2cf61025eec856d9ebe723101c" title="Apply rotation to y coordinate of lines being drawn for current glyph such that they match passed dir..." alt="" coords="458,123,619,165"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="178,141,442,141,442,147,178,147"/>
+<area shape="rect" id="Node000004" href="$class_s_h1122_oled.html#af34ec9eab6c67f9b41a67ff83c9dcb1f" title="Decodes bit values from font lookup table and returns them as a signed integer." alt="" coords="226,232,398,275"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="135,164,227,211,251,223,249,227,224,216,133,168"/>
+<area shape="rect" id="Node000005" href="$class_s_h1122_oled.html#af50199e0503a8d4608cd2d798d369f5e" title="Decodes bit values from font lookup table and returns them as an unsigned integer." alt="" coords="452,211,624,253"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="178,158,437,210,436,215,177,163"/>
+<area shape="rect" id="Node000006" href="$class_s_h1122_oled.html#a82fd42daedda58b4872568f4def4fdc6" title="Draws lines/pixels for glyph being drawn." alt="" coords="233,64,391,107"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="173,120,217,108,219,113,175,125"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="398,243,436,239,437,244,399,248"/>
+<area shape="poly" id="edge7_Node000006_Node000002" title=" " alt="" coords="390,62,442,49,443,54,391,68"/>
+<area shape="poly" id="edge8_Node000006_Node000003" title=" " alt="" coords="391,103,443,117,442,122,390,108"/>
+<area shape="rect" id="Node000007" href="$class_s_h1122_oled.html#a68b5b4726aafb82116a7f9c6f4fa61f3" title="Draws a single font line, called from font_draw_lines." alt="" coords="446,72,630,99"/>
+<area shape="poly" id="edge9_Node000006_Node000007" title=" " alt="" coords="391,83,430,83,430,88,391,88"/>
+<area shape="rect" id="Node000008" href="$class_s_h1122_oled.html#afdc6accc8d7fd602781c66db6e0ce956" title="Draws a line between two points." alt="" coords="678,72,835,99"/>
+<area shape="poly" id="edge10_Node000007_Node000008" title=" " alt="" coords="631,83,663,83,663,88,631,88"/>
+<area shape="rect" id="Node000009" href="$class_s_h1122_oled.html#a003791e9b607af20e96a11b9cd074d50" title="Sets respective pixel to specified grayscale intensity." alt="" coords="883,72,1037,99"/>
+<area shape="poly" id="edge11_Node000008_Node000009" title=" " alt="" coords="835,83,867,83,867,88,835,88"/>
+</map>

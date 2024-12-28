@@ -1,0 +1,312 @@
+\doxysection{SH1122\+Oled.\+hpp}
+\hypertarget{_s_h1122_oled_8hpp_source}{}\label{_s_h1122_oled_8hpp_source}\index{components/esp32\_SH1122/SH1122Oled.hpp@{components/esp32\_SH1122/SH1122Oled.hpp}}
+\mbox{\hyperlink{_s_h1122_oled_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ standard\ library\ includes}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <math.h>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <cstring>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <cstdarg>}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ esp-\/idf\ includes}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <driver/gpio.h>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <driver/spi\_common.h>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <driver/spi\_master.h>}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#include\ <esp\_log.h>}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ <freertos/FreeRTOS.h>}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{\#include\ <freertos/task.h>}}
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#include\ <esp\_timer.h>}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{preprocessor}{\#define\ SH1122\_PIXEL\_IN\_BOUNDS(x,\ y)\ (((x\ >=\ 0)\ \&\&\ (x\ <\ SH1122Oled::WIDTH))\ \&\&\ ((y\ >=\ 0)\ \&\&\ (y\ <\ SH1122Oled::HEIGHT)))}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structsh1122__oled__cfg__t}{sh1122\_oled\_cfg\_t}}}
+\DoxyCodeLine{00024\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ spi\_host\_device\_t\ \mbox{\hyperlink{structsh1122__oled__cfg__t_af553b54b1bdc449e09a9a4c013c38043}{spi\_peripheral}};\ }
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ gpio\_num\_t\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a55e71bed986c9ac9e2296d814955d88e}{io\_mosi}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ gpio\_num\_t\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a02516a618bc825f76213c8e49db8665c}{io\_sclk}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ gpio\_num\_t\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a6b699f8bcca49ff085c8d1509dce989f}{io\_cs}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ gpio\_num\_t\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a18cbedefd08f69cdcc353caafaaee8ee}{io\_rst}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ gpio\_num\_t\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a035093973cede0ca3a9ad06eb68d243b}{io\_dc}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ spi\_dma\_chan\_t\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a7558ad775b551bda58c2f4ce27cd44bb}{dma\_cha}};\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#ifdef\ ESP32C3\_SH1122\_CONFIG}}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structsh1122__oled__cfg__t_a5c64762714e1afbf71d1302c30ce2dbf}{sh1122\_oled\_cfg\_t}}()}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{structsh1122__oled__cfg__t_af553b54b1bdc449e09a9a4c013c38043}{spi\_peripheral}}(SPI2\_HOST)}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a55e71bed986c9ac9e2296d814955d88e}{io\_mosi}}(GPIO\_NUM\_4)}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a02516a618bc825f76213c8e49db8665c}{io\_sclk}}(GPIO\_NUM\_18)}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a6b699f8bcca49ff085c8d1509dce989f}{io\_cs}}(GPIO\_NUM\_5)}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a18cbedefd08f69cdcc353caafaaee8ee}{io\_rst}}(GPIO\_NUM\_7)}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a035093973cede0ca3a9ad06eb68d243b}{io\_dc}}(GPIO\_NUM\_6)}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a7558ad775b551bda58c2f4ce27cd44bb}{dma\_cha}}(SPI\_DMA\_CH\_AUTO)}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\#elif\ defined(ESP32C6\_IMU\_CONFIG)}}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structsh1122__oled__cfg__t_a5c64762714e1afbf71d1302c30ce2dbf}{sh1122\_oled\_cfg\_t}}()}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{structsh1122__oled__cfg__t_af553b54b1bdc449e09a9a4c013c38043}{spi\_peripheral}}(SPI2\_HOST)}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a55e71bed986c9ac9e2296d814955d88e}{io\_mosi}}(GPIO\_NUM\_4)}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a02516a618bc825f76213c8e49db8665c}{io\_sclk}}(GPIO\_NUM\_18)}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a6b699f8bcca49ff085c8d1509dce989f}{io\_cs}}(GPIO\_NUM\_5)}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a18cbedefd08f69cdcc353caafaaee8ee}{io\_rst}}(GPIO\_NUM\_7)}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a035093973cede0ca3a9ad06eb68d243b}{io\_dc}}(GPIO\_NUM\_6)}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a7558ad775b551bda58c2f4ce27cd44bb}{dma\_cha}}(SPI\_DMA\_CH\_AUTO)}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structsh1122__oled__cfg__t_a5c64762714e1afbf71d1302c30ce2dbf}{sh1122\_oled\_cfg\_t}}()}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{structsh1122__oled__cfg__t_af553b54b1bdc449e09a9a4c013c38043}{spi\_peripheral}}(SPI3\_HOST)}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a55e71bed986c9ac9e2296d814955d88e}{io\_mosi}}(GPIO\_NUM\_4)}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a02516a618bc825f76213c8e49db8665c}{io\_sclk}}(GPIO\_NUM\_18)}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a6b699f8bcca49ff085c8d1509dce989f}{io\_cs}}(GPIO\_NUM\_21)}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a18cbedefd08f69cdcc353caafaaee8ee}{io\_rst}}(GPIO\_NUM\_22)}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a035093973cede0ca3a9ad06eb68d243b}{io\_dc}}(GPIO\_NUM\_23)}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a7558ad775b551bda58c2f4ce27cd44bb}{dma\_cha}}(SPI\_DMA\_CH\_AUTO)}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{structsh1122__oled__cfg__t_a50c4c7fd54df4e7148b0370b92304cc6}{sh1122\_oled\_cfg\_t}}(spi\_host\_device\_t\ \mbox{\hyperlink{structsh1122__oled__cfg__t_af553b54b1bdc449e09a9a4c013c38043}{spi\_peripheral}},\ gpio\_num\_t\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a55e71bed986c9ac9e2296d814955d88e}{io\_mosi}},\ gpio\_num\_t\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a02516a618bc825f76213c8e49db8665c}{io\_sclk}},\ gpio\_num\_t\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a6b699f8bcca49ff085c8d1509dce989f}{io\_cs}},\ gpio\_num\_t\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a18cbedefd08f69cdcc353caafaaee8ee}{io\_rst}},}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ gpio\_num\_t\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a035093973cede0ca3a9ad06eb68d243b}{io\_dc}},\ spi\_dma\_chan\_t\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a7558ad775b551bda58c2f4ce27cd44bb}{dma\_cha}}\ =\ SPI\_DMA\_CH\_AUTO)}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{structsh1122__oled__cfg__t_af553b54b1bdc449e09a9a4c013c38043}{spi\_peripheral}}(\mbox{\hyperlink{structsh1122__oled__cfg__t_af553b54b1bdc449e09a9a4c013c38043}{spi\_peripheral}})}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a55e71bed986c9ac9e2296d814955d88e}{io\_mosi}}(\mbox{\hyperlink{structsh1122__oled__cfg__t_a55e71bed986c9ac9e2296d814955d88e}{io\_mosi}})}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a02516a618bc825f76213c8e49db8665c}{io\_sclk}}(\mbox{\hyperlink{structsh1122__oled__cfg__t_a02516a618bc825f76213c8e49db8665c}{io\_sclk}})}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a6b699f8bcca49ff085c8d1509dce989f}{io\_cs}}(\mbox{\hyperlink{structsh1122__oled__cfg__t_a6b699f8bcca49ff085c8d1509dce989f}{io\_cs}})}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a18cbedefd08f69cdcc353caafaaee8ee}{io\_rst}}(\mbox{\hyperlink{structsh1122__oled__cfg__t_a18cbedefd08f69cdcc353caafaaee8ee}{io\_rst}})}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a035093973cede0ca3a9ad06eb68d243b}{io\_dc}}(\mbox{\hyperlink{structsh1122__oled__cfg__t_a035093973cede0ca3a9ad06eb68d243b}{io\_dc}})}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ ,\ \mbox{\hyperlink{structsh1122__oled__cfg__t_a7558ad775b551bda58c2f4ce27cd44bb}{dma\_cha}}(\mbox{\hyperlink{structsh1122__oled__cfg__t_a7558ad775b551bda58c2f4ce27cd44bb}{dma\_cha}})}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00087\ \}\ \mbox{\hyperlink{_s_h1122_oled_8hpp_a70dae088cdf0826fc4e703d71ec41d70}{sh1122\_oled\_cfg\_t}};}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00099\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_s_h1122_oled}{SH1122Oled}}}
+\DoxyCodeLine{00100\ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9}{FontDirection}}}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9a1f8f6a66881ca551a945cf0ab4765dc1}{left\_to\_right}},}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9ad7ea855d3aeb1a739a24e932a7bce30f}{top\_to\_bottom}},}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9a74ecbc5c277e2952aac1ac167699d74c}{right\_to\_left}},}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9ab0bbb8506521265f19fa24cf86c91b9d}{bottom\_to\_top}}}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \textcolor{keyword}{enum\ class}\ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{PixelIntensity}}}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4ab7bed2dc97436a0501ba5a774443ea64}{level\_0}},}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4ac98a679441798bdb9c194f9ca471e6cd}{level\_1}},}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a4eb5d6bd65ed1b4f5ac431b04a2cac1f}{level\_2}},}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4aee54449478c54a5a5cc4f774e3d4ba34}{level\_3}},}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a49e3c1983311a275fadc1509148f7ff1}{level\_4}},}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4ac4d34107574167d0d7df7edf1169012b}{level\_5}},}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a390f15df565c93c0a56e50b24dc0d5ec}{level\_6}},}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4af62a5fcd32eaea4a780a1e07590044f0}{level\_7}},}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a4644e8641609ebfc6592f54684a0327d}{level\_8}},}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4aba1c19b08f58adf45bdc3b1ec7031cf4}{level\_9}},}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a8e43ab279ebe8f429fcd78d6118a535e}{level\_10}},}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4acbfc013d5dd314f8f19a42c9a6bdea09}{level\_11}},}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4ab947969bfcaa4fbafe6a9baad232c870}{level\_12}},}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a0e2058acb38c1be6aaa88110a6113de1}{level\_13}},}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a284db4add314301df3eb5081e9ae00bf}{level\_14}},}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a823f22afd79716eecd814bcc35a68f00}{level\_15}},}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a30ef25429edb51d4600306155fd454b1}{level\_transparent}},}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a2ffe4e77325d9a7152f7086ea7aa5114}{max}}}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_a7f420d6b65d23d7f985403bcbb5678c4}{SH1122Oled}}(\mbox{\hyperlink{structsh1122__oled__cfg__t}{sh1122\_oled\_cfg\_t}}\ settings\ =\ \mbox{\hyperlink{_s_h1122_oled_8hpp_a70dae088cdf0826fc4e703d71ec41d70}{sh1122\_oled\_cfg\_t}}());}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_adc65debb1bc5cfc1d999e26d82a50c11}{update\_screen}}();}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_ae9c9bf415c7848c01e52596556a3bb6e}{clear\_buffer}}();}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_a003791e9b607af20e96a11b9cd074d50}{set\_pixel}}(uint16\_t\ x,\ uint16\_t\ y,\ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{PixelIntensity}}\ intensity);}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_afdc6accc8d7fd602781c66db6e0ce956}{draw\_line}}(int16\_t\ x\_1,\ int16\_t\ y\_1,\ int16\_t\ x\_2,\ int16\_t\ y\_2,\ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{PixelIntensity}}\ intensity);}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_a12600c4d2c22996c87be1446989bf7d0}{draw\_rectangle\_frame}}(int16\_t\ x\_1,\ int16\_t\ y\_1,\ int16\_t\ width,\ int16\_t\ height,\ int16\_t\ thickness,\ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{PixelIntensity}}\ intensity);}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_a6102a5313bff0ba8a4725b803309789c}{draw\_rectangle}}(int16\_t\ x\_1,\ int16\_t\ y\_1,\ int16\_t\ width,\ int16\_t\ height,\ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{PixelIntensity}}\ intensity);}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_ab260f74fc232167563981e1d10b2b6e0}{draw\_circle\_frame}}(int16\_t\ x\_c,\ int16\_t\ y\_c,\ int16\_t\ r,\ int16\_t\ thickness,\ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{PixelIntensity}}\ intensity);}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_a159f736ac2228779cd736ec1010d0bfe}{draw\_circle}}(int16\_t\ x\_c,\ int16\_t\ y\_c,\ int16\_t\ r,\ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{PixelIntensity}}\ intensity);}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_a24718f02884b9c6cc40208133eb30950}{draw\_ellipse\_frame}}(int16\_t\ x\_c,\ int16\_t\ y\_c,\ int16\_t\ r\_x,\ int16\_t\ r\_y,\ int16\_t\ thickness,\ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{PixelIntensity}}\ intensity);}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_a1da72c1ec0d254373074975aca0bb718}{draw\_ellipse}}(int16\_t\ x\_c,\ int16\_t\ y\_c,\ int16\_t\ r\_x,\ int16\_t\ r\_y,\ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{PixelIntensity}}\ intensity);}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_ad65919c509de2a2f7dd400213c841387}{draw\_glyph}}(uint16\_t\ x,\ uint16\_t\ y,\ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{PixelIntensity}}\ intensity,\ uint16\_t\ encoding);}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_afe2872705b72dfb528bd0832a89fc58a}{draw\_string}}(uint16\_t\ x,\ uint16\_t\ y,\ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{PixelIntensity}}\ intensity,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ format,\ ...);}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_aa8af3daa933bda16bcf067f8db12f78b}{draw\_bitmap}}(uint16\_t\ x,\ uint16\_t\ y,\ \textcolor{keyword}{const}\ uint8\_t*\ bitmap,\ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{PixelIntensity}}\ bg\_intensity\ =\ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4a30ef25429edb51d4600306155fd454b1}{PixelIntensity::level\_transparent}});}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_ab7bcdc3fa8313f91c05d37570816fb17}{load\_font}}(\textcolor{keyword}{const}\ uint8\_t*\ font);}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_ae1d7a94ff416bc9a558a1fc4c7ff35ec}{set\_font\_direction}}(\mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9}{FontDirection}}\ dir);}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_a86155554c86a14a9b89e8c554cecb691}{font\_get\_string\_width}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ format,\ ...);}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_a8322d2ced6b528001c14a6fd695ef1db}{font\_get\_string\_height}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ format,\ ...);}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_ab7eefc47c2dc09a37bdb6d8d90982e04}{font\_get\_glyph\_width}}(uint16\_t\ encoding);}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \ \ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_a6ed995d587a6b3d20e3fa082130c35cb}{font\_get\_glyph\_height}}(uint16\_t\ encoding);}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \ \ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_a2e1585db0fd1b9fcb92c561405cbcc72}{font\_get\_string\_center\_x}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ str);}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_a469839045764fccd33cf3483ce1d2447}{font\_get\_string\_center\_y}}(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}*\ str);}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_a92010fddd147fc64038929dc7b40243c}{take\_screen\_shot}}();}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_a96b1b46a7c1a22561b855b5aad92457f}{reset}}();}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_ab154cadf1937648d6120898aa3d6bc04}{power\_off}}();}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_a3451d7390126f548201a805f5e6abc9d}{power\_on}}();}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_aeff5399c17bc82f44742d033739d361c}{set\_contrast}}(uint8\_t\ contrast\_reg\_val);}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_ab99bd32e75f8e779bd4d4d36a2ebe9a5}{set\_multiplex\_ratio}}(uint8\_t\ multiplex\_ratio\_reg\_val);}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_ac16ce3e20b50763e3df0772a50aa4283}{set\_dc\_dc\_control\_mod}}(uint8\_t\ mod);}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_a7a22357242e851f2a64ea8444f0dc1ca}{set\_oscillator\_freq}}(uint8\_t\ freq\_reg\_val);}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_a50494e4bcd3e1b6d159f5bc019e165e6}{set\_display\_offset\_mod}}(uint8\_t\ mod);}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_ac83a69bbc79dc3c057179b9d958f6a85}{set\_precharge\_period}}(uint8\_t\ period\_reg\_val);}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_aaa87c3bccddc1da7cebcf8b8db31639c}{set\_vcom}}(uint8\_t\ vcom\_reg\_val);}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_a29f8aa9893da7d04dfc785bd6781e599}{set\_vseg}}(uint8\_t\ vseg\_reg\_val);}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_af97ba3a723487a6942b811c36c4c3a52}{set\_row\_addr}}(uint8\_t\ row\_addr);}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_a5f14953bbe4fb051025d0501ec516f69}{set\_start\_line}}(uint8\_t\ start\_line);}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_a9555edfce2feaf0d4e0d61f63c6ae58e}{set\_vseg\_discharge\_level}}(uint8\_t\ discharge\_level);}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_a121a11c25273b6e4cc90513274b6dd04}{set\_high\_column\_address}}(uint8\_t\ high\_column\_addr);}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_af1417429d4dcd4153176af27af55e50a}{set\_low\_column\_address}}(uint8\_t\ low\_column\_addr);}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_ac1fc1026116fad7874e1230efbc10c11}{set\_inverted\_intensity}}(\textcolor{keywordtype}{bool}\ inverted);}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_aed0f6a05c8af394bf3688477375dd7c3}{set\_segment\_remap}}(\textcolor{keywordtype}{bool}\ remapped);}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_a2445641bf8444f5f36e3943ff2f4e576}{set\_orientation}}(\textcolor{keywordtype}{bool}\ flipped);}
+\DoxyCodeLine{00180\ }
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_a19a266d7e191a80f5aa3830f061523cd}{WIDTH}}\ =\ 256U;\ }
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_a2262e8942e3aac1dfd2b01220a2fc7d4}{HEIGHT}}\ =\ 64U;\ }
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t}{sh1122\_oled\_font\_info\_t}}}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t*\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_a59b256f585fda97f90f0de728f76ccd6}{font}};\ }
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ offset\ 0\ */}}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_a6dcf83d752279ec90d79f1f57f487bfb}{glyph\_cnt}};\ \ }
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_ab29b4e111f0c1bfae0a7dbdccc35d126}{bbx\_mode}};\ \ \ }
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_a14984328419684522f9f6c56627ed114}{bits\_per\_0}};\ }
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_a82c1d2c2d9ea57e4b32fde3f9a33e436}{bits\_per\_1}};\ }
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ offset\ 4\ */}}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_a0176fd401b3d5b4bf1776669fe705a11}{bits\_per\_char\_width}};\ \ }
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_a9ab5dcbd3f477fc641fba0084a518c9b}{bits\_per\_char\_height}};\ }
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_accef431f2dde484644e19fecd094d362}{bits\_per\_char\_x}};\ \ \ \ \ \ }
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_aca827e14e0699be535bc2832393bbbcb}{bits\_per\_char\_y}};\ \ \ \ \ \ }
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_a4166cdffafaca8bb0c44308924557412}{bits\_per\_delta\_x}};\ \ \ \ \ }
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ offset\ 9\ */}}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_aa6fca0c660aa279455da29537e1521bd}{max\_char\_width}};\ \ }
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_ab9a8c494e8dd555366677f4fbfd6c3e9}{max\_char\_height}};\ }
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_a50b430655cad2fa13321517fac198016}{x\_offset}};\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_af716343c347f1db346f9b049b50651d1}{y\_offset}};\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ offset\ 13\ */}}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_a22d23f5e76ad5f9036c2f33189e1770c}{ascent\_A}};\ \ \ \ \ }
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_a21267f799cac9fce0ac4103e3da5b86e}{descent\_g}};\ \ \ \ }
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_a9e776a76a366091c4d1f07d791a5f68a}{ascent\_para}};\ \ }
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_acc72c1ffce8b3100264c13028e3fbb31}{descent\_para}};\ }
+\DoxyCodeLine{00213\ }
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{/*\ offset\ 17\ */}}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_a1ff1cd9c34d77f2c4051b3a741df4f8b}{start\_pos\_upper\_A}};\ }
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_ac2fd74e634bc327ba77e4bdce1d57e57}{start\_pos\_lower\_a}};\ }
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t_afc8a0db8ee2111d068855aad49ecb1c9}{start\_pos\_unicode}};\ }
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \}\ \mbox{\hyperlink{class_s_h1122_oled_a3c3d79af886110fb86315a3259b752f8}{sh1122\_oled\_font\_info\_t}};}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00223\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t}{sh1122\_oled\_font\_decode\_t}}}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t*\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_ac89132faf969500f8b64a3a07772af11}{decode\_ptr}};\ }
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a7a23e855a6ca199b69b3d2c931577946}{bit\_pos}};\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a936e37ad68a9e797b99bbf01956ca16b}{glyph\_width}};\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_adbb6e3d28e17e1b4f8ce0952cee6e6fe}{glyph\_height}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{00229\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a544b0cdda146a01944838b710d0416b7}{x}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_aba0bfe6232b5bb5d4c2322d2730bc943}{y}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_af97a1c2290538086cc098c84b4f401db}{target\_x}};\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00232\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint16\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a1e4465efe63ae22ba748a699a661455a}{target\_y}};\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00233\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a23cc69ce9554716233d24106275e97ef}{glyph\_x\_offset}};\ \ \ \ \ }
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ uint8\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__decode__t_a5aabbe7032a4f9258b4c33a9e5a5494e}{fg\_intensity}};\ \ \ \ \ \ }
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \ \ \}\ \mbox{\hyperlink{class_s_h1122_oled_abdb36da48c6c30f11d35686d91dc030c}{sh1122\_oled\_font\_decode\_t}};}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__2d__point__t}{sh1122\_2d\_point\_t}}}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int16\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__2d__point__t_a956ad7697186c30d90f823260b66013f}{x}};}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ int16\_t\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__2d__point__t_a9cb4e3730050745381ae0796f8289fbd}{y}};}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \}\ \mbox{\hyperlink{class_s_h1122_oled_a70af700c5576f1f8f6e4001b92af9e86}{sh1122\_2d\_point\_t}};}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_aba88d2d86818ead888fd67013092f041}{default\_init}}();}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_ac6dfaaa4196a0884e4fb667f7f2074cf}{send\_commands}}(uint8\_t*\ cmds,\ uint16\_t\ length);}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_afbe7825390dc2b04088519ffeca5b77d}{send\_data}}(uint8\_t*\ data,\ uint16\_t\ length);}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_aa2a376249df70b0d7371b7848c444def}{fill\_ellipse\_frame\_quadrant}}(}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<sh1122\_2d\_point\_t>\&\ outter\_points,\ std::vector<sh1122\_2d\_point\_t>\&\ inner\_points,\ int16\_t\ y\_c,\ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{PixelIntensity}}\ intensity);}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_aea74a84a1a7c77538cf10acd006fedfa}{get\_ascii\_next}}(uint8\_t\ b);}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ uint8\_t*\ \mbox{\hyperlink{class_s_h1122_oled_a08193b37bce29edab80eca0a174a98e3}{font\_get\_glyph\_data}}(uint16\_t\ encoding);}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_ab7eefc47c2dc09a37bdb6d8d90982e04}{font\_get\_glyph\_width}}(\mbox{\hyperlink{class_s_h1122_oled_abdb36da48c6c30f11d35686d91dc030c}{sh1122\_oled\_font\_decode\_t}}*\ decode,\ uint16\_t\ encoding);}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_aa79b0bc9fe78fbf5005bb196f2be01e5}{font\_setup\_glyph\_decode}}(\mbox{\hyperlink{class_s_h1122_oled_abdb36da48c6c30f11d35686d91dc030c}{sh1122\_oled\_font\_decode\_t}}*\ decode,\ \textcolor{keyword}{const}\ uint8\_t*\ glyph\_data);}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ int8\_t\ \mbox{\hyperlink{class_s_h1122_oled_aa5e8a8d1e70b5c61c4d15a8adae72c96}{font\_decode\_and\_draw\_glyph}}(\mbox{\hyperlink{class_s_h1122_oled_abdb36da48c6c30f11d35686d91dc030c}{sh1122\_oled\_font\_decode\_t}}*\ decode,\ \textcolor{keyword}{const}\ uint8\_t*\ glyph\_data);}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_af50199e0503a8d4608cd2d798d369f5e}{font\_decode\_get\_unsigned\_bits}}(\mbox{\hyperlink{class_s_h1122_oled_abdb36da48c6c30f11d35686d91dc030c}{sh1122\_oled\_font\_decode\_t}}*\ decode,\ uint8\_t\ cnt);}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ int8\_t\ \mbox{\hyperlink{class_s_h1122_oled_af34ec9eab6c67f9b41a67ff83c9dcb1f}{font\_decode\_get\_signed\_bits}}(\mbox{\hyperlink{class_s_h1122_oled_abdb36da48c6c30f11d35686d91dc030c}{sh1122\_oled\_font\_decode\_t}}*\ decode,\ uint8\_t\ cnt);}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_a61416c2cf61025eec856d9ebe723101c}{font\_apply\_direction\_y}}(uint16\_t\ dy,\ int8\_t\ x,\ int8\_t\ y,\ \mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9}{FontDirection}}\ dir);}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_a04e6d8b29a6d7be2af038255c2fe0303}{font\_apply\_direction\_x}}(uint16\_t\ dx,\ int8\_t\ x,\ int8\_t\ y,\ \mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9}{FontDirection}}\ dir);}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_a82fd42daedda58b4872568f4def4fdc6}{font\_draw\_lines}}(\mbox{\hyperlink{class_s_h1122_oled_abdb36da48c6c30f11d35686d91dc030c}{sh1122\_oled\_font\_decode\_t}}*\ decode,\ uint8\_t\ len,\ uint8\_t\ is\_foreground);}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_a68b5b4726aafb82116a7f9c6f4fa61f3}{font\_draw\_line}}(\mbox{\hyperlink{class_s_h1122_oled_abdb36da48c6c30f11d35686d91dc030c}{sh1122\_oled\_font\_decode\_t}}*\ decode,\ int16\_t\ x,\ int16\_t\ y,\ uint16\_t\ length,\ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{PixelIntensity}}\ intensity);}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_a3474f62559f1422c513f268bd0ef1d0e}{font\_lookup\_table\_read\_char}}(\textcolor{keyword}{const}\ uint8\_t*\ font,\ uint8\_t\ offset);}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_af61635f67414cacee544f05623706ef0}{font\_lookup\_table\_read\_word}}(\textcolor{keyword}{const}\ uint8\_t*\ font,\ uint8\_t\ offset);}
+\DoxyCodeLine{00262\ }
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_a0d13ae8a730db7045001391a8fe42f29}{bitmap\_decode\_pixel\_block}}(\textcolor{keyword}{const}\ uint8\_t**\ data\_ptr,\ int16\_t\&\ r\_val\_lim,\ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{PixelIntensity}}\&\ intensity);}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_ae9c2ec8d6c8057fd79c42bf61954b3d6}{bitmap\_read\_byte}}(\textcolor{keyword}{const}\ uint8\_t**\ data\_ptr,\ int16\_t\&\ r\_val\_lim,\ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{PixelIntensity}}\&\ intensity);}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_s_h1122_oled_a3f8a731bd280d7ed48e4e9f2b1f57608}{bitmap\_read\_word}}(\textcolor{keyword}{const}\ uint8\_t**\ data\_ptr,\ int16\_t\&\ r\_val\_lim,\ \mbox{\hyperlink{class_s_h1122_oled_ad8b515d4fef52e11ed035cc7b29d5fe4}{PixelIntensity}}\&\ intensity);}
+\DoxyCodeLine{00266\ }
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{structsh1122__oled__cfg__t}{sh1122\_oled\_cfg\_t}}\ \mbox{\hyperlink{class_s_h1122_oled_a0d5df271e419f1a5a8df11acb2aa7f73}{oled\_cfg}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ spi\_bus\_config\_t\ \mbox{\hyperlink{class_s_h1122_oled_a8aaa71e256dcebd9e99082eba78923b8}{spi\_bus\_cfg}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ spi\_device\_interface\_config\_t\ \mbox{\hyperlink{class_s_h1122_oled_aa92164c7db52556e7e16f14d5c16b5f6}{oled\_interface\_cfg}};\ }
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ spi\_device\_handle\_t\ \mbox{\hyperlink{class_s_h1122_oled_a23d90d2c3e8ba08c8bc924da308fe9d8}{spi\_hdl}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00271\ }
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_s_h1122_oled_ade910ac73b72ef6741675ec92e50a1f9}{FontDirection}}\ \mbox{\hyperlink{class_s_h1122_oled_a4fb503745866f11f1785305129088203}{font\_dir}};\ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{struct_s_h1122_oled_1_1sh1122__oled__font__info__t}{sh1122\_oled\_font\_info\_t}}\ \mbox{\hyperlink{class_s_h1122_oled_ad58c7db5f63260d4611cfccae4510c8b}{font\_info}};\ }
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_afd462082bdd4ad29573d20d5aa5e5d3a}{FRAME\_BUFFER\_LENGTH}}\ =\ \mbox{\hyperlink{class_s_h1122_oled_a19a266d7e191a80f5aa3830f061523cd}{WIDTH}}\ *\ \mbox{\hyperlink{class_s_h1122_oled_a2262e8942e3aac1dfd2b01220a2fc7d4}{HEIGHT}}\ /\ 2;\ }
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_abee6954ef1412b2596d11711386dc957}{frame\_buffer}}[\mbox{\hyperlink{class_s_h1122_oled_afd462082bdd4ad29573d20d5aa5e5d3a}{FRAME\_BUFFER\_LENGTH}}];\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_ad3beec9ffecbef962900d51811dd6497}{FRAME\_CHUNK\_1\_LENGTH}}\ =}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_afd462082bdd4ad29573d20d5aa5e5d3a}{FRAME\_BUFFER\_LENGTH}}\ /}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 3;\ }
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_a5346d620aa6154288c2fd501671dedc8}{FRAME\_CHUNK\_2\_LENGTH}}\ =}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_ad3beec9ffecbef962900d51811dd6497}{FRAME\_CHUNK\_1\_LENGTH}};\ }
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_a6dec7aad7d1c51d1f8e6706e2f5a6aa9}{FRAME\_CHUNK\_3\_LENGTH}}\ =}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_afd462082bdd4ad29573d20d5aa5e5d3a}{FRAME\_BUFFER\_LENGTH}}\ -\/\ \mbox{\hyperlink{class_s_h1122_oled_ad3beec9ffecbef962900d51811dd6497}{FRAME\_CHUNK\_1\_LENGTH}}\ -\/}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_a5346d620aa6154288c2fd501671dedc8}{FRAME\_CHUNK\_2\_LENGTH}};\ }
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_a902b63747363fe1ab33c529602e420b8}{FRAME\_CHUNK\_LENGTHS}}[3]\ =\ \{\mbox{\hyperlink{class_s_h1122_oled_ad3beec9ffecbef962900d51811dd6497}{FRAME\_CHUNK\_1\_LENGTH}},\ \mbox{\hyperlink{class_s_h1122_oled_a5346d620aa6154288c2fd501671dedc8}{FRAME\_CHUNK\_2\_LENGTH}},}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_s_h1122_oled_a6dec7aad7d1c51d1f8e6706e2f5a6aa9}{FRAME\_CHUNK\_3\_LENGTH}}\};\ }
+\DoxyCodeLine{00287\ }
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ bitmap\ decoding}}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_aeefac42005c9109aed9106154da435d6}{BITMAP\_DECODE\_WORD\_FLG\_BIT}}\ =\ BIT7;\ \ \ \ }
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_a012f800031e09a22e78a893b0714aaac}{BITMAP\_DECODE\_R\_VAL\_LOW\_BIT\_POS}}\ =\ 5;\ }
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_a71d34a2f0329c74df4c47c6e63f4f43b}{BITMAP\_DECODE\_R\_VAL\_LOW\_MASK}}\ =}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (BIT7\ |\ BIT6\ |\ BIT5);\ }
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint16\_t\ \mbox{\hyperlink{class_s_h1122_oled_aa8c21f166a3287affe10d3eee7c40e27}{BITMAP\_DECODE\_R\_VAL\_B\_MASK}}\ =}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (BIT6\ |\ BIT5);\ }
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_a3ecc1f97866aafeaa6f5d4d234632d69}{BITMAP\_DECODE\_PIXEL\_INTENSITY\_MASK}}\ =}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (BIT4\ |\ BIT3\ |\ BIT2\ |\ BIT1\ |\ BIT0);\ }
+\DoxyCodeLine{00297\ }
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ spi}}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint64\_t\ \mbox{\hyperlink{class_s_h1122_oled_aefff5f5f6dc7e25b86b8ed4661fc6c33}{SPI\_CLK\_SPEED\_HZ}}\ =\ 8000000ULL;\ \ \ \ }
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint64\_t\ \mbox{\hyperlink{class_s_h1122_oled_a24b3de23489ca7f901e00cf7197134c1}{SPI\_TRANS\_TIMEOUT\_MS}}\ =\ 10ULL;\ \ \ \ \ }
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_a2964b2a282a8d6a2cba6d2cdf2e234e1}{SPI\_INTERRUPT\_MODE\_QUEUE\_SIZE}}\ =\ 1;\ }
+\DoxyCodeLine{00302\ }
+\DoxyCodeLine{00303\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ commands}}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_a1c124bd3383f372bf6b8c7b2d5f89643}{OLED\_CMD\_POWER\_ON}}\ =\ 0xAF;\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_aca3d70952aae528ab2619c12e766eff4}{OLED\_CMD\_POWER\_OFF}}\ =\ 0xAE;\ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_ac17fd82e0721177f795f9517ebdacb55}{OLED\_CMD\_SET\_ROW\_ADDR}}\ =\ 0xB0;\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_a405304572afe85841b7ca9e866f5dc46}{OLED\_CMD\_SCAN\_0\_TO\_N}}\ =\ 0xC0;\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_a5d3d96475512d084e8bf3cf7e2aded3c}{OLED\_CMD\_SCAN\_N\_TO\_0}}\ =\ 0xC8;\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_a9bdbfba1d14f4bb8e2dc9895b86dce8f}{OLED\_CMD\_NORM\_SEG\_MAP}}\ =\ 0xA0;\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_a371303be5a154299a6c68d457e9ef84d}{OLED\_CMD\_REV\_SEG\_MAP}}\ =\ 0xA1;\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_a14a5f7919b7bd8557214b7d52cbed0c6}{OLED\_CMD\_SET\_MULTIPLEX\_RATION}}\ =\ 0xA8;\ }
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_aada79481bc61abadb5ef7583547907e3}{OLED\_CMD\_SET\_DC\_DC\_CONTROL\_MOD}}\ =}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0xAD;\ }
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_afe27cc5858383bdb9db3a33908a0c9ae}{OLED\_CMD\_SET\_OSCILLATOR\_FREQ}}\ =\ 0xD5;\ \ \ }
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_a3bd058540cc75517a669c3d879b9e2bc}{OLED\_CMD\_SET\_DISP\_START\_LINE}}\ =\ 0x40;\ \ \ }
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_ad5786ef911ff07670eb8cd1e71f26b95}{OLED\_CMD\_SET\_DISP\_CONTRAST}}\ =\ 0x81;\ \ \ \ \ }
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_ae56af72f473123f999a94bc06009340d}{OLED\_CMD\_SET\_DISP\_OFFSET\_MOD}}\ =\ 0xD3;\ \ \ }
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_a97817cc6d38374b164784b61fd1bd04c}{OLED\_CMD\_SET\_PRE\_CHARGE\_PERIOD}}\ =\ 0xD9;\ }
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_aecc270914ae7872e0167b162f183776e}{OLED\_CMD\_SET\_VCOM}}\ =\ 0xDB;\ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_aee2702c845eedc85afb91116eeb2e362}{OLED\_CMD\_SET\_VSEG}}\ =\ 0xDC;\ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_a993475a6e62043c8248ed296fac2e98a}{OLED\_CMD\_SET\_DISCHARGE\_LEVEL}}\ =\ 0x30;\ \ \ }
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_ab5333e4f1fbd97f95120a4f413c78e18}{OLED\_CMD\_SET\_NORMAL\_DISPLAY}}\ =\ 0xA6;\ \ \ \ }
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_a5514cdcbf77f0f9f54a0be622e9e3ce2}{OLED\_CMD\_SET\_INV\_DISPLAY}}\ =\ 0xA7;\ \ \ \ \ \ \ }
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_a83f3cd54480f03fb4d3bc30118db0e57}{OLED\_CMD\_SET\_HIGH\_COLUMN\_ADDR}}\ =\ 0x10;\ \ }
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ uint8\_t\ \mbox{\hyperlink{class_s_h1122_oled_a06838f47f318807fb74aedc756d4ecf4}{OLED\_CMD\_SET\_LOW\_COLUMN\_ADDR}}\ =\ 0x00;\ \ \ }
+\DoxyCodeLine{00326\ }
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{char}*\ \mbox{\hyperlink{class_s_h1122_oled_af39205d189bbc123188e770af948aeec}{TAG}}\ =\ \textcolor{stringliteral}{"{}SH1122Oled"{}};\ }
+\DoxyCodeLine{00328\ \};}
+
+\end{DoxyCode}
