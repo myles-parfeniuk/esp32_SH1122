@@ -1,7 +1,0 @@
-<map id="SH1122Oled::load_font" name="SH1122Oled::load_font">
-<area shape="rect" id="Node000001" title="Loads a font for drawing strings and glyphs." alt="" coords="5,47,160,73"/>
-<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#a3474f62559f1422c513f268bd0ef1d0e" title="Reads an 8 bit value from specified font lookup table." alt="" coords="208,5,376,48"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,45,192,40,193,45,161,50"/>
-<area shape="rect" id="Node000003" href="$class_s_h1122_oled.html#af61635f67414cacee544f05623706ef0" title="Reads a 16 bit value from specified font lookup table." alt="" coords="208,72,376,115"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="161,70,193,75,192,80,160,75"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="SH1122Oled::font_get_string_width" name="SH1122Oled::font_get_string_width">
-<area shape="rect" id="Node000001" title="Returns the width of specified string using the currently loaded font." alt="" coords="202,5,350,48"/>
-<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#a2e1585db0fd1b9fcb92c561405cbcc72" title="Returns the x position required to horizontally center a given string." alt="" coords="5,5,154,48"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="186,29,154,29,154,24,186,24"/>
-</map>

@@ -1,7 +1,0 @@
-<map id="SH1122Oled::set_high_column_address" name="SH1122Oled::set_high_column_address">
-<area shape="rect" id="Node000001" title="Sets the high column address of display. Display must be powered off before calling." alt="" coords="441,5,592,48"/>
-<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#aba88d2d86818ead888fd67013092f041" title="Sends commands to initialize display for use." alt="" coords="229,13,393,40"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="426,29,394,29,394,24,426,24"/>
-<area shape="rect" id="Node000003" href="$class_s_h1122_oled.html#a7f420d6b65d23d7f985403bcbb5678c4" title="SH1122Oled constructor." alt="" coords="5,13,181,40"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="213,29,181,29,181,24,213,24"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="SH1122Oled::set_precharge_period" name="SH1122Oled::set_precharge_period">
-<area shape="rect" id="Node000001" title="Sets duration of precharge/discharge period of display. Display must be powered off before calling." alt="" coords="5,5,190,48"/>
-<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#ac6dfaaa4196a0884e4fb667f7f2074cf" title="Sends commands to SH1122 over SPI." alt="" coords="238,13,439,40"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="190,24,222,24,222,29,190,29"/>
-</map>

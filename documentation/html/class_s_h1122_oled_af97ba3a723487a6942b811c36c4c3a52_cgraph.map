@@ -1,5 +1,0 @@
-<map id="SH1122Oled::set_row_addr" name="SH1122Oled::set_row_addr">
-<area shape="rect" id="Node000001" title="Sets the current row address in display internal RAM. Display must be powered off before calling." alt="" coords="5,5,185,32"/>
-<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#ac6dfaaa4196a0884e4fb667f7f2074cf" title="Sends commands to SH1122 over SPI." alt="" coords="233,5,434,32"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="185,16,217,16,217,21,185,21"/>
-</map>

@@ -1,5 +1,0 @@
-<map id="SH1122Oled::update_screen" name="SH1122Oled::update_screen">
-<area shape="rect" id="Node000001" title="Updates OLED display with current frame buffer." alt="" coords="5,5,147,48"/>
-<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#afbe7825390dc2b04088519ffeca5b77d" title="Sends data to SH1122 over SPI." alt="" coords="195,13,357,40"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,24,179,24,179,29,147,29"/>
-</map>

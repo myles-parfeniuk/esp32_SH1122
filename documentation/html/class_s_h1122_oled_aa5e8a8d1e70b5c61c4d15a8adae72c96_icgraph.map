@@ -1,7 +1,0 @@
-<map id="SH1122Oled::font_decode_and_draw_glyph" name="SH1122Oled::font_decode_and_draw_glyph">
-<area shape="rect" id="Node000001" title="Decodes and draws a single glyph/character." alt="" coords="437,5,609,48"/>
-<area shape="rect" id="Node000002" href="$class_s_h1122_oled.html#ad65919c509de2a2f7dd400213c841387" title="Draws the selected glyph/character using the currently loaded font." alt="" coords="222,13,389,40"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="422,29,389,29,389,24,422,24"/>
-<area shape="rect" id="Node000003" href="$class_s_h1122_oled.html#afe2872705b72dfb528bd0832a89fc58a" title="Draws a string at the specified location using the currently loaded font." alt="" coords="5,13,174,40"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="206,29,174,29,174,24,206,24"/>
-</map>
