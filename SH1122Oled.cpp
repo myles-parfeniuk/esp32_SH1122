@@ -1729,6 +1729,7 @@ void SH1122Oled::default_init()
  */
 void SH1122Oled::send_commands(uint8_t* cmds, uint16_t length)
 {
+    gpio_set_level(oled_cfg.io_cs, 0);
     gpio_set_level(oled_cfg.io_dc, 0);
     spi_transaction_t t;
     spi_transaction_t* rt;
@@ -1739,6 +1740,7 @@ void SH1122Oled::send_commands(uint8_t* cmds, uint16_t length)
     t.flags = 0;
     spi_device_queue_trans(spi_hdl, &t, portMAX_DELAY);
     spi_device_get_trans_result(spi_hdl, &rt, portMAX_DELAY);
+    gpio_set_level(oled_cfg.io_cs, 1);
 }
 
 /**
