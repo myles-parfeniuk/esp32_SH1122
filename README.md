@@ -213,6 +213,61 @@ To use a font:
     int my_number = 1122;
     oled.draw_string(x, y, SH1122Oled::PixelIntensity::level_15, "my number %d", my_number); 
     ```
+
+**NOTE:**  
+
+If you would like to use utf-8 encoded strings, call `load_font_utf8()` instead of `load_font()`, here is an example:  
+```cpp
+#include <stdio.h>
+#include "SH1122Oled.hpp"
+#include "fonts/sh1122_font_8x13_t_cyrillic.hpp"
+#include "fonts/sh1122_font_f12_b_t_japanese1.hpp"
+#include "fonts/sh1122_font_etl14thai_t.hpp"
+#include "fonts/sh1122_font_shylock_nbp_t_all.hpp"
+
+extern "C" void app_main(void)
+{
+    SH1122Oled oled; // using default initialization
+
+    uint16_t x = 0U;
+    uint16_t y = 0U;
+
+    while (1)
+    {
+
+        oled.clear_buffer(); // clear buffer of previous frame before drawing
+
+        x = 5U;
+        y = 0U;
+
+        // load cyrillic font and draw string
+        SH1122Oled::load_font_utf8(sh1122_font_8x13_t_cyrillic);
+        oled.draw_string(x, y, SH1122Oled::PixelIntensity::level_15, "Привет Мир!");
+
+        y += 25;
+
+        // load japanese font and draw string
+        SH1122Oled::load_font_utf8(sh1122_font_f12_b_t_japanese1);
+        oled.draw_string(x, y, SH1122Oled::PixelIntensity::level_15, "こんにちは世界!");
+
+        y += 10;
+
+        // load thai font and draw string
+        SH1122Oled::load_font_utf8(sh1122_font_etl14thai_t);
+        oled.draw_string(x, y, SH1122Oled::PixelIntensity::level_15, "สวัสดีโลก!");
+
+        y += 15;
+
+        // load greek font and draw string
+        SH1122Oled::load_font_utf8(sh1122_font_shylock_nbp_t_all);
+        oled.draw_string(x, y, SH1122Oled::PixelIntensity::level_15, "Γειά σου Κόσμε!");
+
+        oled.update_screen(); // send the current buffer to the screen
+
+        vTaskDelay(50 / portTICK_PERIOD_MS);
+    }
+}
+```
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Taking Screenshots

@@ -111,9 +111,9 @@ void SH1122Oled::set_pixel(uint16_t x, uint16_t y, PixelIntensity intensity)
             uint8_t* pixel = (frame_buffer + x_it + y_it);
 
             if (high_byte == 1)
-                *pixel = ((uint8_t) intensity & 0x0F) | (*pixel & 0xF0);
+                *pixel = (static_cast<uint8_t>(intensity) & 0x0FU) | (*pixel & 0xF0U);
             else
-                *pixel = (((uint8_t) intensity << 4) & 0xF0) | (*pixel & 0x0F);
+                *pixel = ((static_cast<uint8_t>(intensity) << 4U) & 0xF0U) | (*pixel & 0x0FU);
         }
 }
 
@@ -453,7 +453,7 @@ uint16_t SH1122Oled::draw_glyph(uint16_t x, uint16_t y, PixelIntensity intensity
     }
 
     decode.target_y = y;
-    decode.fg_intensity = (uint8_t) intensity;
+    decode.fg_intensity = static_cast<uint8_t>(intensity);
 
     glyph_ptr = NULL;
 
@@ -697,6 +697,9 @@ uint16_t SH1122Oled::font_get_string_width(const char* format, ...)
     va_list args;
     uint16_t size;
 
+    utf8_encoding = 0U;
+    utf8_state = 0U;
+
     // cannot get string width without font info
     if (font_info.font == nullptr)
     {
@@ -727,9 +730,9 @@ uint16_t SH1122Oled::font_get_string_width(const char* format, ...)
     {
         encoding = get_next_char_cb(*str); // get next character
 
-        if (encoding == 0x0ffff)
+        if (encoding == 0x0FFFFU)
             break;
-        if (encoding != 0x0fffe)
+        if (encoding != 0x0FFFEU)
         {
             dx = font_get_glyph_width(&decode, encoding); // get the glyph width
             if (initial_x_offset == -64)
@@ -866,7 +869,7 @@ void SH1122Oled::take_screen_shot()
     printf("TIMESTAMP %lld\n\r", esp_timer_get_time());
     for (int i = 0; i < FRAME_BUFFER_LENGTH; i += 2)
     {
-        encoded_val = (((uint16_t) frame_buffer[i + 1] << 8) & 0xFF00) | ((uint16_t) frame_buffer[i] & 0x00FF);
+        encoded_val = ((static_cast<uint16_t>(frame_buffer[i + 1]) << 8U) & 0xFF00U) | (static_cast<uint16_t>(frame_buffer[i]) & 0x00FFU);
         index += snprintf(chunk_buffer + index, CHUNK_BUFFER_LENGTH - index, " %d,", encoded_val);
 
         if (index > CHUNK_BUFFER_LENGTH - 50)
@@ -1159,7 +1162,7 @@ void SH1122Oled::set_segment_remap(bool remapped)
     uint8_t cmd = 0;
 
     if (remapped)
-        cmd = OLED_CMD_NORM_SEG_MAP | 0x01;
+        cmd = OLED_CMD_NORM_SEG_MAP | 0x01U;
     else
         cmd = OLED_CMD_NORM_SEG_MAP;
 
@@ -1193,7 +1196,7 @@ void SH1122Oled::set_orientation(bool flipped)
 uint16_t SH1122Oled::get_ascii_next(uint8_t b)
 {
     if (b == 0U || b == '\n')
-        return 0x0FFFF;
+        return 0x0FFFFU;
     else
         return b;
 }
@@ -1207,7 +1210,7 @@ uint16_t SH1122Oled::get_ascii_next(uint8_t b)
 uint16_t SH1122Oled::get_utf8_next(uint8_t b)
 {
     if (b == 0U || b == '\n')
-        return 0x0FFFF;
+        return 0x0FFFFU;
 
     if (utf8_state == 0U)
     {
@@ -1428,7 +1431,7 @@ int8_t SH1122Oled::font_decode_get_signed_bits(sh1122_oled_font_decode_t* decode
 {
     int8_t val;
     int8_t d;
-    val = (int8_t) font_decode_get_unsigned_bits(decode, cnt);
+    val = static_cast<int8_t>(font_decode_get_unsigned_bits(decode, cnt));
     d = 1;
     cnt--;
     d <<= cnt;
@@ -1512,7 +1515,7 @@ uint16_t SH1122Oled::font_apply_direction_x(uint16_t dx, int8_t x, int8_t y, Fon
  */
 uint8_t SH1122Oled::font_lookup_table_read_char(const uint8_t* font, uint8_t offset)
 {
-    return *(const uint8_t*) (font + offset);
+    return *static_cast<const uint8_t*>(font + offset);
 }
 
 /**
@@ -1526,9 +1529,9 @@ uint16_t SH1122Oled::font_lookup_table_read_word(const uint8_t* font, uint8_t of
 {
     uint16_t word;
 
-    word = (uint16_t) * (const uint8_t*) (font + offset);
+    word = static_cast<uint16_t>(*static_cast<const uint8_t*>(font + offset));
     word <<= 8;
-    word += (uint16_t) * (const uint8_t*) (font + offset + 1);
+    word += static_cast<uint16_t>(*static_cast<const uint8_t*>(font + offset + 1U));
 
     return word;
 }
@@ -1560,8 +1563,8 @@ void SH1122Oled::bitmap_decode_pixel_block(const uint8_t** data_ptr, int16_t& r_
  */
 void SH1122Oled::bitmap_read_byte(const uint8_t** data_ptr, int16_t& r_val_lim, PixelIntensity& intensity)
 {
-    intensity = (PixelIntensity) (**data_ptr & BITMAP_DECODE_PIXEL_INTENSITY_MASK);
-    r_val_lim = (int16_t) (**data_ptr & BITMAP_DECODE_R_VAL_B_MASK) >> 5;
+    intensity = static_cast<PixelIntensity>((**data_ptr & BITMAP_DECODE_PIXEL_INTENSITY_MASK));
+    r_val_lim = static_cast<int16_t>((**data_ptr & BITMAP_DECODE_R_VAL_B_MASK)) >> 5;
     *data_ptr += 1;
 }
 
@@ -1575,8 +1578,9 @@ void SH1122Oled::bitmap_read_byte(const uint8_t** data_ptr, int16_t& r_val_lim, 
  */
 void SH1122Oled::bitmap_read_word(const uint8_t** data_ptr, int16_t& r_val_lim, PixelIntensity& intensity)
 {
-    intensity = (PixelIntensity) (*(*data_ptr + 1) & BITMAP_DECODE_PIXEL_INTENSITY_MASK);
-    r_val_lim = (int16_t) ((**data_ptr & ~BITMAP_DECODE_WORD_FLG_BIT) << 3) | (int16_t) (((*(*data_ptr + 1)) & BITMAP_DECODE_R_VAL_LOW_MASK) >> 5);
+    intensity = static_cast<PixelIntensity>((*(*data_ptr + 1) & BITMAP_DECODE_PIXEL_INTENSITY_MASK));
+    r_val_lim = static_cast<int16_t>(((**data_ptr & ~BITMAP_DECODE_WORD_FLG_BIT) << 3)) |
+                static_cast<int16_t>((((*(*data_ptr + 1)) & BITMAP_DECODE_R_VAL_LOW_MASK) >> 5));
     *data_ptr += 2;
 }
 
@@ -1674,7 +1678,7 @@ void SH1122Oled::font_draw_lines(sh1122_oled_font_decode_t* decode, uint8_t len,
 
         if (is_foreground)
         {
-            font_draw_line(decode, x, y, current, (PixelIntensity) decode->fg_intensity);
+            font_draw_line(decode, x, y, current, static_cast<PixelIntensity>(decode->fg_intensity));
         }
 
         if (cnt < rem)
@@ -1793,21 +1797,21 @@ void SH1122Oled::default_init()
 
     power_off();
     // send all initialization commands
-    set_oscillator_freq(0x50);
-    set_multiplex_ratio(HEIGHT - 1);
-    set_display_offset_mod(0x00);
-    set_row_addr(0x00);
-    set_high_column_address(0x00);
-    set_low_column_address(0x00);
-    set_start_line(0x00);
-    set_vseg_discharge_level(0x00);
-    set_dc_dc_control_mod(0x80);
+    set_oscillator_freq(0x50U);
+    set_multiplex_ratio(HEIGHT - 1U);
+    set_display_offset_mod(0x00U);
+    set_row_addr(0x00U);
+    set_high_column_address(0x00U);
+    set_low_column_address(0x00U);
+    set_start_line(0x00U);
+    set_vseg_discharge_level(0x00U);
+    set_dc_dc_control_mod(0x80U);
     set_segment_remap(false);
     set_orientation(false);
     set_contrast(0x90);
-    set_precharge_period(0x28);
-    set_vcom(0x30);
-    set_vseg(0x1E);
+    set_precharge_period(0x28U);
+    set_vcom(0x30U);
+    set_vseg(0x1EU);
     set_inverted_intensity(false);
     power_on(); // power back on oled
 
