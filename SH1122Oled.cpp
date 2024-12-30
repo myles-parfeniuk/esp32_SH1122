@@ -2,8 +2,11 @@
 
 sh1122_oled_cfg_t SH1122Oled::oled_cfg;
 uint8_t SH1122Oled::frame_buffer[FRAME_BUFFER_LENGTH];
-SH1122Oled::sh1122_oled_font_info_t SH1122Oled::font_info;
+SH1122Oled::get_next_char_cb_t SH1122Oled::get_next_char_cb = nullptr;
+uint8_t SH1122Oled::utf8_state = 0U;
+uint16_t SH1122Oled::utf8_encoding = 0U;
 SH1122Oled::FontDirection SH1122Oled::font_dir = SH1122Oled::FontDirection::left_to_right;
+SH1122Oled::sh1122_oled_font_info_t SH1122Oled::font_info;
 
 /**
  * @brief SH1122Oled constructor.
@@ -18,7 +21,7 @@ SH1122Oled::FontDirection SH1122Oled::font_dir = SH1122Oled::FontDirection::left
 SH1122Oled::SH1122Oled(sh1122_oled_cfg_t settings)
 {
     oled_cfg = settings;
-    font_info.font = nullptr; //used to check if user has loaded font for string/glyph functions
+    font_info.font = nullptr; // used to check if user has loaded font for string/glyph functions
     // set-up data command pin and rst pin
     gpio_config_t io_dc_rst_cs_cfg;
 
@@ -486,6 +489,9 @@ uint16_t SH1122Oled::draw_string(uint16_t x, uint16_t y, PixelIntensity intensit
     va_list args;
     uint16_t size;
 
+    utf8_encoding = 0U;
+    utf8_state = 0U;
+
     // must load font before attempting to write
     if (font_info.font == nullptr)
     {
@@ -510,10 +516,12 @@ uint16_t SH1122Oled::draw_string(uint16_t x, uint16_t y, PixelIntensity intensit
 
     while (1)
     {
-        encoding = get_ascii_next(*str); // check to ensure character is not null or new line (end of string)
+        encoding = get_next_char_cb(*str); // check to ensure character is not null or new line (end of string)
 
         if (encoding == 0x0ffff)
             break;
+
+        str++;
 
         if (encoding != 0x0fffe)
         {
@@ -540,8 +548,6 @@ uint16_t SH1122Oled::draw_string(uint16_t x, uint16_t y, PixelIntensity intensit
 
             sum += delta;
         }
-
-        str++;
     }
 
     delete[] buffer;
@@ -719,7 +725,7 @@ uint16_t SH1122Oled::font_get_string_width(const char* format, ...)
 
     while (1)
     {
-        encoding = get_ascii_next(*str); // get next character
+        encoding = get_next_char_cb(*str); // get next character
 
         if (encoding == 0x0ffff)
             break;
@@ -875,39 +881,33 @@ void SH1122Oled::take_screen_shot()
 }
 
 /**
- * @brief Loads a font for drawing strings and glyphs.
+ * @brief Loads a font for drawing strings and glyphs (will be decoded in ASCII mode).
  *
  * @param font A pointer to the first element of the respective font lookup table, font tables are located in fonts directory.
  * @return void, nothing to return
  */
 void SH1122Oled::load_font(const uint8_t* font)
 {
-    font_info.font = font;
 
-    font_info.glyph_cnt = font_lookup_table_read_char(font, 0);
-    font_info.bbx_mode = font_lookup_table_read_char(font, 1);
-    font_info.bits_per_0 = font_lookup_table_read_char(font, 2);
-    font_info.bits_per_1 = font_lookup_table_read_char(font, 3);
+    // set get_next_char callback to ASCII
+    get_next_char_cb = get_ascii_next;
 
-    font_info.bits_per_char_width = font_lookup_table_read_char(font, 4);
-    font_info.bits_per_char_height = font_lookup_table_read_char(font, 5);
-    font_info.bits_per_char_x = font_lookup_table_read_char(font, 6);
-    font_info.bits_per_char_y = font_lookup_table_read_char(font, 7);
-    font_info.bits_per_delta_x = font_lookup_table_read_char(font, 8);
+    set_font_vars(font);
+}
 
-    font_info.max_char_width = font_lookup_table_read_char(font, 9);
-    font_info.max_char_height = font_lookup_table_read_char(font, 10);
-    font_info.x_offset = font_lookup_table_read_char(font, 11);
-    font_info.y_offset = font_lookup_table_read_char(font, 12);
+/**
+ * @brief Loads a font for drawing strings and glyphs (will be decoded in utf-8 mode).
+ *
+ * @param font A pointer to the first element of the respective font lookup table, font tables are located in fonts directory.
+ * @return void, nothing to return
+ */
+void SH1122Oled::load_font_utf8(const uint8_t* font)
+{
 
-    font_info.ascent_A = font_lookup_table_read_char(font, 13);  // capital a usually the highest pixels of any characters
-    font_info.descent_g = font_lookup_table_read_char(font, 14); // lower case usually has the lowest pixels of any characters
-    font_info.ascent_para = font_lookup_table_read_char(font, 15);
-    font_info.descent_para = font_lookup_table_read_char(font, 16);
+    // set get_next_char callback to ASCII
+    get_next_char_cb = get_utf8_next;
 
-    font_info.start_pos_upper_A = font_lookup_table_read_word(font, 17);
-    font_info.start_pos_lower_a = font_lookup_table_read_word(font, 19);
-    font_info.start_pos_unicode = font_lookup_table_read_word(font, 21);
+    set_font_vars(font);
 }
 
 /**
@@ -1192,10 +1192,106 @@ void SH1122Oled::set_orientation(bool flipped)
  */
 uint16_t SH1122Oled::get_ascii_next(uint8_t b)
 {
-    if (b == 0 || b == '\n')
-        return 0x0ffff;
+    if (b == 0U || b == '\n')
+        return 0x0FFFF;
     else
         return b;
+}
+
+/**
+ * @brief Checks a passed glyph for EOL conditions.
+ *
+ * @param b Encoding of the glyph being checked.
+ * @return utf8 value/encoding of the glyph, 0x0ffff if EOL.
+ */
+uint16_t SH1122Oled::get_utf8_next(uint8_t b)
+{
+    if (b == 0U || b == '\n')
+        return 0x0FFFF;
+
+    if (utf8_state == 0U)
+    {
+        if (b >= 0xFCU) /* 6 byte sequence */
+        {
+            utf8_state = 5U;
+            b &= 1U;
+        }
+        else if (b >= 0xF8U)
+        {
+            utf8_state = 4U;
+            b &= 3U;
+        }
+        else if (b >= 0xF0U)
+        {
+            utf8_state = 3;
+            b &= 7U;
+        }
+        else if (b >= 0xE0U)
+        {
+            utf8_state = 2U;
+            b &= 15U;
+        }
+        else if (b >= 0xC0U)
+        {
+            utf8_state = 1U;
+            b &= 0x01FU;
+        }
+        else
+        {
+            return b;
+        }
+
+        utf8_encoding = b;
+        return 0x0FFFEU;
+    }
+    else
+    {
+        utf8_state--;
+        utf8_encoding <<= 6U;
+        b &= 0x03FU;
+        utf8_encoding |= b;
+
+        if (utf8_state != 0)
+            return 0x0FFFEU;
+    }
+
+    return utf8_encoding;
+}
+
+/**
+ * @brief Sets font info from desired font. Font info is to decode strings and glyphs.
+ *
+ * @param font A pointer to the first element of the respective font lookup table, font tables are located in fonts directory.
+ * @return void, nothing to return
+ */
+void SH1122Oled::set_font_vars(const uint8_t* font)
+{
+    font_info.font = font;
+
+    font_info.glyph_cnt = font_lookup_table_read_char(font, 0);
+    font_info.bbx_mode = font_lookup_table_read_char(font, 1);
+    font_info.bits_per_0 = font_lookup_table_read_char(font, 2);
+    font_info.bits_per_1 = font_lookup_table_read_char(font, 3);
+
+    font_info.bits_per_char_width = font_lookup_table_read_char(font, 4);
+    font_info.bits_per_char_height = font_lookup_table_read_char(font, 5);
+    font_info.bits_per_char_x = font_lookup_table_read_char(font, 6);
+    font_info.bits_per_char_y = font_lookup_table_read_char(font, 7);
+    font_info.bits_per_delta_x = font_lookup_table_read_char(font, 8);
+
+    font_info.max_char_width = font_lookup_table_read_char(font, 9);
+    font_info.max_char_height = font_lookup_table_read_char(font, 10);
+    font_info.x_offset = font_lookup_table_read_char(font, 11);
+    font_info.y_offset = font_lookup_table_read_char(font, 12);
+
+    font_info.ascent_A = font_lookup_table_read_char(font, 13);  // capital a usually the highest pixels of any characters
+    font_info.descent_g = font_lookup_table_read_char(font, 14); // lower case usually has the lowest pixels of any characters
+    font_info.ascent_para = font_lookup_table_read_char(font, 15);
+    font_info.descent_para = font_lookup_table_read_char(font, 16);
+
+    font_info.start_pos_upper_A = font_lookup_table_read_word(font, 17);
+    font_info.start_pos_lower_a = font_lookup_table_read_word(font, 19);
+    font_info.start_pos_unicode = font_lookup_table_read_word(font, 21);
 }
 
 /**

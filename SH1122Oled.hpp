@@ -148,6 +148,7 @@ class SH1122Oled
         void draw_bitmap(uint16_t x, uint16_t y, const uint8_t* bitmap, PixelIntensity bg_intensity = PixelIntensity::level_transparent);
 
         static void load_font(const uint8_t* font);
+        static void load_font_utf8(const uint8_t* font);
         void set_font_direction(FontDirection dir);
         uint16_t font_get_string_width(const char* format, ...);
         uint16_t font_get_string_height(const char* format, ...);
@@ -246,7 +247,11 @@ class SH1122Oled
         void send_data(uint8_t* data, uint16_t length);
         void fill_ellipse_frame_quadrant(
                 std::vector<sh1122_2d_point_t>& outter_points, std::vector<sh1122_2d_point_t>& inner_points, int16_t y_c, PixelIntensity intensity);
-        uint16_t get_ascii_next(uint8_t b);
+
+        using get_next_char_cb_t = uint16_t (*)(uint8_t);
+        static uint16_t get_ascii_next(uint8_t b);
+        static uint16_t get_utf8_next(uint8_t b);
+        static void set_font_vars(const uint8_t* font);
         const uint8_t* font_get_glyph_data(uint16_t encoding);
         uint16_t font_get_glyph_width(sh1122_oled_font_decode_t* decode, uint16_t encoding);
         void font_setup_glyph_decode(sh1122_oled_font_decode_t* decode, const uint8_t* glyph_data);
@@ -269,6 +274,11 @@ class SH1122Oled
         spi_device_interface_config_t oled_interface_cfg; ///< SPI interface struct for SH1122
         spi_device_handle_t spi_hdl;                      ///< Handle to perform SPI transactions with.
 
+        static get_next_char_cb_t
+                get_next_char_cb; ///< Contains function to use for decoding next char (get_utf8_next or get_ascii next depending on which draw_string method was called)
+
+        static uint8_t utf8_state;                ///< Used during utf-8 font decoding with get_utf8_next(), reset by load_font_utf8()
+        static uint16_t utf8_encoding;            ///< Stores encoding result for get_utf8_next()
         static FontDirection font_dir;            ///< The currently selected font direction, default is left to right.
         static sh1122_oled_font_info_t font_info; ///< Contains information about the currently loaded font.
 
